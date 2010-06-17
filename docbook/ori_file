@@ -1,0 +1,71 @@
+<sect1 ID="TGE-LV-DVFS-0140" status="TBD" role="NoRelease">
+	<title>
+TGE-LV-DVFS-0140: Drivers frequence test
+	</title>
+	<formalpara>
+		<title>
+		Priority
+		</title>
+		<para>
+P3
+		</para>
+	</formalpara>
+	<formalpara>
+		<title>
+		Category
+		</title>
+		<para>
+Function
+		</para>
+	</formalpara>
+	<formalpara>
+		<title>
+		Auto_Level
+		</title>
+		<para>
+Auto
+		</para>
+	</formalpara>
+	<formalpara>
+		<title>
+		Objective
+		</title>
+		<para>
+Drivers standby test
+		</para>
+	</formalpara>
+	<formalpara>
+		<title>
+		Environment
+		</title>
+		<para>
+Default
+		</para>
+	</formalpara>
+	<formalpara>
+		<title>
+		Steps
+		</title>
+		<screen><![CDATA[
+run command line
+		]]></screen>
+	</formalpara>
+	<formalpara>
+		<title>
+Expected Result
+		</title>
+		<screen>
+Descripted in steps
+		</screen>
+	</formalpara>
+	<formalpara>
+		<title>
+Command Line
+		</title>
+		<para>
+		<![CDATA[
+dvfs_mx50.sh 1
+		]]>
+		</para>
+	</formalpara>
+</sect1>

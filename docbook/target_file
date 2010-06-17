@@ -1,0 +1,67 @@
+<row>
+	<column>
+	<char></char>
+	</column>
+	<column>
+		<skip>
+		Priority
+		</skip>
+		<char>
+P3
+		</char>
+	</column>
+	<column>
+		<skip>
+		Category
+		</skip>
+		<char>
+Function
+		</char>
+	</column>
+	<column>
+		<skip>
+		</skip>
+		<char>
+		</char>
+	</column>
+	<column>
+		<skip>
+		</skip>
+		<char>
+		</char>
+	</column>
+	<column>
+		<skip>
+		Environment
+		</skip>
+		<char>
+Default
+		</char>
+	</column>
+	<column>
+		<skip>
+		Steps
+		</skip>
+		<char><![CDATA[
+run command line
+		]]></char>
+	</column>
+	<column>
+		<skip>
+Expected Result
+		</skip>
+		<char>
+Descripted in steps
+		</char>
+	</column>
+	<column>
+		<skip>
+Command Line
+		</skip>
+		<char>
+		<![CDATA[
+dvfs_mx50.sh 1
+		]]>
+		</char>
+	</column>
+</row>
