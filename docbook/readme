@@ -1,0 +1,4 @@
+run:
+./xml_parser <the docbook xml file>
+Note:
+the ori_file and target_file is the format control
