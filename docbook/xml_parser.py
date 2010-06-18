@@ -63,7 +63,7 @@ def end_element(name):
 		elif("skip" == target_end_array[seq_end]):
 			pass
 		else:
-			f.write("\n<\\")
+			f.write("\n</")
 			f.write(target_end_array[seq_end])
 			f.write(">")
 		seq_end = seq_end + 1
