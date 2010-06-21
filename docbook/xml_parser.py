@@ -2,6 +2,7 @@
 
 import xml.parsers.expat
 import sys
+import os
 
 #virables
 ori_array = [ ]
@@ -28,8 +29,8 @@ def start_element(name, attrs):
 	global ori_array
 	global target_array
 	global f
-	print 'Start element:', name, attrs, seq
-	if (name == ori_array[seq]):
+	print 'Start element:', name, attrs, seq, len_ori
+	if (seq < len_ori and name == ori_array[seq]):
 		if( "skip" == target_array[seq]):
 			add_content = 0
 		elif ("char" == target_array[seq]):
@@ -39,12 +40,12 @@ def start_element(name, attrs):
 			f.write(target_array[seq]);
 			f.write(">")
 			add_content = 1
-		if(seq < len_ori - 1):
+		if(seq < len_ori):
 			seq = seq + 1
 	else:
 		#abnormal happen
 		add_content = 0
-		print 'abnormal!!!', name , ori_array[seq], seq
+		print 'abnormal!!!', name, seq
 		return
 def end_element(name):
 	global add_content
@@ -57,7 +58,7 @@ def end_element(name):
 	if (seq_end >= len(ori_end_array)):
 		seq_end = 0
 		seq = 0
-	if (name == ori_end_array[seq_end] and  seq > 0):
+	if (name == ori_end_array[seq_end] and seq > 0):
 		if(target_end_array[seq_end] == "char" ):
 			pass
 		elif("skip" == target_end_array[seq_end]):
@@ -131,16 +132,23 @@ else:
 	print 'current target array is:',target_array
 	print 'current target_end array is:',target_end_array
 	len_target = len(target_array) 
-	f = file('db.xml', 'w')
 	p3 = xml.parsers.expat.ParserCreate()
 	seq = 0
 	p3.StartElementHandler = start_element
 	p3.EndElementHandler = end_element
 	p3.CharacterDataHandler = char_data
 	for filename in sys.argv[1:]:
+		fp = [ ]
+		fp = os.path.split(filename) 
+		fname = "db_" + fp[1]
+		f = file(fname, 'w')
+		f.write("<sheet>")
 		try:
 			inFile = open(filename,'r')
+			print 'inFile is :', filename
 			p3.ParseFile(inFile)
 		finally:
 			inFile.close()
+			f.write("</sheet>")
+			f.close
 
