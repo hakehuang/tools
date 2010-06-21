@@ -1,5 +1,6 @@
 <row>
 	<column>
+
 	</column>
 	<column>
 		<skip>
@@ -19,14 +20,18 @@ Function
 	</column>
 	<column>
 		<skip>
+
 		</skip>
 		<char>
+
 		</char>
 	</column>
 	<column>
 		<skip>
+
 		</skip>
 		<char>
+
 		</char>
 	</column>
 	<column>
@@ -35,7 +40,7 @@ Function
 		</skip>
 		<char>
 Default
-		</char>
+	</char>
 	</column>
 	<column>
 		<skip>
@@ -64,16 +69,18 @@ dvfs_mx50.sh 1
 		</char>
 	</column>
 <column>
+<char>
 		<char>
 SRS ID: SD_00060
 		</char>
-		<skip>
-			<skip>
+		<char>
+				<skip>
 Description
-			</skip>
+				</skip>
 			<char>
 The  MMC/SD/SDIO driver shall support DMA transfers
 			</char>
-		</skip>
+		</char>
+</char>
 </column>
 </row>

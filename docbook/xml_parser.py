@@ -9,6 +9,7 @@ ori_array = [ ]
 ori_end_array = [ ]
 target_array = [ ]
 target_end_array = [ ]
+sa = [ ]
 seq = 0
 seq_end = 0
 add_content = 0
@@ -29,6 +30,7 @@ def start_element(name, attrs):
 	global ori_array
 	global target_array
 	global f
+	global sa
 	print 'Start element:', name, attrs, seq, len_ori
 	if (seq < len_ori and name == ori_array[seq]):
 		if( "skip" == target_array[seq]):
@@ -45,8 +47,14 @@ def start_element(name, attrs):
 	else:
 		#abnormal happen
 		add_content = 0
-		print 'abnormal!!!', name, seq
-		return
+		if(seq > 0 and seq < len_ori - 1):
+			print 'abnormal!!!', name, ori_array[seq],seq
+			#try to use the parent attribute
+			if(len(sa)):
+				add_content = sa[-1]
+		#in this cases the content seems need
+	sa.append(add_content)
+	return
 def end_element(name):
 	global add_content
 	global seq_end
@@ -54,6 +62,7 @@ def end_element(name):
 	global ori_end_array
 	global target_end_array
 	global f
+	global sa
 	print 'End element:', name
 	if (seq_end >= len(ori_end_array)):
 		seq_end = 0
@@ -69,9 +78,11 @@ def end_element(name):
 			f.write(">")
 		seq_end = seq_end + 1
 	else:
+		pass
 		#abnormal happen
-		print 'end abnormal!!!', name , ori_end_array[seq_end], seq_end
-		return
+		#print 'end abnormal!!!', name , ori_end_array[seq_end], seq_end
+	sa.pop()
+	return
 def char_data(data):
 	global add_content
 	global seq

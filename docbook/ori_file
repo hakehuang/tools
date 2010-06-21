@@ -68,7 +68,8 @@ dvfs_mx50.sh 1
 		]]>
 		</para>
 	</formalpara>
-<sect2 condition="SD_00060">
+<sect2>
+<sect3 condition="SD_00060">
 		<title>
 SRS ID: SD_00060
 		</title>
@@ -80,6 +81,7 @@ Description
 The  MMC/SD/SDIO driver shall support DMA transfers
 			</para>
 		</formalpara>
+</sect3>
 </sect2>
 
 </sect1>
