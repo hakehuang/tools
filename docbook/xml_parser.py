@@ -13,6 +13,8 @@ sa = [ ]
 seq = 0
 seq_end = 0
 add_content = 0
+pat = -1
+cnt = 0
 # 3 store the  
 def store_ori_start_element(name, attrs):
 	ori_array.append(name);
@@ -31,6 +33,7 @@ def start_element(name, attrs):
 	global target_array
 	global f
 	global sa
+	global cnt
 	print 'Start element:', name, attrs, seq, len_ori
 	if (seq < len_ori and name == ori_array[seq]):
 		if( "skip" == target_array[seq]):
@@ -40,10 +43,13 @@ def start_element(name, attrs):
 		else:
 			f.write("\n<")
 			f.write(target_array[seq]);
+			if(seq == 0):
+			  	f.write(" id=")
+				f.write("\""+str(cnt)+"\"")
+				cnt = cnt + 1
 			f.write(">")
 			add_content = 1
-		if(seq < len_ori):
-			seq = seq + 1
+		seq = seq + 1
 	else:
 		#abnormal happen
 		add_content = 0
@@ -63,33 +69,37 @@ def end_element(name):
 	global target_end_array
 	global f
 	global sa
-	print 'End element:', name
-	if (seq_end >= len(ori_end_array)):
-		seq_end = 0
-		seq = 0
+	global pat
+	print 'End element:', name, seq_end, len(ori_end_array)
 	if (name == ori_end_array[seq_end] and seq > 0):
 		if(target_end_array[seq_end] == "char" ):
 			pass
 		elif("skip" == target_end_array[seq_end]):
 			pass
 		else:
+			if (pat != -1):
+		  		f.write("]]>")
+				pat = -1
 			f.write("\n</")
 			f.write(target_end_array[seq_end])
 			f.write(">")
 		seq_end = seq_end + 1
+		if (seq_end >= len(ori_end_array)):
+			seq_end = 0
+			seq = 0
 	else:
 		pass
 		#abnormal happen
-		#print 'end abnormal!!!', name , ori_end_array[seq_end], seq_end
+		print 'end abnormal!!!', name , ori_end_array[seq_end], seq_end
 	sa.pop()
 	return
 def char_data(data):
 	global add_content
 	global seq
-	global len_ori
 	global ori_array
 	global target_array
 	global f
+	global pat
 	if(data == '\n'):  
 		return  
 	if(data.isspace()):  
@@ -99,6 +109,12 @@ def char_data(data):
 	tl = len(temp)
 	if(add_content == 1):
 		f.write("\n")
+		if (pat == -1):
+			pat1 = data.find("&")
+			pat2 = data.find("<")
+			if (pat1 != -1 or pat2 != -1):
+		  		f.write("<![CDATA[")
+				pat = 0
 		f.write(repr(data)[2:tl-1].replace("\\t",""))
 	else:
 		return
@@ -143,12 +159,18 @@ else:
 	print 'current target array is:',target_array
 	print 'current target_end array is:',target_end_array
 	len_target = len(target_array) 
-	p3 = xml.parsers.expat.ParserCreate()
-	seq = 0
-	p3.StartElementHandler = start_element
-	p3.EndElementHandler = end_element
-	p3.CharacterDataHandler = char_data
+	#p3 = xml.parsers.expat.ParserCreate()
+	#seq = 0
+	#p3.StartElementHandler = start_element
+	#p3.EndElementHandler = end_element
+	#p3.CharacterDataHandler = char_data
 	for filename in sys.argv[1:]:
+		p3 = xml.parsers.expat.ParserCreate()
+		seq = 0
+		cnt = 0
+		p3.StartElementHandler = start_element
+		p3.EndElementHandler = end_element
+		p3.CharacterDataHandler = char_data
 		fp = [ ]
 		fp = os.path.split(filename) 
 		fname = "db_" + fp[1]
@@ -162,4 +184,5 @@ else:
 			inFile.close()
 			f.write("</sheet>")
 			f.close
+		del p3
 
