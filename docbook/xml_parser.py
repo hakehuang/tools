@@ -8,6 +8,7 @@ import os
 ori_array = [ ]
 ori_end_array = [ ]
 target_array = [ ]
+target_array_attr = [ ]
 target_end_array = [ ]
 sa = [ ]
 seq = 0
@@ -15,15 +16,20 @@ seq_end = 0
 add_content = 0
 pat = -1
 cnt = 0
+module = ""
 # 3 store the  
 def store_ori_start_element(name, attrs):
-	ori_array.append(name);
+	ori_array.append(name)
 def store_ori_end_element(name):
-	ori_end_array.append(name);
+	ori_end_array.append(name)
 def store_target_start_element(name, attrs):
-	target_array.append(name);
+	target_array.append(name)
+	if(len(attrs)):
+		target_array_attr.append(attrs)
+	else:
+		target_array_attr.append({'NA':'NA'})
 def store_target_end_element(name):
-	target_end_array.append(name);
+	target_end_array.append(name)
 # 3 handler functions
 def start_element(name, attrs):
 	global add_content
@@ -34,6 +40,7 @@ def start_element(name, attrs):
 	global f
 	global sa
 	global cnt
+	global module
 	print 'Start element:', name, attrs, seq, len_ori
 	if (seq < len_ori and name == ori_array[seq]):
 		if( "skip" == target_array[seq]):
@@ -42,12 +49,25 @@ def start_element(name, attrs):
 			add_content = 1
 		else:
 			f.write("\n<")
-			f.write(target_array[seq]);
+			f.write(target_array[seq])
+			key = target_array_attr[seq].keys()[0]
+			value = target_array_attr[seq].values()[0]
+			if(key != "NA"):
+				f.write(" " + str(key) + "=\"" + str(value) + "\"");
 			if(seq == 0):
 			  	f.write(" id=")
 				f.write("\""+str(cnt)+"\"")
+				f.write(">")
+				if(attrs.has_key('id')):
+					f.write("\n<field name=\"Test Case ID\">" + str(attrs['id'])  +"</field>")
+				elif(attrs.has_key('ID')):
+					f.write("\n<field name=\"Test Case ID\">" + str(attrs['ID'])  +"</field>")
+				#add additional informations
+				f.write("\n<field name=\"Type\">" + "Linux BSP" + "</field>")
+				f.write("\n<field name=\"Module\">" + module + "</field>")
 				cnt = cnt + 1
-			f.write(">")
+			else:
+				f.write(">")
 			add_content = 1
 		seq = seq + 1
 	else:
@@ -58,6 +78,13 @@ def start_element(name, attrs):
 			#try to use the parent attribute
 			if(len(sa)):
 				add_content = sa[-1]
+		elif(seq == 0):
+			if(name == "chapter" and attrs.has_key('name')):
+				module=str(attrs['name'])
+			else:
+				pass
+		else:
+			pass
 		#in this cases the content seems need
 	sa.append(add_content)
 	return
