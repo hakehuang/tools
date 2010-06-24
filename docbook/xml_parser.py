@@ -65,6 +65,9 @@ def start_element(name, attrs):
 				#add additional informations
 				f.write("\n<field name=\"Type\">" + "Linux BSP" + "</field>")
 				f.write("\n<field name=\"Module\">" + module + "</field>")
+				f.write("\n<field name=\"Test Point\">" + "default test point for " + module + "</field>")
+				f.write("\n<field name=\"Source\">" + "FSL MAD" + "</field>")
+				f.write("\n<field name=\"Owner\">" + "Hake Huang" + "</field>")
 				cnt = cnt + 1
 			else:
 				f.write(">")
