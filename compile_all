@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
 #PLATFORM="28 233 31 35 37 25 51 53"
 PLATFORM="28 233 51 53"
-#PLATFORM="53"
+#PLATFORM="233"
 VTE_TARGET_PRE=/mnt/vte
 
 KERNEL_DIR=/home/vobs/linux-2.6-imx
@@ -18,14 +18,14 @@ cd $VTE_PARENT_DIR
 
 rm -rf vte
 
-git-clone git://10.192.225.222/vte
-
+#git clone git://10.192.225.222/vte
+git clone b20222@10.192.225.222:/home/git-repository/vte
 cd vte
 
 VTE_DIR=${VTE_PARENT_DIR}vte
 
-git-checkout -b master origin/master
-git-pull
+git checkout -b master origin/master
+git pull
 
 #git-checkout -b SDK_1.7_rel_RC5 origin/SDK_1.7_rel_RC5
 #git-pull
@@ -34,20 +34,19 @@ git-pull
 chmod -R 777 .
 
 
-
 pt=$(echo $PLATFORM | grep 31 | wc -l)
 if [ $pt = 1 ]; then
 echo "make 31"
 cd $KERNEL_DIR
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx31_3stack_defconfig
-make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi-
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2
 
 
 cd $VTE_DIR
 
 source  mx31_3stack_config
 ./armconfig
-make vte || RC="31 $RC"
+make vte  -j 2|| RC="31 $RC"
 cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx31/testcases/bin/
 #sync to Wukong
 scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx31/testcases/bin
@@ -60,14 +59,14 @@ echo "make 35"
 cd $KERNEL_DIR
 make distclean
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx35_3stack_defconfig
-make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi-
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2
 
 
 cd $VTE_DIR
 make clean
 source  mx35_3stack_config
 ./armconfig
-make vte || RC="35 $RC"
+make vte -j 2|| RC="35 $RC"
 cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx35/testcases/bin/
 scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx35/testcases/bin
 fi
@@ -78,14 +77,14 @@ echo "make 37"
 cd $KERNEL_DIR
 make distclean
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx37_3stack_defconfig
-make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi-
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2
 
 
 cd $VTE_DIR
 make clean
 source  mx37_3stack_config
 ./armconfig
-make vte || RC="37 $RC"
+make vte -j 2|| RC="37 $RC"
 cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx37/testcases/bin/
 scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx37/testcases/bin
 fi
@@ -96,14 +95,14 @@ echo "make 25"
 cd $KERNEL_DIR
 make distclean
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx25_3stack_defconfig
-make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi-
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2
 
 
 cd $VTE_DIR
 make clean
 source  mx25_3stack_config
 ./armconfig
-make vte || RC="25 $RC"
+make vte -j 2|| RC="25 $RC"
 cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx25/testcases/bin/
 scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx25/testcases/bin
 fi
@@ -114,14 +113,14 @@ echo "make 23"
 cd $KERNEL_DIR
 make distclean
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx23evk_defconfig 
-make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi-
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2
 
 
 cd $VTE_DIR
 make clean
 source mx233_armadillo_config
 ./armconfig
-make vte || RC="23 $RC"
+make vte -j 2|| RC="23 $RC"
 cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx233/testcases/bin/
 scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx233/testcases/bin
 fi
@@ -133,14 +132,14 @@ cd $KERNEL_DIR
 make distclean
 #make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx51_defconfig
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx5_defconfig
-make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- 
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2
 
 
 cd $VTE_DIR
 make clean
 source  mx51_3stack_config
 ./armconfig
-make vte || RC="51 $RC"
+make vte -j 2|| RC="51 $RC"
 cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx51/testcases/bin/
 scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx51/testcases/bin
 fi
@@ -156,13 +155,13 @@ echo "make 28"
 cd ${KERNEL_DIR}
 make distclean
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx28evk_defconfig
-make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- 
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2
 
 cd $VTE_DIR
 make clean
 source mx28_evk_config
 ./armconfig
-make vte || rc="28 $RC"
+make vte -j 2|| rc="28 $RC"
 cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx28/testcases/bin/
 scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx28/testcases/bin
 fi
@@ -180,13 +179,13 @@ echo "make 53"
 cd ${KERNEL_DIR}
 make distclean
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx5_defconfig
-make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- 
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2
 
 cd $VTE_DIR
 make clean
 source mx53_evk_config
 ./armconfig
-make vte || rc="53 $RC"
+make vte -j 2|| rc="53 $RC"
 cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx53/testcases/bin/
 scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx53/testcases/bin
 fi
