@@ -7,38 +7,46 @@ fon = sys.argv[2]
 
 start = 0
 count = 0
-
+hsect = 0
 try:
 	fi = open(fin, 'r')
 	fo = open(fon, 'w')
 #write head
-	fo.write("<chapter name=\"SRS\">\n");
+	fo.write("<chapter name=\"SRS\"><title>SRS List</title>\n");
 	for line in fi:
 		pt = line.find("\t")
 		if ( line.find("_") != -1 ):
 			head = line.find("\t")
 			hs = line[:head]
 			if (start == 1):
-				fo.write("]]></annotation>\n")
-			fo.write("<annotation xml:id=\"" + hs + " \" role=\"" + str(count) + "\" ><![CDATA[\n")
+				fo.write("]]></para></formalpara>\n")
+			fo.write("<formalpara name=\"" + hs + "\" count=\"" + str(count) + "\" >")
+			fo.write("\n<title>" + hs + "</title>\n")
+			fo.write("<para><![CDATA[\n")
 			fo.write(line)
 			start = 1
 			count = count + 1
 		elif (line.find("\t") == 0):
 			if(start == 1):
-				fo.write("]]></annotation>\n")
+				fo.write("]]></para></formalpara>\n")
 				start = 0
-			fo.write("<para>")
-			fo.write("<![CDATA[")
+			if (hsect == 1):
+				fo.write("</sect1>\n")
+				hsect = 0
+			fo.write("<sect1>")
+			fo.write("<title><![CDATA[")
 			fo.write(line.strip())
-			fo.write("]]>")
-			fo.write("</para>\n")
+			fo.write("]]></title>")
+			hsect = 1
 		else:
 			if(start == 1):
 				fo.write(line)
 	if(start == 1):
-		fo.write("]]></annotation>\n")
+		fo.write("]]></para></formalpara>\n")
 		start = 0
+	if (hsect == 1):
+		fo.write("</sect1>\n")
+		hsect = 0
 	fo.write("</chapter>")
 	count = 0
 finally:
