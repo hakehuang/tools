@@ -1,4 +1,9 @@
 #!/usr/bin/python
+#generate the srs reprot sheet
+#command line:
+#xml_srs.py <the SRS blank file> <xml file you want output>
+#e.g.
+#./xml_srs.py ../mx50_test_manual/SRS/mx508_SRS_release SRS_release.xml
 
 import sys
 

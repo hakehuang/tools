@@ -1,4 +1,11 @@
 #!/usr/bin/python
+#summary the srs map to test cases
+#command line
+#./xml_sum.py <srs xml file> <directory path where all the cases xml lies>
+#e.g.
+#./xml_sum.py SRS_release.xml ../mx50_test_manual
+#the result
+# the result will be SRS_MAP.xml
 
 import xml.parsers.expat
 import sys
