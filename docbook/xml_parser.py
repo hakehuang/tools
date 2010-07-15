@@ -17,6 +17,7 @@ add_content = 0
 pat = -1
 cnt = 0
 module = ""
+cid = ""
 # 3 store the  
 def store_ori_start_element(name, attrs):
 	ori_array.append(name)
@@ -41,6 +42,7 @@ def start_element(name, attrs):
 	global sa
 	global cnt
 	global module
+	global cid
 	print 'Start element:', name, attrs, seq, len_ori
 	if (seq < len_ori and name == ori_array[seq]):
 		if( "skip" == target_array[seq]):
@@ -60,8 +62,10 @@ def start_element(name, attrs):
 				f.write(">")
 				if(attrs.has_key('id')):
 					f.write("\n<field name=\"Test Case ID\">" + str(attrs['id'])  +"</field>")
+					cid = str(attrs['id'])
 				elif(attrs.has_key('ID')):
 					f.write("\n<field name=\"Test Case ID\">" + str(attrs['ID'])  +"</field>")
+					cid = str(attrs['ID'])
 				#add additional informations
 				f.write("\n<field name=\"Platform : OS\">" + "MX50_EVK:Linux" + "</field>")
 				f.write("\n<field name=\"Type\">" + "Linux BSP" + "</field>")
@@ -131,22 +135,25 @@ def char_data(data):
 	global target_array
 	global f
 	global pat
+	global cid
 	if(data == '\n'):  
 		return  
 	if(data.isspace()):  
 		return  
 	print 'Character data:', repr(data)
 	temp = repr(data)
+	temp = temp.replace(cid,"");
+	temp = temp.replace(":","");
 	tl = len(temp)
 	if(add_content == 1):
 		f.write("\n")
 		if (pat == -1):
-			pat1 = data.find("&")
-			pat2 = data.find("<")
+			pat1 = temp.find("&")
+			pat2 = temp.find("<")
 			if (pat1 != -1 or pat2 != -1):
 		  		f.write("<![CDATA[")
 				pat = 0
-		f.write(repr(data)[2:tl-1].replace("\\t",""))
+		f.write(temp[2:tl-1].replace("\\t",""))
 	else:
 		return
 # Script starts from here

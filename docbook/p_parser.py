@@ -105,19 +105,12 @@ for filename in args:
 		p.StartElementHandler = start_element
 		p.EndElementHandler = end_element
 		p.CharacterDataHandler = char_data
-		fp = [ ]
-		fp = os.path.split(filename) 
-		fname = "P_" + fp[1]
-		f = file(fname, 'w')
-		f.write("<sheet>")
 		try:
 			inFile = open(filename,'r')
 			print 'inFile is :', filename
 			p.ParseFile(inFile)
 		finally:
 			inFile.close()
-			f.write("</sheet>")
-			f.close
 		del p
 
 of.close()
