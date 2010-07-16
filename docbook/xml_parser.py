@@ -18,6 +18,7 @@ pat = -1
 cnt = 0
 module = ""
 cid = ""
+multi_line = 0
 # 3 store the  
 def store_ori_start_element(name, attrs):
 	ori_array.append(name)
@@ -43,7 +44,10 @@ def start_element(name, attrs):
 	global cnt
 	global module
 	global cid
+	global multi_line
 	print 'Start element:', name, attrs, seq, len_ori
+	if(name == "screen"):
+		multi_line = 1
 	if (seq < len_ori and name == ori_array[seq]):
 		if( "skip" == target_array[seq]):
 			add_content = 0
@@ -105,7 +109,10 @@ def end_element(name):
 	global f
 	global sa
 	global pat
+	global multi_line
 	print 'End element:', name, seq_end, len(ori_end_array)
+	if(name == "screen"):
+		multi_line = 0
 	if (name == ori_end_array[seq_end] and seq > 0):
 		if(target_end_array[seq_end] == "char" ):
 			pass
@@ -136,6 +143,7 @@ def char_data(data):
 	global f
 	global pat
 	global cid
+	global multi_line
 	if(data == '\n'):  
 		return  
 	if(data.isspace()):  
@@ -154,6 +162,8 @@ def char_data(data):
 		  		f.write("<![CDATA[")
 				pat = 0
 		f.write(temp[2:tl-1].replace("\\t",""))
+		if(multi_line == 1):
+			f.write("\n")
 	else:
 		return
 # Script starts from here
