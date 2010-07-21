@@ -53,6 +53,7 @@ def start_element(name, attrs):
 			add_content = 0
 		elif ("char" == target_array[seq]):
 			add_content = 1
+			f.write("\n")
 		else:
 			f.write("\n<")
 			f.write(target_array[seq])
@@ -154,16 +155,19 @@ def char_data(data):
 	temp = temp.replace(":","");
 	tl = len(temp)
 	if(add_content == 1):
-		f.write("\n")
 		if (pat == -1):
 			pat1 = temp.find("&")
 			pat2 = temp.find("<")
 			if (pat1 != -1 or pat2 != -1):
 		  		f.write("<![CDATA[")
 				pat = 0
-		f.write(temp[2:tl-1].replace("\\t",""))
-		if(multi_line == 1):
-			f.write("\n")
+		temp = temp[2:tl-1].replace("\\t","")
+		temp = temp.replace("\n","")
+		if(len(temp) > 1):
+			print "write", temp
+			f.write(temp)
+			if(multi_line == 1):
+				f.write("\n")
 	else:
 		return
 # Script starts from here
