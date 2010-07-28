@@ -1,8 +1,10 @@
 #!/usr/bin/python
+#./xml_parser.py $(ls ../mx50_test_manual/*.xml)
 
 import xml.parsers.expat
 import sys
 import os
+import time
 
 #virables
 ori_array = [ ]
@@ -19,6 +21,17 @@ cnt = 0
 module = ""
 cid = ""
 multi_line = 0
+
+def init_data():
+	global seq, seq_end, add_content, pat, cnt, module,cid,multi_line 
+	seq = 0
+	seq_end = 0
+	add_content = 0
+	pat = -1
+	cnt = 0
+	module = ""
+	cid = ""
+	multi_line = 0
 # 3 store the  
 def store_ori_start_element(name, attrs):
 	ori_array.append(name)
@@ -237,4 +250,4 @@ else:
 			f.write("</sheet>")
 			f.close
 		del p3
-
+		init_data()
