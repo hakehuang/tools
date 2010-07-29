@@ -173,8 +173,9 @@ add_report($file_name, $rt);
 sub search_dir
 {
      my ($dirpath)=@_;
+		 my $rt = 0;
      die "Error: $dirpath not exsit\n" if !$dirpath;
-     #print "Starting search in $dirpath  ... \n";
+     print "Starting search in $dirpath  ... \n";
      my @list_dirs=();
      if (-d $dirpath)
      {
@@ -186,26 +187,30 @@ sub search_dir
          for my $file_index (readdir($hDir))
          {
              my $tmp=catfile($dirpath,$file_index);
-             if (-d $tmp && ($file_index ne '.' && $file_index ne '..'))
+             if (-d $tmp )
              {
+							 if($file_index ne '.' && $file_index ne '..')
+							 {
                  push(@list_dirs,$tmp);
-                 next;
-             }
-             if ( -T $tmp)
-             {
-	          if( $tmp =~ /.swap/i )
-		  {
-	            push(@marks, $tmp);
-		    $rt=-11;
-		    add_report($tmp, $rt);
-		  }else{
+								 $rt=0;
+               }
+             }else{
+								if ( -T $tmp)
+             		{
+	          			if( $tmp =~ /\.swap/i )
+		  						{
+	            			push(@marks, $tmp);
+		    						$rt=-11;
+		    						add_report($tmp, $rt);
+		  						}else{
                    search_file($tmp);
-		  }
-             }else{	           
-	        push(@marks, $tmp);
-		$rt=-10;
-		add_report($tmp, $rt);
-	     }
+									}
+             		}else{
+	        				push(@marks, $tmp);
+									$rt=-10;
+									add_report($tmp, $rt);
+	     			 		}
+						 }
          }
      }
      add_report_end;

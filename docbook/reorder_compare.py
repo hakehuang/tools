@@ -46,19 +46,21 @@ pof = file(of,'w')
 for line in pdf:
 	case = line.split('\t')
 	title = case[0]
-	cmd1 = case[1]
+	cmd1 = case[1].rstrip().strip()
 	pxf.seek(0)
 	for line2 in pxf:
-		case2 = line2.split('\t')
-		title2 =  case2[0]
-		cmd2 = case2[1]
+		case2 = line2
+		lx = line2.find(" ")
+		title2 = line2[:lx]
+		cmd2 = line2[lx+1:].rstrip().strip()
 		if (title2 == title):
 			if(cmd1 != cmd2):
 				print 'case diff:', title
 				print 'should be:', cmd1
 				print 'but is:', cmd2
 				pof.write("\n++++++++++++\n")
-				pof.write(str(case))
+				pof.write(str(title)+"\n")
+				pof.write(str(cmd1)+"\n")
 				pof.write("\n----------\n")
-				pof.write(str(case2))
+				pof.write(str(cmd2))
 

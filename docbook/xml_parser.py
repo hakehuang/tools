@@ -164,8 +164,8 @@ def char_data(data):
 		return  
 	print 'Character data:', repr(data)
 	temp = repr(data)
-	temp = temp.replace(cid,"");
-	temp = temp.replace(":","");
+	temp = temp.replace(cid + ":","");
+	#temp = temp.replace(":","");
 	tl = len(temp)
 	if(add_content == 1):
 		if (pat == -1):
