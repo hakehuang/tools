@@ -17,12 +17,18 @@ pflag = 0
 aflag = 0
 oflag = 0
 cid = ""
+skip = 0
+startname = []
 
 def start_element(name, attrs):
-	global pflag,aflag,oflag,cid
+	global pflag,aflag,oflag,cid,skip,startname
 	global Pattern,attrib,OPattern
 	if (pflag == 0 and name.upper() == "TITLE"):
 		pflag = 1
+	if(attrs.has_key('role')):
+		if(str(attrs['role']).rstrip().strip() != "Release"):
+			skip = 1
+			startname.append(name.upper())
 	if(name == "sect1"):
 		if(attrs.has_key('id')):
 			cid = str(attrs['id'])
@@ -31,13 +37,17 @@ def start_element(name, attrs):
 	if(oflag == 2):
 		oflag = 3
 def end_element(name):
-	global pflag,aflag,oflag,cid
+	global pflag,aflag,oflag,cid,startname,skip
 	if (pflag == 1 and name.upper() == "TITLE"):
 		pflag = 0
 	if (aflag == 1 and name.upper() == "FORMALPARA"):
 		aflag = 0
+	if(skip == 1 and startname.__contains__(name.upper())):
+		skip = 0
+		startname.remove(name.upper())
 	if(oflag == 4):
-		of.write("\n")
+		if (skip != 1):
+			of.write("\n")
 		oflag = 0
 		print "output end", name
 	if(name == "sect1"): 
@@ -46,7 +56,7 @@ def end_element(name):
 		oflag = 0
 		cid = ""
 def char_data(data):
-	global pflag,aflag,oflag,cid
+	global pflag,aflag,oflag,cid,skip
 	global Pattern,attrib,OPattern
 	sl = len(repr(data))
 	string = repr(data)[2:sl-1].replace("\\t","").replace("\\n","")
@@ -62,12 +72,14 @@ def char_data(data):
 			oflag = 2
 		#print 'oflag 2 Character data', string
 	elif (oflag == 3):
-		of.write(cid + "\t")
-		of.write(string)
+		if(skip != 1):
+			of.write(cid + "\t")
+			of.write(string)
 		oflag = 4
 		print string
 	elif (oflag == 4):
-		of.write(string)
+		if(skip != 1):
+			of.write(string)
 		print string
 	else:
 		pass
