@@ -29,6 +29,7 @@ def start_element(name, attrs):
 		if(str(attrs['role']).rstrip().strip() != "Release"):
 			skip = 1
 			startname.append(name.upper())
+			print "add...",startname
 	if(name == "sect1"):
 		if(attrs.has_key('id')):
 			cid = str(attrs['id'])
@@ -43,8 +44,10 @@ def end_element(name):
 	if (aflag == 1 and name.upper() == "FORMALPARA"):
 		aflag = 0
 	if(skip == 1 and startname.__contains__(name.upper())):
-		skip = 0
 		startname.remove(name.upper())
+		if(len(startname) == 0):
+			skip = 0
+		print "remaining...",startname
 	if(oflag == 4):
 		if (skip != 1):
 			of.write("\n")

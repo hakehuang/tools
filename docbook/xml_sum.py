@@ -75,12 +75,12 @@ def search_SRS(id):
 					search_caseID(id,spath + i)
 		if(len(cur_map_list)):
 			fm.write("<sect1><title>")
-			fm.write(str(id))
+			fm.write(str(id) + " is mapped to below case(s)")
 			fm.write("</title>")
 			for item in cur_map_list:
-				fm.write("<sect2><para>\n")
+				fm.write("<section><para>\n")
 				fm.write(item)
-				fm.write("\n</para></sect2>")
+				fm.write("\n</para></section>")
 			fm.write("</sect1>")
 		else:
 			fm.write("<sect1><title>")
