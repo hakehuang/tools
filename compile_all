@@ -43,7 +43,7 @@ pt=$(echo $PLATFORM | grep 31 | wc -l)
 if [ $pt = 1 ]; then
 echo "make 31"
 cd $KERNEL_DIR
-make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx31_3stack_defconfig
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx3_defconfig
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2
 
 
@@ -64,7 +64,7 @@ if [ $pt = 1 ]; then
 echo "make 35"
 cd $KERNEL_DIR
 make distclean
-make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx35_3stack_defconfig
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx3_defconfig
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2
 
 
@@ -83,7 +83,7 @@ if [ $pt = 1 ]; then
 echo "make 37"
 cd $KERNEL_DIR
 make distclean
-make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx37_3stack_defconfig
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx3_defconfig
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2
 
 cd $VTE_DIR
