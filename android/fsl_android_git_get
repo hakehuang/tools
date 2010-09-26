@@ -1,0 +1,29 @@
+#!/bin/sh
+#to get code from repomad
+unset http_proxy
+curl http://repomad.ap.freescale.net/repo > ./repo
+chmod a+x ./repo
+./repo init -u git://repomad.ap.freescale.net/platform/manifest.git -b maddev_froyo
+./repo sync
+
+rm -rf cts
+git clone git://10.192.225.222/cts
+
+#below is to get code from android official site
+#export DIR_TOBUILD=/rootfs
+#export RELESE_CODE=${DIR_TOBUILD}/AndroidRelease/imx-android-r6/code/R6
+#echo "make sure you setup the fsl http_proxy"
+#read -p "please input your coreID:" cid
+#export SOCKS_USER=${cid}
+#read -p "please input your coreID passwd:" pw
+#export SOCKS_PASSWD=${pw}
+#cd ${DIR_TOBUILD}/myandroid
+#curl http://android.git.kernel.org/repo > ./repo
+#chmod a+x ./repo
+#socksify ./repo init -u git://android.git.kernel.org/platform/manifest.git -b donut
+#cp ${RELESE_CODE}/default.xml .repo/manifests/default.xml
+#socksify ./repo sync
+#socksify git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-2.6.28.y.git kernel_imx
+#cd ${DIR_TOBUILD}/myandroid/bootable/bootloader
+#socksify git clone git://git.denx.de/u-boot.git uboot-imx
+

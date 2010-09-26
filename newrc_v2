@@ -56,6 +56,7 @@ MX51_ROOTFS_28=${NFS_PATH}imx51_rootfs_babbage/
 MX37_ROOTFS_24=${NFS_PATH}imx37_rootfs_24/
 MX25_ROOTFS=${NFS_PATH}imx25_rootfs/
 MX53_ROOTFS=${NFS_PATH}imx53_rootfs/
+MX50_ROOTFS=${NFS_PATH}imx50_rootfs/
 
 
 echo "$(date +"%y%m%d")" >> .newrclog
@@ -80,6 +81,7 @@ then
   rm -rf ${NFS_PATH}imx25_rootfs
   rm -rf ${NFS_PATH}imx28_rootfs
   rm -rf ${NFS_PATH}imx53_rootfs
+  rm -rf ${NFS_PATH}imx50_rootfs
   exit 0
 fi
 
@@ -102,6 +104,7 @@ else
  mkdir ${NFS_PATH}temp
  echo "get the package"
  scp b20222@${HOST_SERVER}:${RELEASE_PATH}/${RELEASE_PACKAGE} ${NFS_PATH}temp/ || exit 1  
+ #wget http://bluebell.am.freescale.net/previous/100906_033828_CDT/${RELEASE_PACKAGE} -P ${NFS_PATH}temp/ || exit 1  
  echo "unzip the package"
  tar xzvf ${NFS_PATH}temp/$RELEASE_PACKAGE -C ${NFS_PATH}temp || exit 2
  #RELEASE_TARGET=$(basename ${RELEASE_PACKAGE} .tar.gz)
@@ -209,7 +212,12 @@ do
   scp ${NFS_PATH}temp/${RELEASE_TARGET}/uImage ${TFTP_SERVER}:/tftpboot/uImage_mx53
   scp ${NFS_PATH}temp/${RELEASE_TARGET}/rootfs.jffs2 ${TFTP_SERVER}:/tftpboot/mx53_rootfs.jffs2
  fi
-
+ if [ $i == "MX50" ]
+ then
+  scp ${NFS_PATH}temp/${RELEASE_TARGET}/zImage ${TFTP_SERVER}:/tftpboot/zImage_mx50
+  scp ${NFS_PATH}temp/${RELEASE_TARGET}/uImage ${TFTP_SERVER}:/tftpboot/uImage_mx50
+  scp ${NFS_PATH}temp/${RELEASE_TARGET}/rootfs.jffs2 ${TFTP_SERVER}:/tftpboot/mx50_rootfs.jffs2
+  fi
 done
 
 
@@ -414,7 +422,21 @@ do
  sync
  umount /mnt/tempfs 
  fi
- 
+ if [ $i == "MX50" ]
+ then
+ gzip -d ${NFS_PATH}temp/${RELEASE_TARGET}/rootfs.ext2.gz
+ if [ $? -ne 0 ]
+ then
+  mv ${NFS_PATH}temp/${RELEASE_TARGET}/rootfs.ext2.gz ${NFS_PATH}temp/${RELEASE_TARGET}/rootfs.ext2
+ fi 
+ mount -o loop ${NFS_PATH}temp/${RELEASE_TARGET}/rootfs.ext2 /mnt/tempfs
+ rm -rf ./last_week/imx50_rootfs
+ mv ${MX50_ROOTFS} ./last_week/
+ mkdir -p ${MX50_ROOTFS}
+ cp -a /mnt/tempfs/* ${MX50_ROOTFS}/
+ sync
+ umount /mnt/tempfs 
+ fi
 done
 
 
@@ -460,6 +482,10 @@ do
   if [ $i == "MX53" ]
   then
   cp ${VTE_ORIGINAL_PATH}vte ${MX53_ROOTFS}/etc/rc.d/init.d/
+  fi
+  if [ $i == "MX50" ]
+  then
+  cp ${VTE_ORIGINAL_PATH}vte ${MX50_ROOTFS}/etc/rc.d/init.d/
   fi
 done
 
@@ -557,6 +583,13 @@ do
      sed -i "s/pango//g" ${MX53_ROOTFS}/etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX53_ROOTFS}/etc/rc.d/rc.conf 
      sed -i "s/fslgnome//g" ${MX53_ROOTFS}/etc/rc.d/rc.conf 
+  fi
+  if [ $i == "MX50" ]
+  then
+     echo "/etc/rc.d/init.d/vte &" >> ${MX50_ROOTFS}/etc/rc.d/rc.local || exit 1
+     sed -i "s/pango//g" ${MX50_ROOTFS}/etc/rc.d/rc.conf 
+     sed -i "s/gtk2//g" ${MX50_ROOTFS}/etc/rc.d/rc.conf 
+     sed -i "s/fslgnome//g" ${MX50_ROOTFS}/etc/rc.d/rc.conf 
   fi
 done
 
