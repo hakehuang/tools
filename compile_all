@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #PLATFORM="28 233 31 35 37 25 51 53"
-PLATFORM="5x 28 31 35 25 233"
-#PLATFORM="31"
+#PLATFORM="5x 28 31 35 25 233"
+PLATFORM="35 25 233"
 #PLATFORM="233"
 VTE_TARGET_PRE=/mnt/vte
 
@@ -43,7 +43,7 @@ pt=$(echo $PLATFORM | grep 31 | wc -l)
 if [ $pt = 1 ]; then
 echo "make 31"
 cd $KERNEL_DIR
-make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx3_defconfig
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- mx3_defconfig
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2
 
 
@@ -64,7 +64,7 @@ if [ $pt = 1 ]; then
 echo "make 35"
 cd $KERNEL_DIR
 make distclean
-make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx3_defconfig
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- mx3_defconfig
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2
 
 
@@ -83,7 +83,7 @@ if [ $pt = 1 ]; then
 echo "make 37"
 cd $KERNEL_DIR
 make distclean
-make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx3_defconfig
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- mx3_defconfig
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2
 
 cd $VTE_DIR
