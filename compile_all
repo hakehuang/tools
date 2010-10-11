@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #PLATFORM="28 233 31 35 37 25 51 53"
-PLATFORM="5x 28"
-#PLATFORM="31"
+#PLATFORM="5x 28 31 35 25 233"
+PLATFORM="35 25 233"
 #PLATFORM="233"
 VTE_TARGET_PRE=/mnt/vte
 
@@ -11,13 +11,13 @@ KERNEL_DIR=/home/vobs/linux-2.6-imx
 VTE_PARENT_DIR=/home/ltib2/vte_build/
 
 
-export PATH=$PATH:/opt/freescale/usr/local/gcc-4.1.2-glibc-2.5-nptl-3/arm-none-linux-gnueabi/bin
+export PATH=$PATH:/opt/freescale/usr/local/gcc-4.4.4-glibc-2.11.1-multilib-1.0/arm-fsl-linux-gnueabi/bin
 
 RC=0
 
 rm -rf ${KERNEL_DIR}
-tar xzvf /home/vobs/linux-2.6.31_wb.tar.gz -C /home/vobs/
-mv /home/vobs/linux-2.6.31 ${KERNEL_DIR}
+tar xzvf /home/vobs/linux-2.6.35.3_wb.tar.gz -C /home/vobs/
+mv /home/vobs/linux-2.6.35.3 ${KERNEL_DIR}
 
 cd $VTE_PARENT_DIR
 
@@ -43,7 +43,7 @@ pt=$(echo $PLATFORM | grep 31 | wc -l)
 if [ $pt = 1 ]; then
 echo "make 31"
 cd $KERNEL_DIR
-make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx31_3stack_defconfig
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- mx3_defconfig
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2
 
 
@@ -64,7 +64,7 @@ if [ $pt = 1 ]; then
 echo "make 35"
 cd $KERNEL_DIR
 make distclean
-make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx35_3stack_defconfig
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- mx3_defconfig
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2
 
 
@@ -83,9 +83,8 @@ if [ $pt = 1 ]; then
 echo "make 37"
 cd $KERNEL_DIR
 make distclean
-make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx37_3stack_defconfig
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- mx3_defconfig
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2
-
 
 cd $VTE_DIR
 make clean
