@@ -21,7 +21,7 @@ git checkout -b REL_${vte_version}
 mv testcases/vte_tests_suite/test_data ../
 
 tar czvf ../${name}_0001_vte_source_${vte_version}.tar.gz testcases/vte_tests_suite
-tar csvf ../${name}_0002_open_module_test_${vte_version}.tar.gz testcases/module_test/open_source_module
+tar czvf ../${name}_0002_open_module_test_${vte_version}.tar.gz testcases/module_test/open_source_module
 tar czvf ../${name}_0003_vte_module_test_${vte_version}.tar.gz testcases/module_test/vte_test_modules
 echo "move in test data"
 mv ../test_data testcases/vte_tests_suite/
