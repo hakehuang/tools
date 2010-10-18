@@ -434,6 +434,7 @@ do
  mv ${MX50_ROOTFS} ./last_week/
  mkdir -p ${MX50_ROOTFS}
  cp -a /mnt/tempfs/* ${MX50_ROOTFS}/
+ cp ${NFS_PATH}temp/${RELEASE_TARGET}/u-boot-mx50-*.bin ${MX50_ROOTFS}/root
  sync
  umount /mnt/tempfs 
  fi
