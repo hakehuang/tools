@@ -4,20 +4,20 @@ name=ltp-imx
 
 read -p "will clone from git master to generate release tar balls. press to continue"
 
+vte_version=101000
+
+read -p "please define the vte release version:" vte_version
+
+
 git clone b20222@10.192.225.222:/home/git-repository/vte
 
 git checkout master
 
 cd vte
 
-vte_version=100800
-
-read -p "please define the vte release version:" vte_version
-
-echo "moves out the test data first"
-
 git checkout -b REL_${vte_version}
 
+echo "moves out the test data first"
 mv testcases/vte_tests_suite/test_data ../
 
 tar czvf ../${name}_0001_vte_source_${vte_version}.tar.gz testcases/vte_tests_suite
