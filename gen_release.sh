@@ -28,5 +28,5 @@ mv ../test_data testcases/vte_tests_suite/
 tar czvf ../${name}_0004_vte_test_data_${vte_version}.tar.gz testcases/vte_tests_suite/test_data
 tar czvf ../${name}_0005_add_module_test_${vte_version}.tar.gz testcases/module_test/Makefile
 tar czvf ../${name}_0006_add_top_makefile_${vte_version}.tar.gz Makefile_vte
-tar czvf ../${name}_0007_add_armconfig_${vte_version}.tar.gz armconfig
+tar czvf ../${name}_0007_add_armconfig_${vte_version}.tar.gz armconfig package_manifest.txt
 
