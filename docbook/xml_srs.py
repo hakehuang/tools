@@ -38,11 +38,12 @@ try:
 			if (hsect == 1):
 				fo.write("</sect1>\n")
 				hsect = 0
-			fo.write("<sect1>")
-			fo.write("<title><![CDATA[")
-			fo.write(line.strip())
-			fo.write("]]></title>")
-			hsect = 1
+			if (line.strip() != ''):
+				fo.write("<sect1>")
+				fo.write("<title><![CDATA[")
+				fo.write(line.strip())
+				fo.write("]]></title>")
+				hsect = 1
 		else:
 			if(start == 1):
 				fo.write(line)
