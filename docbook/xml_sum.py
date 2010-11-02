@@ -52,6 +52,7 @@ def end_case(name):
 		caseNM = ""
 def search_caseID(srs, fxml):
 	global cur_SRS
+	print 'secarhing id', srs
 	pc = xml.parsers.expat.ParserCreate()
 	pc.StartElementHandler = start_case
 	pc.EndElementHandler = end_case
@@ -119,6 +120,7 @@ except:
 	print 'can not create SRS_MAP.xml'
 	sys.exit()
 
+fm.write("<?xml-stylesheet type=\"text/xsl\" href=\"srs.xsl\"?>\n")
 fm.write("<chapter>\n")
 fm.write("<title>srs to case mapping</title>\n")
 

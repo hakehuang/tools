@@ -9,7 +9,7 @@ chmod a+x ./repo
 rm -rf cts
 git clone git://10.192.225.222/cts
 cd cts
-git checkout -b fslmad_bsp origin/fslmad_bsp 
+git checkout fslmad_bsp origin/fslmad_bsp 
 cd ..
 
 #below is to get code from android official site
