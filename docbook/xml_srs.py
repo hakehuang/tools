@@ -17,6 +17,7 @@ try:
 	fi = open(fin, 'r')
 	fo = open(fon, 'w')
 #write head
+	fo.write("<?xml-stylesheet type=\"text/xsl\" href=\"srs_list.xsl\"?>\n");
 	fo.write("<chapter name=\"SRS\"><title>SRS List</title>\n");
 	for line in fi:
 		pt = line.find("\t")
