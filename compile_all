@@ -1,9 +1,8 @@
 #!/bin/bash
 
 #PLATFORM="28 233 31 35 37 25 51 53"
-#PLATFORM="5x 28 31 35 25 233"
-PLATFORM="35 25 233"
-#PLATFORM="233"
+PLATFORM="5x 28"
+#PLATFORM="5x"
 VTE_TARGET_PRE=/mnt/vte
 
 KERNEL_DIR=/home/vobs/linux-2.6-imx
@@ -51,11 +50,14 @@ cd $VTE_DIR
 
 source  mx31_3stack_config
 ./armconfig
-make apps || RC="31_apps $RC"
+#make apps || RC="31_apps $RC"
+make
 make vte || RC="31 $RC"
 sudo cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx31/testcases/bin/
+sudo cp -a bin/* ${VTE_TARGET_PRE}/vte_mx31/bin/
 #sync to Wukong
 sudo scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx31/testcases/bin
+sudo scp -r bin/* b17931@survivor:/rootfs/wb/vte_mx31/bin
 fi
 
 
@@ -75,7 +77,9 @@ source  mx35_3stack_config
 make apps || RC="35_apps $RC"
 make vte || RC="35 $RC"
 sudo cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx35/testcases/bin/
+sudo cp -a bin/* ${VTE_TARGET_PRE}/vte_mx35/bin/
 sudo scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx35/testcases/bin
+sudo scp -r bin/* b17931@survivor:/rootfs/wb/vte_mx35/bin
 fi
 
 pt=$(echo $PLATFORM | grep 37 | wc -l)
@@ -93,7 +97,9 @@ source  mx37_3stack_config
 make apps || RC="37_apps $RC"
 make vte || RC="37 $RC"
 sudo cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx37/testcases/bin/
+sudo cp -a bin/* ${VTE_TARGET_PRE}/vte_mx37/bin/
 sudo scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx37/testcases/bin
+sudo scp -r bin/* b17931@survivor:/rootfs/wb/vte_mx37/bin
 fi
 
 pt=$(echo $PLATFORM | grep 25| wc -l)
@@ -109,10 +115,11 @@ cd $VTE_DIR
 make clean
 source  mx25_3stack_config
 ./armconfig
-make apps || RC="25_apps $RC"
+#make apps || RC="25_apps $RC"
 make vte || RC="25 $RC"
 sudo cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx25/testcases/bin/
-sudo scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx25/testcases/bin
+sudo cp -a bin/* ${VTE_TARGET_PRE}/vte_mx25/bin/
+sudo scp -r bin/* b17931@survivor:/rootfs/wb/vte_mx25/bin
 fi
 
 pt=$(echo $PLATFORM | grep 23 | wc -l)
@@ -128,10 +135,12 @@ cd $VTE_DIR
 make clean
 source mx233_armadillo_config
 ./armconfig
-make apps || RC="23_apps $RC"
+#make apps || RC="23_apps $RC"
 make vte || RC="23 $RC"
 sudo cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx233/testcases/bin/
+sudo cp -a bin/* ${VTE_TARGET_PRE}/vte_mx233/bin/
 sudo scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx233/testcases/bin
+sudo scp -r bin/* b17931@survivor:/rootfs/wb/vte_mx233/bin
 fi
 
 pt=$(echo $PLATFORM | grep 51 | wc -l)
@@ -148,10 +157,12 @@ cd $VTE_DIR
 make clean
 source  mx51_3stack_config
 ./armconfig
-make apps || RC="51_apps $RC"
+#make apps || RC="51_apps $RC"
 make vte || RC="51 $RC"
 sudo cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx51/testcases/bin/
+sudo cp -a bin/* ${VTE_TARGET_PRE}/vte_mx51/bin/
 sudo scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx51/testcases/bin
+sudo scp -r bin/* b17931@survivor:/rootfs/wb/vte_mx51/bin
 fi
 
 pt=$(echo $PLATFORM | grep 28 | wc -l)
@@ -171,10 +182,12 @@ cd $VTE_DIR
 make clean
 source mx28_evk_config
 ./armconfig
-make apps || RC="28_apps $RC"
+#make apps || RC="28_apps $RC"
 make vte || rc="28 $RC"
 sudo cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx28/testcases/bin/
+sudo cp -a bin/* ${VTE_TARGET_PRE}/vte_mx28/bin/
 sudo scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx28/testcases/bin
+sudo scp -r bin/* b17931@survivor:/rootfs/wb/vte_mx28/bin
 fi
 
 pt=$(echo $PLATFORM | grep 53 | wc -l)
@@ -196,10 +209,12 @@ cd $VTE_DIR
 make clean
 source mx53_evk_config
 ./armconfig
-make apps || RC="53_apps $RC"
+#make apps || RC="53_apps $RC"
 make vte || rc="53 $RC"
 sud ocp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx53/testcases/bin/
+sud ocp -a bin/* ${VTE_TARGET_PRE}/vte_mx53/bin/
 sudo scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx53/testcases/bin
+sudo scp -r bin/* b17931@survivor:/rootfs/wb/vte_mx53/bin
 fi
 
 
@@ -222,10 +237,12 @@ cd $VTE_DIR
 make clean
 source mx50_evk_config
 ./armconfig
-make apps || RC="50_apps $RC"
+#make apps || RC="50_apps $RC"
 make vte || rc="50 $RC"
 sudo cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx50/testcases/bin/
+sudo cp -a bin/* ${VTE_TARGET_PRE}/vte_mx50/bin/
 sudo scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx53/testcases/bin
+sudo scp -r bin/* b17931@survivor:/rootfs/wb/vte_mx53/bin
 fi
 
 pt=$(echo $PLATFORM | grep 5x | wc -l)
@@ -241,13 +258,23 @@ cd $VTE_DIR
 make clean
 source mx5x_evk_config
 ./armconfig
-make apps || RC="5x_apps $RC"
+#make apps || RC="5x_apps $RC"
+make
+make install
 make vte || rc="5x $RC"
 sudo cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx50/testcases/bin/
 sudo cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx51/testcases/bin/
 sudo cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx53/testcases/bin/
+sudo cp -a runtest/* ${VTE_TARGET_PRE}/vte_mx53/runtest/
+sudo cp -a runtest/* ${VTE_TARGET_PRE}/vte_mx50/runtest/
+sudo cp -a runtest/* ${VTE_TARGET_PRE}/vte_mx51/runtest/
+sudo cp -a bin/* ${VTE_TARGET_PRE}/vte_mx50/bin/
+sudo cp -a bin/* ${VTE_TARGET_PRE}/vte_mx51/bin/
+sudo cp -a bin/* ${VTE_TARGET_PRE}/vte_mx53/bin/
 sudo scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx51/testcases/bin
+sudo scp -r bin/* b17931@survivor:/rootfs/wb/vte_mx51/bin
 sudo scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx53/testcases/bin
+sudo scp -r bin/* b17931@survivor:/rootfs/wb/vte_mx53/bin
 
 #50 not in xiaotian
 #scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx53/testcases/bin
