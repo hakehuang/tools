@@ -9,6 +9,7 @@ KERNEL_DIR=/home/vobs/linux-2.6-imx
 
 VTE_PARENT_DIR=/home/ltib2/vte_build/
 
+VTE_DIR=${VTE_PARENT_DIR}vte
 
 export PATH=$PATH:/opt/freescale/usr/local/gcc-4.4.4-glibc-2.11.1-multilib-1.0/arm-fsl-linux-gnueabi/bin
 
@@ -27,7 +28,6 @@ git clone git://10.192.225.222/vte
 #git clone b20222@10.192.225.222:/home/git-repository/vte
 cd vte
 
-VTE_DIR=${VTE_PARENT_DIR}vte
 
 git checkout -b master origin/master
 git pull
