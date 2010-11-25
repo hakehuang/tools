@@ -87,6 +87,9 @@ def search_SRS(id):
 			fm.write("<sect1><title>")
 			fm.write(str(id))
 			fm.write("</title>")
+			fm.write("<section><title>\n")
+			fm.write("No cases mapped or not testable!")
+			fm.write("\n</title></section>")
 			fm.write("</sect1>")
 		del cur_map_list[:]			
 # 3 handler functions
