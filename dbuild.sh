@@ -41,6 +41,11 @@ make_kernel()
 echo "make Platform $2 with $1"
 cd $KERNEL_DIR
 if [ "$old_kernel_config" = $1 ];then
+if [ "$old_kernel_rc" -eq 0 ]; then
+rm -rf ${TARGET_ROOTFS}/imx${2}_rootfs/lib/modules/*-dirty
+sudo make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi-  modules_install INSTALL_MOD_PATH=${TARGET_ROOTFS}/imx${2}_rootfs || return 3
+scp arch/arm/boot/uImage root@10.192.225.218:/tftpboot/uImage_mx${2}_d
+fi
 return $old_kenel_rc
 fi
 old_kernel_config=$1
@@ -59,6 +64,10 @@ make_vte()
 ret=0
 cd $VTE_DIR
 if [ "$old_vte_config" = $1 ]; then
+ if [ $old_vte_rc -eq 0 ]; then
+   sudo cp -a bin/* ${VTE_TARGET_PRE}/vte_mx${2}/bin/
+   sudo cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx${2}_d/testcases/bin/
+ fi
 return $old_vte_rc
 fi
 old_vte_config=$1
@@ -71,11 +80,10 @@ make apps || ret=1
 if [ $BUILD = "y" ]; then
 make
 sudo cp -a bin/* ${VTE_TARGET_PRE}/vte_mx${2}/bin/
-sudo scp -r bin/* b17931@survivor:/rootfs/wb/vte_mx${2}_d/bin
+#sudo scp -r bin/* b17931@survivor:/rootfs/wb/vte_mx${2}_d/bin
 fi
 sudo cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx${2}_d/testcases/bin/
-#sync to Wukong
-sudo scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx${2}_d/testcases/bin
+#sudo scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx${2}_d/testcases/bin
 old_vte_rc=0
 return $ret
 }
