@@ -42,7 +42,7 @@ echo "make Platform $2 with $1"
 cd $KERNEL_DIR
 if [ "$old_kernel_config" = $1 ];then
 if [ "$old_kernel_rc" -eq 0 ]; then
-rm -rf ${TARGET_ROOTFS}/imx${2}_rootfs/lib/modules/*-dirty
+rm -rf ${TARGET_ROOTFS}/imx${2}_rootfs/lib/modules/*-daily
 sudo make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi-  modules_install INSTALL_MOD_PATH=${TARGET_ROOTFS}/imx${2}_rootfs || return 3
 scp arch/arm/boot/uImage root@10.192.225.218:/tftpboot/uImage_mx${2}_d
 fi
@@ -50,9 +50,11 @@ return $old_kenel_rc
 fi
 old_kernel_config=$1
 make distclean
+lv=$(git-log | head -n 1 | cut -d " " -f 2 | cut -c 1-8)
+echo "-g${lv}-daily"  > localversion
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- $1 || return 1
 make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2 || return 2
-rm -rf ${TARGET_ROOTFS}/imx${2}_rootfs/lib/modules/*-dirty
+rm -rf ${TARGET_ROOTFS}/imx${2}_rootfs/lib/modules/*-daily
 sudo make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi-  modules_install INSTALL_MOD_PATH=${TARGET_ROOTFS}/imx${2}_rootfs || return 3
 scp arch/arm/boot/uImage root@10.192.225.218:/tftpboot/uImage_mx${2}_d
 old_kernel_rc=0
