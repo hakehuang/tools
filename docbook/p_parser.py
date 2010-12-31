@@ -19,10 +19,11 @@ oflag = 0
 cid = ""
 skip = 0
 startname = []
+former_data = ""
 
 def start_element(name, attrs):
 	global pflag,aflag,oflag,cid,skip,startname
-	global Pattern,attrib,OPattern
+	global Pattern,Attrib,OPattern
 	if (pflag == 0 and name.upper() == "TITLE"):
 		pflag = 1
 	if(attrs.has_key('role')):
@@ -35,10 +36,25 @@ def start_element(name, attrs):
 			cid = str(attrs['id'])
 		if(attrs.has_key('ID')):
 			cid = str(attrs['ID'])
+		print "ID is ",cid
 	if(oflag == 2):
 		oflag = 3
 def end_element(name):
 	global pflag,aflag,oflag,cid,startname,skip
+	global former_data,Pattern, OPattern, Attrib
+	if(len(former_data)):
+		print "former_data", pflag,oflag,former_data,Pattern
+		if (pflag == 1 and oflag == 0):
+			if(former_data.find(Pattern) != -1):
+				aflag = 1
+				print "find the pattern"
+		elif (aflag == 1):
+			if(former_data.find(Attrib) != -1):
+				oflag = 1
+		elif (oflag == 1):
+			if(former_data == OPattern ):
+				oflag = 2
+	former_data=''
 	if (pflag == 1 and name.upper() == "TITLE"):
 		pflag = 0
 	if (aflag == 1 and name.upper() == "FORMALPARA"):
@@ -60,16 +76,18 @@ def end_element(name):
 		cid = ""
 def char_data(data):
 	global pflag,aflag,oflag,cid,skip
-	global Pattern,attrib,OPattern
+	global Pattern,Attrib,OPattern,former_data
 	sl = len(repr(data))
 	string = repr(data)[2:sl-1].replace("\\t","").replace("\\n","")
 	if (pflag == 1 and oflag == 0):
 		if(string.find(Pattern) != -1):
 			aflag = 1
+		else:
+			former_data = former_data + string
 	elif (aflag == 1):
 		if(string.find(Attrib) != -1):
 			oflag = 1
-			#print 'oflag Character data', string
+		#print 'oflag Character data', string
 	elif (oflag == 1):
 		if(string == OPattern ):
 			oflag = 2
@@ -85,6 +103,8 @@ def char_data(data):
 			of.write(string)
 		print string
 	else:
+#		if (len(string)):
+#			print skip,oflag,pflag,string
 		pass
 
 def usage():
