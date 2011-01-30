@@ -1,8 +1,8 @@
 #!/bin/bash -x
 
 #PLATFORM="28 233 31 35 37 25 51 53"
-PLATFORM="50 53"
-#PLATFORM="5x"
+#PLATFORM="50 53"
+PLATFORM="5x"
 VTE_TARGET_PRE=/mnt/vte
 
 KERNEL_DIR=/home/vobs/linux-2.6-imx
@@ -269,7 +269,7 @@ cd $VTE_DIR
 make clean
 source mx5x_evk_config
 ./armconfig
-#make apps || RC="5x_apps $RC"
+make apps || RC="5x_apps $RC"
 make
 make install
 make vte || rc="5x $RC"
@@ -291,6 +291,11 @@ sudo scp -r bin/* b17931@survivor:/rootfs/wb/vte_mx53/bin
 #scp -r testcases/bin/* b17931@survivor:/rootfs/wb/vte_mx53/testcases/bin
 fi
 
+#deply debain packages
+if [ -e /mnt/nfs_root/pkg_handle.sh ]; then
+sudo ROOTFS=/mnt/nfs_root/ubuntu_10.10 /mnt/nfs_root/pkg_handle.sh remove /mnt/nfs_root/debains
+sudo ROOTFS=/mnt/nfs_root/ubuntu10.10 /mnt/nfs_root/pkg_handle.sh install /mnt/nfs_root/debains
+fi
 
 echo $RC
 echo "VTE build OK" | mutt -s "VTE build is OK" \
