@@ -19,8 +19,8 @@ apps_cnt=4
 apps=("3DMarkMobile.git" "bbPinball.git" "openGLES.git" "openVG.git");
 apps_configs_FB=("fsl_imx_linux" "master" "FB" "framebuffer_crosscompile");
 apps_configs_XGL=("fsl_egl_x" "xwindow" "master" "egl_x_crosscompile");
-apps_dir_FB=("configuration/fsl_imx_linux" "mak" ".");
-apps_dir_XGL=("configuration/iMX51_pdk" "mak" ".");
+apps_dir_FB=("configuration/fsl_imx_linux" "mak" "." ".");
+apps_dir_XGL=("configuration/iMX51_pdk" "mak" "." ".");
 
 iplat_cnt=0
 export CROSS_COMPILE=arm-none-linux-gnueabi-
