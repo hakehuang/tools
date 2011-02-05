@@ -16,20 +16,28 @@ export CROSS_COMPILE=arm-none-linux-gnueabi-
 RC=0
 
 platfm_rootfs="imx50_rootfs"  "imx53_rootfs" "ubuntu_10.10"
-#below is the matrix for gpu applications
-declare -a apps;
-declare -a apps_configs;
-declare -a apps_dir;
-declare -a target_rootfs;
 declare -a platfm_rootfs_config;
+declare -a platfm_cflags;
 #rootfs can only has FB or XGL, otherwise will be taken as XGL
 platfm_rootfs_config=("FB" "FB" "XGL");
+#CFLAGS for different rootfs
+platfm_cflags=("-Wall -O2 -fsigned-char -march=armv7-a -mfpu=neon -mfloat-abi=softfp " \
+"-Wall -O2 -fsigned-char -march=armv7-a -mfpu=neon -mfloat-abi=softfp " \
+
+
+#below is the matrix for gpu applications
+declare -a apps;
+declare -a apps_configs_FB;
+declare -a apps_configs_XGL;
+declare -a apps_dir_FB;
+declare -a apps_dir_XGL;
 apps_cnt=4
 apps=("3DMarkMobile.git" "bbPinball.git" "openGLES.git" "openVG.git");
 apps_configs_FB=("fsl_imx_linux" "master" "FB" "framebuffer_crosscompile");
 apps_configs_XGL=("fsl_egl_x" "xwindow" "master" "egl_x_crosscompile");
 apps_dir_FB=("configuration/fsl_imx_linux" "mak" "." ".");
 apps_dir_XGL=("configuration/iMX51_pdk" "mak" "." ".");
+
 
 iplat_cnt=0
 
@@ -41,6 +49,7 @@ sudo chmod -R 777 ${TARGET_APP_BASE}Graphics/
 for k in $platfm_rootfs
 do
   TARGET_ROOTFS=${TARGET_ROOTFS_BASE}/$k
+	export CFLAGS=${platfm_cflags[${iplat_cnt}]}
   icnt=0
   if [ $BUILD = 'y' ]; then
     while [ $icnt -lt $apps_cnt ]; do
@@ -71,7 +80,7 @@ do
 			else
       	cd ${apps_dir_XGL[${icnt}]}
       fi
-      make ROOTFS=${TARGET_ROOTFS} || RC=(expr $RC ${cdir}_${apps_config}_$k)
+      make ROOTFS=${TARGET_ROOTFS} || RC=($RC ${cdir}_${apps_config}_$k)
       #make clean
       #cd $ROOTDIR/$cdir
       #git add .
@@ -83,6 +92,7 @@ do
 			cp -a ${cdir}  ${TARGET_APP_BASE}Graphics/${cdir}_${CUR_CONFIG}_$k
     done
   fi
+  iplat_cnt=$(expr $iplat_cnt + 1)
 done
 
 if [ '$RC' = '0' ]; then
