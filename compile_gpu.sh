@@ -1,9 +1,17 @@
+#!/bin/bash
+#pre-requisities:
+#a test board reachable nfs is mounted at /mnt/nfs/
+
 TARGET_ROOTFS_BASE="/mnt/nfs_root/"
+TARGET_APP_BASE="/mnt/nfs/util/"
 BUILD=y
 TOOLS_PATH=/home/ltibs/tools
 ROOTDIR=$(pwd)
+GIT_SERVER=10.192.225.222/Graphics/
 
+ntpdate 10.19.225.222
 export PATH=$PATH:/opt/freescale/usr/local/gcc-4.4.4-glibc-2.11.1-multilib-1.0/arm-fsl-linux-gnueabi/bin
+export CROSS_COMPILE=arm-none-linux-gnueabi-
 
 RC=0
 
@@ -14,6 +22,7 @@ declare -a apps_configs;
 declare -a apps_dir;
 declare -a target_rootfs;
 declare -a platfm_rootfs_config;
+#rootfs can only has FB or XGL, otherwise will be taken as XGL
 platfm_rootfs_config=("FB" "FB" "XGL");
 apps_cnt=4
 apps=("3DMarkMobile.git" "bbPinball.git" "openGLES.git" "openVG.git");
@@ -23,7 +32,11 @@ apps_dir_FB=("configuration/fsl_imx_linux" "mak" "." ".");
 apps_dir_XGL=("configuration/iMX51_pdk" "mak" "." ".");
 
 iplat_cnt=0
-export CROSS_COMPILE=arm-none-linux-gnueabi-
+
+
+mkdir -p ${TARGET_APP_BASE}Graphics/
+sudo chmod -R 777 ${TARGET_APP_BASE}Graphics/
+
 
 for k in $platfm_rootfs
 do
@@ -34,10 +47,14 @@ do
       CUR_CONFIG=${platfm_rootfs_config[${$iplat_cnt}]}
       cd $ROOTDIR
       apps_name=${apps[${icnt}]}
-      apps_config=${apps_configs_${CUR_CONFIG}[${icnt}]}
+			if [ $CUR_CONFIG = "FB" ];then
+      apps_config=${apps_configs_FB[${icnt}]}
+			else
+      apps_config=${apps_configs_XGL[${icnt}]}
+			fi
       cdir=$(echo $apps_name | cut -d"." -f 1) 
       if [ ! -e $cdir ]; then
-       git clone git://10.192.225.222/Graphics/$apps_name
+       git clone git://${GIT_SERVER}/$apps_name
       fi
       cd $cdir
       git checkout -b temp || git checkout temp
@@ -47,19 +64,31 @@ do
        git reset --hard HEAD~1
        git checkout -b temp || git checkout temp
       fi
-      git branch -D build_${apps_config}
-      git fetch origin +${apps_config}:build_${apps_config} && git checkout build_${apps_config} || exit -3
-      cd ${apps_dir_${CUR_CONFIG}[${icnt}]}
-      make ROOTFS=${TARGET_ROOTFS} || exit -5
-      make clean
-      cd $ROOTDIR/$cdir
-      git add .
-      git commit -s -m"make result"
+      git branch -D build_${apps_config}_$k
+      git fetch origin +${apps_config}:build_${apps_config}_$k && git checkout build_${apps_config}_$k || exit -3
+			if [ $CUR_CONFIG = "FB" ];then
+      	cd ${apps_dir_FB[${icnt}]}
+			else
+      	cd ${apps_dir_XGL[${icnt}]}
+      fi
+      make ROOTFS=${TARGET_ROOTFS} || RC=(expr $RC ${cdir}_${apps_config}_$k)
+      #make clean
+      #cd $ROOTDIR/$cdir
+      #git add .
+			#cmts=$(date +%y%m%d)
+      #git commit -s -m"make result $cmts"
       icnt=$(expr $icnt + 1)
+			cd ${ROOTDIR}
+			rm -rf ${TARGET_APP_BASE}Graphics/${cdir}_${CUR_CONFIG}_$k
+			cp -a ${cdir}  ${TARGET_APP_BASE}Graphics/${cdir}_${CUR_CONFIG}_$k
     done
   fi
 done
 
-echo "gpu apps build" | mutt -s "gpu build OK" \
+if [ '$RC' = '0' ]; then
+echo "gpu apps build ok" | mutt -s "gpu build OK" \
 b20222@shlx12.ap.freescale.net 
-
+else
+echo "gpu apps build fail" | mutt -s "gpu build fail" \
+b20222@shlx12.ap.freescale.net 
+fi
