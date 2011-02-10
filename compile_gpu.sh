@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 #pre-requisities:
 #a test board reachable nfs is mounted at /mnt/nfs/
 
@@ -7,23 +7,22 @@ TARGET_APP_BASE="/mnt/vte/util/"
 BUILD=y
 TOOLS_PATH=/home/ltibs/tools
 ROOTDIR=$(pwd)
-GIT_SERVER=10.192.225.222/Graphics/
+GIT_SERVER=10.192.225.222/Graphics
 
-ntpdate 10.19.225.222
+sudo ntpdate 10.19.225.222
 export PATH=$PATH:/opt/freescale/usr/local/gcc-4.4.4-glibc-2.11.1-multilib-1.0/arm-fsl-linux-gnueabi/bin
 export CROSS_COMPILE=arm-none-linux-gnueabi-
 
 RC=0
 
-platfm_rootfs="imx50_rootfs"  "imx53_rootfs" "ubuntu_10.10"
+platfm_rootfs="imx50_rootfs imx53_rootfs ubuntu_10.10"
 declare -a platfm_rootfs_config;
 declare -a platfm_cflags;
 #rootfs can only has FB or XGL, otherwise will be taken as XGL
 platfm_rootfs_config=("FB" "FB" "XGL");
 #CFLAGS for different rootfs
 platfm_cflags=("-Wall -O2 -fsigned-char -march=armv7-a -mfpu=neon -mfloat-abi=softfp " \
-"-Wall -O2 -fsigned-char -march=armv7-a -mfpu=neon -mfloat-abi=softfp " \
-
+"-Wall -O2 -fsigned-char -march=armv7-a -mfpu=neon -mfloat-abi=softfp ")
 
 #below is the matrix for gpu applications
 declare -a apps;
@@ -43,7 +42,8 @@ iplat_cnt=0
 
 
 mkdir -p ${TARGET_APP_BASE}Graphics/
-sudo chmod -R 777 ${TARGET_APP_BASE}Graphics/
+#sudo rm -rf ${TARGET_APP_BASE}Graphics/
+#sudo chmod -R 777 ${TARGET_APP_BASE}Graphics/
 
 
 for k in $platfm_rootfs
@@ -53,7 +53,7 @@ do
   icnt=0
   if [ $BUILD = 'y' ]; then
     while [ $icnt -lt $apps_cnt ]; do
-      CUR_CONFIG=${platfm_rootfs_config[${$iplat_cnt}]}
+      CUR_CONFIG=${platfm_rootfs_config[${iplat_cnt}]}
       cd $ROOTDIR
       apps_name=${apps[${icnt}]}
 			if [ $CUR_CONFIG = "FB" ];then
@@ -67,12 +67,13 @@ do
       fi
       cd $cdir
       git checkout -b temp || git checkout temp
-      if [ -nz $? ]; then
+      if [ $? -ne 0 ]; then
        git add .
        git commit -s -m"reset"
        git reset --hard HEAD~1
        git checkout -b temp || git checkout temp
       fi
+      make clean
       git branch -D build_${apps_config}_$k
       git fetch origin +${apps_config}:build_${apps_config}_$k && git checkout build_${apps_config}_$k || exit -3
 			if [ $CUR_CONFIG = "FB" ];then
@@ -87,15 +88,17 @@ do
 			#cmts=$(date +%y%m%d)
       #git commit -s -m"make result $cmts"
       icnt=$(expr $icnt + 1)
-			cd ${ROOTDIR}
-			rm -rf ${TARGET_APP_BASE}Graphics/${cdir}_${CUR_CONFIG}_$k
-			cp -a ${cdir}  ${TARGET_APP_BASE}Graphics/${cdir}_${CUR_CONFIG}_$k
+      cd ${ROOTDIR}
+      sudo mkdir ${TARGET_APP_BASE}Graphics/$k
+      tar czvf ${cdir}.tar.gz --exclude-tag-all=FETCH_HEAD  ${cdir}
+      sudo mv ${cdir}.tar.gz  ${TARGET_APP_BASE}Graphics/$k/
     done
   fi
   iplat_cnt=$(expr $iplat_cnt + 1)
 done
 
-if [ '$RC' = '0' ]; then
+echo $RC
+if [ "$RC" = "0" ]; then
 echo "gpu apps build ok" | mutt -s "gpu build OK" \
 b20222@shlx12.ap.freescale.net 
 else
