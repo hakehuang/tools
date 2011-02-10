@@ -3,7 +3,7 @@
 #a test board reachable nfs is mounted at /mnt/nfs/
 
 TARGET_ROOTFS_BASE="/mnt/nfs_root/"
-TARGET_APP_BASE="/mnt/nfs/util/"
+TARGET_APP_BASE="/mnt/vte/util/"
 BUILD=y
 TOOLS_PATH=/home/ltibs/tools
 ROOTDIR=$(pwd)
