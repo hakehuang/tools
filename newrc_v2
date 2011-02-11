@@ -103,8 +103,8 @@ else
   sleep 1
  mkdir ${NFS_PATH}temp
  echo "get the package"
- scp b20222@${HOST_SERVER}:${RELEASE_PATH}/${RELEASE_PACKAGE} ${NFS_PATH}temp/ || exit 1  
- #wget http://bluebell.am.freescale.net/previous/100906_033828_CDT/${RELEASE_PACKAGE} -P ${NFS_PATH}temp/ || exit 1  
+scp b20222@${HOST_SERVER}:${RELEASE_PATH}/${RELEASE_PACKAGE} ${NFS_PATH}temp/ || exit 1  
+# wget http://bluebell.am.freescale.net/previous/101214_222612_CST/${RELEASE_PACKAGE} -P ${NFS_PATH}temp/ || exit 1  
  echo "unzip the package"
  tar xzvf ${NFS_PATH}temp/$RELEASE_PACKAGE -C ${NFS_PATH}temp || exit 2
  #RELEASE_TARGET=$(basename ${RELEASE_PACKAGE} .tar.gz)
@@ -420,7 +420,10 @@ do
  mkdir -p ${MX53_ROOTFS}
  cp -a /mnt/tempfs/* ${MX53_ROOTFS}/
  sync
- umount /mnt/tempfs 
+ umount /mnt/tempfs
+#copy debain packages
+ mkdir -p ${NFS_PATH}debains
+ cp ${NFS_PATH}temp/${RELEASE_TARGET}/*.deb ${NFS_PATH}debains/
  fi
  if [ $i == "MX50" ]
  then
