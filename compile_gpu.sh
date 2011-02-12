@@ -114,7 +114,8 @@ done
 echo $RC
 if [ "$RC" = "0" ]; then
 echo "gpu apps build ok" | mutt -s "gpu build OK" \
-b20222@shlx12.ap.freescale.net 
+b20222@shlx12.ap.freescale.net
+echo Happy123 | ssh b20222@10.192.225.222 'sudo /rootfs/wb/util/Graphics/untar.sh' 
 else
 echo "gpu apps build fail" | mutt -s "gpu build fail" \
 b20222@shlx12.ap.freescale.net 
