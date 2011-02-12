@@ -32,6 +32,8 @@ declare -a apps_dir_FB;
 declare -a apps_dir_XGL;
 apps_cnt=4
 apps=("3DMarkMobile.git" "bbPinball.git" "openGLES.git" "openVG.git");
+apps_support=("imx53_rootfs ubuntu_10.10" "imx53_rootfs ubuntu_10.10" \
+"imx53_rootfs ubuntu_10.10" "imx50_rootfs imx53_rootfs ubuntu_10.10");
 apps_configs_FB=("fsl_imx_linux" "master" "FB" "framebuffer_crosscompile");
 apps_configs_XGL=("fsl_egl_x" "xwindow" "master" "egl_x_crosscompile");
 apps_dir_FB=("configuration/fsl_imx_linux" "mak" "." ".");
@@ -56,11 +58,17 @@ do
       CUR_CONFIG=${platfm_rootfs_config[${iplat_cnt}]}
       cd $ROOTDIR
       apps_name=${apps[${icnt}]}
-			if [ $CUR_CONFIG = "FB" ];then
+      support_fs=${apps_support[${icnt}]}
+      is_support=$(echo $support_fs | grep $k| wc -l)
+      if [ $is_support -eq 0 ]; then
+      	icnt=$(expr $icnt + 1)
+         continue;
+      fi
+      if [ $CUR_CONFIG = "FB" ];then
       apps_config=${apps_configs_FB[${icnt}]}
-			else
+      else
       apps_config=${apps_configs_XGL[${icnt}]}
-			fi
+      fi
       cdir=$(echo $apps_name | cut -d"." -f 1) 
       if [ ! -e $cdir ]; then
        git clone git://${GIT_SERVER}/$apps_name
@@ -90,7 +98,13 @@ do
       icnt=$(expr $icnt + 1)
       cd ${ROOTDIR}
       sudo mkdir ${TARGET_APP_BASE}Graphics/$k
+      if [ $cdir = "openVG" ]; then
+      tar czvf ${cdir}.tar.gz ${cdir}/cts_1.0.1/generation/make/linux/bin/generator.exe \
+      ${cdir}/cts_1.1/generation/make/linux/bin/generator.exe \
+      ${cdir}/VGMark_10_src 
+      else
       tar czvf ${cdir}.tar.gz --exclude-tag-all=FETCH_HEAD  ${cdir}
+      fi
       sudo mv ${cdir}.tar.gz  ${TARGET_APP_BASE}Graphics/$k/
     done
   fi
