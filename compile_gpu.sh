@@ -99,11 +99,11 @@ do
       cd ${ROOTDIR}
       sudo mkdir ${TARGET_APP_BASE}Graphics/$k
       if [ $cdir = "openVG" ]; then
-      tar czvf ${cdir}.tar.gz ${cdir}/cts_1.0.1/generation/make/linux/bin/generator.exe \
+      sudo tar czvf ${cdir}.tar.gz ${cdir}/cts_1.0.1/generation/make/linux/bin/generator.exe \
       ${cdir}/cts_1.1/generation/make/linux/bin/generator.exe \
       ${cdir}/VGMark_10_src 
       else
-      tar czvf ${cdir}.tar.gz --exclude-tag-all=FETCH_HEAD  ${cdir}
+       sudo tar czvf ${cdir}.tar.gz --exclude-tag-all=FETCH_HEAD  ${cdir}
       fi
       sudo mv ${cdir}.tar.gz  ${TARGET_APP_BASE}Graphics/$k/
     done
