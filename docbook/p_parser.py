@@ -9,10 +9,14 @@ import sys
 import os
 import getopt
 
-Pattern = "Auto_Level"
-Attrib = "Auto"
+Pattern = ['Auto_Level','Priority']
+Attrib = {
+	      'Auto_Level': 'Auto',
+          'Priority':'P3'
+		  }
 OPattern = "Command Line"
 
+cflag = 0
 pflag = 0
 aflag = 0
 oflag = 0
@@ -20,12 +24,15 @@ cid = ""
 skip = 0
 startname = []
 former_data = ""
+cpattern = ""
 
 def start_element(name, attrs):
 	global pflag,aflag,oflag,cid,skip,startname
-	global Pattern,Attrib,OPattern
+	global Pattern,Attrib,OPattern,cpattern,cflag
 	if (pflag == 0 and name.upper() == "TITLE"):
 		pflag = 1
+		cpattern = ""
+		cflag = 0
 	if(attrs.has_key('role')):
 		if(str(attrs['role']).rstrip().strip() != "Release"):
 			skip = 1
@@ -40,25 +47,28 @@ def start_element(name, attrs):
 	if(oflag == 2):
 		oflag = 3
 def end_element(name):
-	global pflag,aflag,oflag,cid,startname,skip
-	global former_data,Pattern, OPattern, Attrib
+	global pflag,aflag,oflag,cid,startname,skip,cflag
+	global former_data,Pattern,OPattern, Attrib,cpattern
 	if(len(former_data)):
-		print "former_data", pflag,oflag,former_data,Pattern
-		if (pflag == 1 and oflag == 0):
-			if(former_data.find(Pattern) != -1):
-				aflag = 1
-				print "find the pattern"
-		elif (aflag == 1):
-			if(former_data.find(Attrib) != -1):
-				oflag = 1
-		elif (oflag == 1):
+		print "former_data",former_data
+		if (pflag == 1 and aflag < len(Pattern)):
+			for item in Pattern:
+				if(former_data.find(item) != -1):
+					cflag = 1
+					cpattern = item
+					print " * find the pattern : " + item
+		if (pflag == 0 and cflag > 0):
+			item = Attrib[cpattern]
+			if(former_data.find(item) != -1):
+				aflag += 1
+				print "* find the attribute: " + item
+		elif (pflag == 1 and aflag == len(Attrib)):
 			if(former_data == OPattern ):
+				print "* find output item: " , former_data
 				oflag = 2
 	former_data=''
 	if (pflag == 1 and name.upper() == "TITLE"):
 		pflag = 0
-	if (aflag == 1 and name.upper() == "FORMALPARA"):
-		aflag = 0
 	if(skip == 1 and startname.__contains__(name.upper())):
 		startname.remove(name.upper())
 		if(len(startname) == 0):
@@ -69,30 +79,20 @@ def end_element(name):
 			of.write("\n")
 		oflag = 0
 		print "output end", name
-	if(name == "sect1"): 
+	if(name == "sect1"):
+		cflag = 0
 		pflag = 0
 		aflag = 0
 		oflag = 0
 		cid = ""
+		cpattern=""
 def char_data(data):
 	global pflag,aflag,oflag,cid,skip
 	global Pattern,Attrib,OPattern,former_data
 	sl = len(repr(data))
 	string = repr(data)[2:sl-1].replace("\\t","").replace("\\n","")
-	if (pflag == 1 and oflag == 0):
-		if(string.find(Pattern) != -1):
-			aflag = 1
-		else:
-			former_data = former_data + string
-	elif (aflag == 1):
-		if(string.find(Attrib) != -1):
-			oflag = 1
-		#print 'oflag Character data', string
-	elif (oflag == 1):
-		if(string == OPattern ):
-			oflag = 2
-		#print 'oflag 2 Character data', string
-	elif (oflag == 3):
+	former_data = former_data + string
+	if (oflag == 3):
 		if(skip != 1):
 			of.write(cid + "\t")
 			of.write(string)
@@ -103,8 +103,6 @@ def char_data(data):
 			of.write(string)
 		print string
 	else:
-#		if (len(string)):
-#			print skip,oflag,pflag,string
 		pass
 
 def usage():
@@ -114,7 +112,7 @@ def usage():
 
 try:
     opts, args = getopt.getopt(sys.argv[1:], "hp:a:o:",\
-	["help", "Pattern=","Attrib=","Output="])
+	["help", "Pattern=\"Auto_Level Priority\"","Attrib=\"Auto P1\"","Output="])
 except getopt.error, msg:
 	print msg
 	print "for help use --help"
@@ -125,9 +123,24 @@ for o,a in opts:
 		usage()
 		exit(0)
 	if o in ("-p", "--Pattern"):
-		Pattern = a
+		del Pattern[:]
+		Attrib.clear()
+		for i in a:
+			i = i.replace(" ","")
+			if (len(i)):
+				Pattern.append(i)
+				Attrib[i] = "null"
+		print "pattern", Pattern
 	if o in ("-a","--Attrib"):
-		Attrib = a
+		count = 0
+		for i in Attrib.keys():
+			temp = a[count].replace(" ","")
+			while(len(temp) == 0):
+				count += 1
+				temp = a[count].replace(" ","")
+			Attrib[i] = temp
+			count += 1
+		print "attribue", Attrib
 	if o in ("-o","--Output"):
 		OPattern = a
 
