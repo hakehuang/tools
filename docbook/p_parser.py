@@ -9,12 +9,11 @@ import sys
 import os
 import getopt
 
-Pattern = ['Auto_Level','Priority']
+Pattern = ['Auto_Level']
 Attrib = {
-	      'Auto_Level': 'Auto',
-          'Priority':'P3'
+	      'Auto_Level': 'Auto'
 		  }
-OPattern = "Command Line"
+OPattern = "Command_Line"
 
 cflag = 0
 pflag = 0
@@ -53,17 +52,18 @@ def end_element(name):
 		print "former_data",former_data
 		if (pflag == 1 and aflag < len(Pattern)):
 			for item in Pattern:
-				if(former_data.find(item) != -1):
+				print "item", item
+				if(former_data.replace(" ","_").find(item) != -1):
 					cflag = 1
 					cpattern = item
 					print " * find the pattern : " + item
 		if (pflag == 0 and cflag > 0):
 			item = Attrib[cpattern]
-			if(former_data.find(item) != -1):
+			if(former_data.replace(" ","_").find(item) != -1):
 				aflag += 1
 				print "* find the attribute: " + item
 		elif (pflag == 1 and aflag == len(Attrib)):
-			if(former_data == OPattern ):
+			if(former_data.replace(" ","_").find(OPattern) != -1 ):
 				print "* find output item: " , former_data
 				oflag = 2
 	former_data=''
