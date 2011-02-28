@@ -8,6 +8,9 @@ import xml.parsers.expat
 import sys
 import os
 import getopt
+import re
+
+
 
 Pattern = ['Auto_Level']
 Attrib = {
@@ -148,8 +151,18 @@ print "process :", args
 
 of = file("exec_table",'w')
 
+# from http://boodebr.org/main/python/all-about-python-and-unicode#UNI_XML
+RE_XML_ILLEGAL = u'([\u0000-\u0008\u000b-\u000c\u000e-\u001f\ufffe-\uffff])' + \
+                 u'|' + \
+                 u'([%s-%s][^%s-%s])|([^%s-%s][%s-%s])|([%s-%s]$)|(^[%s-%s])' % \
+                  (unichr(0xd800),unichr(0xdbff),unichr(0xdc00),unichr(0xdfff),
+                   unichr(0xd800),unichr(0xdbff),unichr(0xdc00),unichr(0xdfff),
+                   unichr(0xd800),unichr(0xdbff),unichr(0xdc00),unichr(0xdfff))
+regex = re.compile(RE_XML_ILLEGAL)
+
+
 for filename in args:
-		p = xml.parsers.expat.ParserCreate()
+		p = xml.parsers.expat.ParserCreate('UTF-8')
 		p.StartElementHandler = start_element
 		p.EndElementHandler = end_element
 		p.CharacterDataHandler = char_data
