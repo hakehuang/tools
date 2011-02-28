@@ -14,7 +14,8 @@ import re
 
 Pattern = ['Auto_Level']
 Attrib = {
-	      'Auto_Level': 'Auto'
+#	      'Auto_Level': 'Auto'
+	      'Auto_Level': 'Partially_auto'
 		  }
 OPattern = "Command_Line"
 
