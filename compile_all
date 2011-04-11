@@ -292,10 +292,10 @@ sudo scp -r bin/* b17931@survivor:/rootfs/wb/vte_mx53/bin
 fi
 
 #deply debain packages
-if [ -e /mnt/nfs_root/pkg_handle.sh ]; then
-sudo ROOTFS=/mnt/nfs_root/ubuntu_10.10 /mnt/nfs_root/pkg_handle.sh remove /mnt/nfs_root/debains
-sudo ROOTFS=/mnt/nfs_root/ubuntu10.10 /mnt/nfs_root/pkg_handle.sh install /mnt/nfs_root/debains
-fi
+#if [ -e /mnt/nfs_root/pkg_handle.sh ]; then
+#sudo ROOTFS=/mnt/nfs_root/ubuntu_10.10 /mnt/nfs_root/pkg_handle.sh remove /mnt/nfs_root/debains
+#sudo ROOTFS=/mnt/nfs_root/ubuntu10.10 /mnt/nfs_root/pkg_handle.sh install /mnt/nfs_root/debains
+#fi
 
 echo $RC
 echo "VTE build OK" | mutt -s "VTE build is OK" \
