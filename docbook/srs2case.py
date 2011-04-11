@@ -26,7 +26,7 @@ def start_case(name,attrs):
 	#print 'Start element:', name, attrs
 	if(attrs.has_key('id')):
 		srsNM = str(attrs['id'])
-		if (str(cur_SRS).strip().find(str(srsNM).strip()) != -1):
+		if (str(srsNM).strip().find(str(cur_SRS).strip()) != -1):
 			startc = 1
 		temptag = name
 	elif(startc == 1):
@@ -34,6 +34,8 @@ def start_case(name,attrs):
 			startc = 2
 	elif(startc == 2):
 		if( name == "title"):
+			if(len(cur_map_list) > 0):
+				cur_map_list.append(",")
 			startc = 3
 	else:
 		pass
@@ -55,9 +57,10 @@ def check_data(data):
 	global startc
 	global cur_map_list
 	if(startc == 3 ):
-		loc=str(repr(data)).strip("u/t/t")
+		loc=str(repr(data)).strip("u/t/t").replace("\\t","")
+		loc = loc.replace("\\n"," ");
 		loc2=loc[1:-1]
-		if(len(loc2) > 5):
+		if(len(loc2)):
 			cur_map_list.append(loc2)
 	
 def search_caseID(srs, fxml):
@@ -89,10 +92,11 @@ def search_SRS(id):
 			fm.write("<sect1><title>")
 			fm.write(str(id) + " is mapped to below case(s)")
 			fm.write("</title>")
+			fm.write("<section><para>\n")
 			for item in cur_map_list:
-				fm.write("<section><para>\n")
 				fm.write(item)
-				fm.write("\n</para></section>")
+				#fm.write(" ")
+			fm.write("\n</para></section>")
 			fm.write("</sect1>")
 		else:
 			fm.write("<sect1><title><![CDATA[")

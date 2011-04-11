@@ -3,13 +3,13 @@
 unset http_proxy
 curl http://repomad.ap.freescale.net/repo > ./repo
 chmod a+x ./repo
-./repo init -u git://repomad.ap.freescale.net/platform/manifest.git -b maddev_froyo
+./repo init -u git://repomad.ap.freescale.net/platform/manifest.git -b maddev_gingerbread
 ./repo sync
 
 rm -rf cts
 git clone git://10.192.225.222/cts
 cd cts
-git checkout fslmad_bsp origin/fslmad_bsp 
+git checkout fslmad_bsp
 cd ..
 
 #below is to get code from android official site
