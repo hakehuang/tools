@@ -1,11 +1,11 @@
 #!/usr/bin/python
 #summary the srs map to test cases
 #command line
-#./xml_sum.py <srs xml file> <directory path where all the cases xml lies>
+#./codec_parser.py <xml file> <directory prefix you want to add>
 #e.g.
-#./xml_sum.py SRS_release.xml ../mx50_test_manual/
+#./codec_parser.py P1.xml /mnt/nfs
 #the result
-# the result will be SRS_MAP.xml
+# the result will output in console
 
 import xml.parsers.expat
 import sys
