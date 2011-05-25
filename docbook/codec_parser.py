@@ -10,10 +10,12 @@
 import xml.parsers.expat
 import sys
 import os
+import string
 
 path = ''
 fn = ''
 flag = 0
+cnt = 1
 
 def start_element(name, attrs):
 	global path
@@ -35,9 +37,11 @@ def end_element(name):
 	global fn
 	global flag
 	global prefix
+	global cnt
 	if ( name == "testcase" ):
 		path = path.replace("\\","/")
-		print  prefix + path + fn
+		print   "File" + str(cnt) + "=file://" + prefix + path + fn
+		cnt = cnt + 1
 	elif (name == "title"):
 		flag = 0
 	elif (name == "location"):
@@ -64,6 +68,14 @@ try:
 except:
 	print 'can not open', fnSRS
 	sys.exit()
+
+cmds = "cat " + fnSRS + " | grep testcase | wc -l" 
+
+numbs = os.popen(cmds).read()
+
+print "[playlist]"
+#print numbs
+print "NumberOfEntries=" + str(int(numbs) / 2)
 
 p = xml.parsers.expat.ParserCreate()
 p.StartElementHandler = start_element
