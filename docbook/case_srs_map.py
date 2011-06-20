@@ -142,7 +142,9 @@ class outputXML:
 		self.outfb.write("<")
 		self.outfb.write(tag)
 		self.outfb.write(">\n")
+		self.outfb.write("<![CDATA[")
 		self.outfb.write(content.encode('utf-8'))
+		self.outfb.write("]]>")
 		self.outfb.write("\n")
 		self.outfb.write("</")
 		self.outfb.write(tag)
@@ -151,7 +153,9 @@ class outputXML:
 		self.outfb.write("<")
 		self.outfb.write(tag)
 		self.outfb.write(">\n")
+		self.outfb.write("<![CDATA[")
 		self.outfb.write(content.encode('utf-8'))
+		self.outfb.write("]]>")
 	def writeXMLEnd(self,tag):
 		self.outfb.write("</")
 		self.outfb.write(tag)
@@ -181,7 +185,6 @@ print len(allcases)
 #search srs mapped to case
 myoutput = outputXML("case2srs_map.xml")
 mysrscase = srscase(flsrs,drcase)
-myoutput.writeXMLHead()
 for i in allcases:
 	myoutput.writeXMLStart("","sect1")
 	myoutput.writeXMLContent(i,"title")
