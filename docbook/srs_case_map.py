@@ -16,7 +16,7 @@ class serachXML:
 	def start_element(self,name,attrs):
 		if (attrs.has_key(self.tag)):
 			#print "search tag",name,self.tag,self.sid,attrs[self.tag]
-			if(attrs[self.tag] == self.sid):
+			if(attrs[self.tag].encode('ascii') == self.sid):
 				#start search
 				self.phase = 1
 			else:
@@ -24,7 +24,7 @@ class serachXML:
 		else:
 			pass
 		if (self.phase == 1):
-			self.stack.append(name.upper())
+			self.stack.append(name.upper().encode('ascii'))
 			tlist = self.dict.keys()
 			p = re.compile(r'/')
 			#search possible match tag
@@ -118,7 +118,7 @@ class srscase:
 		'''get all mapping srs detail inform'''
 		del self.relist[:]
 		self.searchengine.runfilesearch(self.srsfd,"name",srsID,lists)
-		if ( len(self.searchengine.dict.values()) > 1):
+		if ( len(self.searchengine.dict.values())):
 			self.relist = self.searchengine.dict.values()
 		self.searchengine.dict.clear()
 	
@@ -142,7 +142,7 @@ class outputXML:
 		self.outfb.write("<")
 		self.outfb.write(tag)
 		self.outfb.write(">\n")
-		self.outfb.write(content)
+		self.outfb.write(content.encode("utf-8"))
 		self.outfb.write("\n")
 		self.outfb.write("</")
 		self.outfb.write(tag)
@@ -151,7 +151,7 @@ class outputXML:
 		self.outfb.write("<")
 		self.outfb.write(tag)
 		self.outfb.write(">\n")
-		self.outfb.write(content)
+		self.outfb.write(content.encode("utf-8"))
 	def writeXMLEnd(self,tag):
 		self.outfb.write("</")
 		self.outfb.write(tag)
@@ -183,6 +183,7 @@ myoutput.writeXMLHead()
 mymap = open(srscasemap,'r')
 p1 = re.compile(r'\s')
 p2 = re.compile(r',')
+p3 = re.compile(r'-')
 for i in mymap:
 	skip = 0
 	if (len(i) == 0 or i[0] == "#"):
@@ -193,10 +194,11 @@ for i in mymap:
 	mysrscase = srscase(flsrs,drcase)
 	lists = {}
 	lists['formalpara/para'.upper()] = ""
+	#print ii[0]
 	mysrscase.getSRSListByID(ii[0],lists)
 	if (len(mysrscase.relist)):
 		myoutput.writeXMLStart("","sect1")
-		print "SRS list by srsID",mysrscase.relist
+		#print "SRS list by srsID",mysrscase.relist
 		myoutput.writeXMLContent(mysrscase.relist[0],"title")
 	else:
 		skip = 1
@@ -204,18 +206,25 @@ for i in mymap:
 	lists.clear()
 	if (skip == 1):
 		continue
-	results = p2.split(ii[1])
+	k = ''.join(ii[1:])
+	del ii
+	results = p2.split(k)
 	for j in results:
+		myoutput.writeXMLStart("","formalpara")
+		if p3.search(j):
+			myoutput.writeXMLStart(j,"title name="+"\""+j+"\"")
+		else:
+			myoutput.writeXMLStart(j,"title")
+		myoutput.writeXMLEnd("title")
 		lists['sect1/title'.upper()] = ""
 		mysrscase =  srscase(flsrs,drcase)
 		mysrscase.getCaseListByID(j,lists)
 		if (len(mysrscase.relist)):
 			print "case list by srsID",mysrscase.relist
-			myoutput.writeXMLStart("","formalpara")
 			myoutput.writeXMLContent(mysrscase.relist[0],"para")
-			myoutput.writeXMLEnd("formalpara")
 		del mysrscase
 		lists.clear()
+		myoutput.writeXMLEnd("formalpara")
 	myoutput.writeXMLEnd("sect1")
 myoutput.writeXMLTail()
 del myoutput

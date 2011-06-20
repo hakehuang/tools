@@ -16,7 +16,7 @@ class serachXML:
 	def start_element(self,name,attrs):
 		if (attrs.has_key(self.tag)):
 			#print "search tag",name,self.tag,self.sid,attrs[self.tag]
-			if(attrs[self.tag] == self.sid):
+			if(attrs[self.tag].encode('ascii') == self.sid):
 				#start search
 				self.phase = 1
 			else:
@@ -24,7 +24,7 @@ class serachXML:
 		else:
 			pass
 		if (self.phase == 1):
-			self.stack.append(name.upper())
+			self.stack.append(name.upper().encode('ascii'))
 			tlist = self.dict.keys()
 			p = re.compile(r'/')
 			#search possible match tag
@@ -142,7 +142,7 @@ class outputXML:
 		self.outfb.write("<")
 		self.outfb.write(tag)
 		self.outfb.write(">\n")
-		self.outfb.write(content)
+		self.outfb.write(content.encode('utf-8'))
 		self.outfb.write("\n")
 		self.outfb.write("</")
 		self.outfb.write(tag)
@@ -151,7 +151,7 @@ class outputXML:
 		self.outfb.write("<")
 		self.outfb.write(tag)
 		self.outfb.write(">\n")
-		self.outfb.write(content)
+		self.outfb.write(content.encode('utf-8'))
 	def writeXMLEnd(self,tag):
 		self.outfb.write("</")
 		self.outfb.write(tag)
