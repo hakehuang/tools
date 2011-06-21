@@ -5,6 +5,7 @@ import sys
 import os
 import re
 from sets import Set
+import copy
 
 class serachXML:
 	def __init__(self):
@@ -73,7 +74,8 @@ class serachXML:
 			sys.exit()
 		'''sid id to search, lists return the search result'''
 		self.sid = sid
-		self.dict = lists
+		self.dict.clear()
+		self.dict = copy.deepcopy(lists)
 		self.tag = tag
 		self.parser.ParseFile(fd)
 		del self.parser

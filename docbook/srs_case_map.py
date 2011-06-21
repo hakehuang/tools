@@ -5,6 +5,7 @@ import xml.parsers.expat
 import sys
 import os
 import re
+import copy
 
 class serachXML:
 	def __init__(self):
@@ -73,7 +74,8 @@ class serachXML:
 			sys.exit()
 		'''sid id to search, lists return the search result'''
 		self.sid = sid
-		self.dict = lists
+		self.dict.clear()
+		self.dict = copy.deepcopy(lists)
 		self.tag = tag
 		self.parser.ParseFile(fd)
 		del self.parser
@@ -207,14 +209,13 @@ for i in mymap:
 	if (skip == 1):
 		continue
 	k = ''.join(ii[1:])
-	del ii
 	results = p2.split(k)
 	for j in results:
 		myoutput.writeXMLStart("","formalpara")
 		if p3.search(j):
 			myoutput.writeXMLStart(j,"title name="+"\""+j+"\"")
 		else:
-			myoutput.writeXMLStart(j,"title")
+			myoutput.writeXMLStart(' '.join(ii[1:]),"title")
 		myoutput.writeXMLEnd("title")
 		lists['sect1/title'.upper()] = ""
 		mysrscase =  srscase(flsrs,drcase)
@@ -226,6 +227,7 @@ for i in mymap:
 		lists.clear()
 		myoutput.writeXMLEnd("formalpara")
 	myoutput.writeXMLEnd("sect1")
+	del ii
 myoutput.writeXMLTail()
 del myoutput
 
