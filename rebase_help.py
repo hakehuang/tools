@@ -53,7 +53,7 @@ class rebase:
 
 myrebase = rebase(sys.argv[1])
 
-ret = myrebase.replace_regions("=======","\>\>\>\>")
+ret = myrebase.replace_regions("=======","\>\>\>\>\>\>\>")
 if (ret != 0):
 	sys.exit(1)
 myrebase.replace_heads("<<<<<<")
