@@ -30,7 +30,7 @@ class rebase:
 		print 'end list',self.elists
 		if (len(self.slists) != len(self.elists)):
 			print "file match error"
-			return
+			return -1
 		self.dicts = dict(zip(self.slists,self.elists))
 		print "dictions", self.dicts
 		for i in self.dicts:
@@ -42,6 +42,7 @@ class rebase:
 		command = "sed -i " + "\'/" + "QWERTYUI" + "/d\'" + " " + self.fname
 		print command
 		ret = commands.getstatusoutput(command)
+		return 0
 	def replace_heads(self,head):
 		command = "sed -i " + "\'/" + head + "/d\'" + " " + self.fname
 		print command
@@ -52,5 +53,7 @@ class rebase:
 
 myrebase = rebase(sys.argv[1])
 
-myrebase.replace_regions("=======","\>\>\>\>")
+ret = myrebase.replace_regions("=======","\>\>\>\>")
+if (ret != 0):
+	sys.exit(1)
 myrebase.replace_heads("<<<<<<")
