@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
-#PLATFORM="28 233 31 35 37 25 51 53"
-#PLATFORM="50 53"
+#PLATFORM="28 233 31 35 37 25 51 53 63"
+#PLATFORM="50 53 63"
 PLATFORM="5x"
 VTE_TARGET_PRE=/mnt/vte
 
@@ -297,6 +297,28 @@ fi
 #sudo ROOTFS=/mnt/nfs_root/ubuntu10.10 /mnt/nfs_root/pkg_handle.sh install /mnt/nfs_root/debains
 #fi
 
+pt=$(echo $PLATFORM | grep 63 | wc -l)
+if [ $pt = 1 ]; then
+echo "make 63"
+
+cd ${KERNEL_DIR}
+make distclean
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- imx6_defconfig
+make ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi- -j 2
+
+cd $VTE_DIR
+make clean
+source mx6x_evk_config
+./armconfig
+make apps || RC="6x_apps $RC"
+make
+make install
+make vte || rc="6x $RC"
+sudo cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx6/testcases/bin/
+sudo cp -a runtest/* ${VTE_TARGET_PRE}/vte_mx6/runtest/
+sudo cp -a bin/* ${VTE_TARGET_PRE}/vte_mx6/bin/
+
+fi
 echo $RC
 echo "VTE build OK" | mutt -s "VTE build is OK" \
 b20222@freescale.com 
