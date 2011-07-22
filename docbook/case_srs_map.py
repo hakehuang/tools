@@ -1,10 +1,10 @@
 #!/usr/bin/python
-
+# case2srs.xml <srsfile.xml> <cases xml dir> <srscase map>
 import xml.parsers.expat
 import sys
 import os
 import re
-from sets import Set
+#from sets import Set
 import copy
 
 class serachXML:
@@ -119,6 +119,7 @@ class srscase:
 	def getSRSListByID(self,srsID,lists):
 		'''get all mapping srs detail inform'''
 		del self.relist[:]
+		print "srsID",srsID
 		self.searchengine.runfilesearch(self.srsfd,"name",srsID,lists)
 		if ( len(self.searchengine.dict.values()) > 1):
 			self.relist = self.searchengine.dict.values()
@@ -183,17 +184,22 @@ for i in mymap:
 	cases += results
 allcases = set(cases)
 print len(allcases)
-
 #search srs mapped to case
 myoutput = outputXML("case2srs_map.xml")
-mysrscase = srscase(flsrs,drcase)
 for i in allcases:
 	myoutput.writeXMLStart("","sect1")
 	myoutput.writeXMLContent(i,"title")
 	p3 = re.compile(i)
+	mymap.seek(0)
 	for j in mymap:
-		jj = p3.search(j)
-		if (len(jj)):
+		if (len(j) == 0 or j[0] == "#"):
+			continue
+		lj = p1.split(j)
+		if ( len(lj) == 0):
+			continue
+		jj = p3.search(str(j))
+		mysrscase = srscase(flsrs,drcase)
+		if (len(str(jj))):
 			ii = p1.split(j)
 			lists = {}
 			lists['formalpara/para'.upper()] = ""
@@ -202,6 +208,7 @@ for i in allcases:
 				myoutput.writeXMLStart("","formalpara")
 				myoutput.writeXMLContent(mysrscase.relist[0],"para")
 				myoutput.writeXMLEnd("formalpara")
+		del mysrscase
 	myoutput.writeXMLEnd("sect1")
 
 myoutput.writeXMLTail()
