@@ -119,9 +119,10 @@ class srscase:
 	def getSRSListByID(self,srsID,lists):
 		'''get all mapping srs detail inform'''
 		del self.relist[:]
-		print "srsID",srsID
+		#print "srsID",srsID
+		#print "lists",lists
 		self.searchengine.runfilesearch(self.srsfd,"name",srsID,lists)
-		if ( len(self.searchengine.dict.values()) > 1):
+		if ( len(self.searchengine.dict.values()) and len(self.searchengine.dict.values()[0]) > 1):
 			self.relist = self.searchengine.dict.values()
 		self.searchengine.dict.clear()
 	
@@ -187,7 +188,13 @@ print len(allcases)
 #search srs mapped to case
 myoutput = outputXML("case2srs_map.xml")
 for i in allcases:
+	if (len(i) == 0 or i[0] == "#"):
+		continue
+	ii = p1.split(i)
+	if ( len(ii) == 0):
+		continue
 	myoutput.writeXMLStart("","sect1")
+	print "i =", i
 	myoutput.writeXMLContent(i,"title")
 	p3 = re.compile(i)
 	mymap.seek(0)

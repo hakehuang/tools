@@ -86,6 +86,7 @@ class serachXML:
 			for i in os.listdir(dirs):
 				if (os.path.isfile(dirs+i)):
 					if(i.find(".xml") != -1):
+						#print "file is",i
 						fd = open(dirs+i,'r')
 						self.runfilesearch(fd,tag,sid,lists)
 						if (len(self.dict.values()) and len(self.dict.values()[0]) > 1 ):
@@ -132,7 +133,6 @@ class outputXML:
 		except:
 			print 'cannot open ',foutname
 			sys.exit()
-		self.writeXMLHead()
 	def writeXMLHead(self):
 		self.outfb.write("<?xml-stylesheet type=\"text/xsl\" href=\"srs_case.xsl\"?>\n")
 		self.outfb.write("<chapter>\n")
@@ -219,6 +219,7 @@ for i in mymap:
 		myoutput.writeXMLEnd("title")
 		lists['sect1/title'.upper()] = ""
 		mysrscase =  srscase(flsrs,drcase)
+		#print "j = ", j
 		mysrscase.getCaseListByID(j,lists)
 		if (len(mysrscase.relist)):
 			print "case list by srsID",mysrscase.relist
