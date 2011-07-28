@@ -1,8 +1,8 @@
 #!/bin/bash -x
 
-#PLATFORM="28 233 31 35 37 25 51 53 63"
-#PLATFORM="50 53 63"
-PLATFORM="5x"
+#PLATFORM="28 233 31 35 37 25 51 53 61"
+#PLATFORM="50 53 61"
+PLATFORM="61"
 VTE_TARGET_PRE=/mnt/vte
 
 KERNEL_DIR=/home/vobs/linux-2.6-imx
@@ -297,9 +297,9 @@ fi
 #sudo ROOTFS=/mnt/nfs_root/ubuntu10.10 /mnt/nfs_root/pkg_handle.sh install /mnt/nfs_root/debains
 #fi
 
-pt=$(echo $PLATFORM | grep 63 | wc -l)
+pt=$(echo $PLATFORM | grep 61 | wc -l)
 if [ $pt = 1 ]; then
-echo "make 63"
+echo "make 61"
 
 cd ${KERNEL_DIR}
 make distclean
@@ -314,9 +314,9 @@ make apps || RC="6x_apps $RC"
 make
 make install
 make vte || rc="6x $RC"
-sudo cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx63/testcases/bin/
-sudo cp -a runtest/* ${VTE_TARGET_PRE}/vte_mx63/runtest/
-sudo cp -a bin/* ${VTE_TARGET_PRE}/vte_mx63/bin/
+sudo cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx61/testcases/bin/
+sudo cp -a runtest/* ${VTE_TARGET_PRE}/vte_mx61/runtest/
+sudo cp -a bin/* ${VTE_TARGET_PRE}/vte_mx61/bin/
 
 fi
 echo $RC
