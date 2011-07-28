@@ -13,7 +13,9 @@ if [ $3 ]; then
 KER_VER=$3
 fi
 
+yes=0
 
+if [ $yes == "1"  ]; then
 export PLATFORM=MX233
 ./newrc_v2 $1/L${KER_VER}_$2_images_${PLATFORM}.tar.gz  || exit 1
 export PLATFORM=MX25
@@ -24,11 +26,14 @@ export PLATFORM=MX31
 echo $passwd | ./newrc_v2 $1/L${KER_VER}_$2_images_${PLATFORM}.tar.gz || exit 1
 export PLATFORM=MX35
 echo $passwd | ./newrc_v2 $1/L${KER_VER}_$2_images_${PLATFORM}.tar.gz || exit 1
-#export PLATFORM=MX37
-#echo $passwd | ./newrc_v2 $1/L${KER_VER}_$2_images_${PLATFORM}.tar.gz || exit 1
+##export PLATFORM=MX37
+##echo $passwd | ./newrc_v2 $1/L${KER_VER}_$2_images_${PLATFORM}.tar.gz || exit 1
 export PLATFORM=MX51
 echo $passwd | ./newrc_v2 $1/L${KER_VER}_$2_images_MX5X.tar.gz || exit 1
 export PLATFORM=MX53
 echo $passwd | ./newrc_v2 $1/L${KER_VER}_$2_images_MX5X.tar.gz || exit 1
 export PLATFORM=MX50
 echo $passwd | ./newrc_v2 $1/L${KER_VER}_$2_images_MX5X.tar.gz || exit 1
+fi
+export PLATFORM=MX61
+echo $passwd | ./newrc_v2 $1/L2.6.38_$2_images_MX6X.tar.gz || exit 1

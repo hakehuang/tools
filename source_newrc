@@ -11,7 +11,7 @@ HOST_SERVER=10.192.224.48
 PLATFORM="MX31 MX35 MX37 MX51 MX25 MX233 MX28" 
 #PLATFORM="MX28" 
 
-KERNEL_VER=2.6.35.3
+KERNEL_VER=2.6.38
 
 SDK_VER=4.4.0
 read -p "please input sdk version: " SDK_VER
@@ -52,9 +52,9 @@ mkdir -p ${NFS_PATH}temp2
 
 echo "get the package"
 echo "$1 should be on scm server path"
-cp /mnt/scmbuild/$1 ${NFS_PATH}temp2/
-#wget http://bluebell.am.freescale.net/previous/100906_033828_CDT/${RELEASE_PACKAGE} -P ${NFS_PATH}temp2/
-#scp b20222@${HOST_SERVER}:${RELEASE_PATH}/${RELEASE_PACKAGE} ${NFS_PATH}temp2/ || exit 1  
+#cp /mnt/scmrelease/$1 ${NFS_PATH}temp2/ || cp /mnt/scmbuild/$1 ${NFS_PATH}temp2/
+#wget http://bluebell.am.freescale.net/previous/101214_222612_CST/${RELEASE_PACKAGE} -P ${NFS_PATH}temp2/
+scp b20222@${HOST_SERVER}:${RELEASE_PATH}/${RELEASE_PACKAGE} ${NFS_PATH}temp2/ || exit 1  
 
 #scp ${NFS_PATH}/temp2/* 10.192.225.217:/home/ltib2/ltib_build/
 scp ${NFS_PATH}/temp2/* ubuntu@10.192.225.32:/home/ltib2/ltib_build/
@@ -80,7 +80,7 @@ cd ..
 tar czvf linux-${KERNEL_VER}_wb.tar.gz linux-${KERNEL_VER}
 rm -f ${LINUX_KERNEL}
 #scp linux-${KERNEL_VER}_wb.tar.gz 10.192.225.217:/home/vobs/
-scp linux-${KERNEL_VER}_wb.tar.gz ubuntu@10.192.225.32:/home/vobs/
+scp linux-${KERNEL_VER}_wb.tar.gz ubuntu@10.192.224.187:/home/vobs/
 sleep 120
 echo "kernel srouce deploy OK" | mutt -s "kernel source is OK" \
 b20222@freescale.com &

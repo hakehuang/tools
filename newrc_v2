@@ -57,6 +57,7 @@ MX37_ROOTFS_24=${NFS_PATH}imx37_rootfs_24/
 MX25_ROOTFS=${NFS_PATH}imx25_rootfs/
 MX53_ROOTFS=${NFS_PATH}imx53_rootfs/
 MX50_ROOTFS=${NFS_PATH}imx50_rootfs/
+MX61_ROOTFS=${NFS_PATH}imx61_rootfs/
 
 
 echo "$(date +"%y%m%d")" >> .newrclog
@@ -82,6 +83,7 @@ then
   rm -rf ${NFS_PATH}imx28_rootfs
   rm -rf ${NFS_PATH}imx53_rootfs
   rm -rf ${NFS_PATH}imx50_rootfs
+  rm -rf ${NFS_PATH}imx61_rootfs
   exit 0
 fi
 
@@ -217,6 +219,12 @@ do
   scp ${NFS_PATH}temp/${RELEASE_TARGET}/zImage ${TFTP_SERVER}:/tftpboot/zImage_mx50
   scp ${NFS_PATH}temp/${RELEASE_TARGET}/uImage ${TFTP_SERVER}:/tftpboot/uImage_mx50
   scp ${NFS_PATH}temp/${RELEASE_TARGET}/rootfs.jffs2 ${TFTP_SERVER}:/tftpboot/mx50_rootfs.jffs2
+  fi
+  if [ $i == "MX61" ]
+  then
+  scp ${NFS_PATH}temp/${RELEASE_TARGET}/zImage ${TFTP_SERVER}:/tftpboot/zImage_mx61
+  scp ${NFS_PATH}temp/${RELEASE_TARGET}/uImage ${TFTP_SERVER}:/tftpboot/uImage_mx61
+  scp ${NFS_PATH}temp/${RELEASE_TARGET}/rootfs.jffs2 ${TFTP_SERVER}:/tftpboot/mx61_rootfs.jffs2
   fi
 done
 
@@ -441,6 +449,22 @@ do
  sync
  umount /mnt/tempfs 
  fi
+ if [ $i == "MX61" ]
+ then
+ gzip -d ${NFS_PATH}temp/${RELEASE_TARGET}/rootfs.ext2.gz
+ if [ $? -ne 0 ]
+ then
+  mv ${NFS_PATH}temp/${RELEASE_TARGET}/rootfs.ext2.gz ${NFS_PATH}temp/${RELEASE_TARGET}/rootfs.ext2
+ fi 
+ mount -o loop ${NFS_PATH}temp/${RELEASE_TARGET}/rootfs.ext2 /mnt/tempfs
+ rm -rf ./last_week/imx61_rootfs
+ mv ${MX61_ROOTFS} ./last_week/
+ mkdir -p ${MX61_ROOTFS}
+ cp -a /mnt/tempfs/* ${MX61_ROOTFS}/
+ cp ${NFS_PATH}temp/${RELEASE_TARGET}/u-boot-mx61-*.bin ${MX61_ROOTFS}/root
+ sync
+ umount /mnt/tempfs 
+ fi
 done
 
 
@@ -490,6 +514,10 @@ do
   if [ $i == "MX50" ]
   then
   cp ${VTE_ORIGINAL_PATH}vte ${MX50_ROOTFS}/etc/rc.d/init.d/
+  fi
+  if [ $i == "MX61" ]
+  then
+  cp ${VTE_ORIGINAL_PATH}vte ${MX61_ROOTFS}/etc/rc.d/init.d/
   fi
 done
 
@@ -594,6 +622,13 @@ do
      sed -i "s/pango//g" ${MX50_ROOTFS}/etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX50_ROOTFS}/etc/rc.d/rc.conf 
      sed -i "s/fslgnome//g" ${MX50_ROOTFS}/etc/rc.d/rc.conf 
+  fi
+  if [ $i == "MX61" ]
+  then
+     echo "/etc/rc.d/init.d/vte &" >> ${MX61_ROOTFS}/etc/rc.d/rc.local || exit 1
+     sed -i "s/pango//g" ${MX61_ROOTFS}/etc/rc.d/rc.conf 
+     sed -i "s/gtk2//g" ${MX61_ROOTFS}/etc/rc.d/rc.conf 
+     sed -i "s/fslgnome//g" ${MX61_ROOTFS}/etc/rc.d/rc.conf 
   fi
 done
 
