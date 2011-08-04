@@ -85,7 +85,7 @@ class serachXML:
 		if (os.path.isdir(dirs)):
 			for i in os.listdir(dirs):
 				if (os.path.isfile(dirs+i)):
-					if(i.find(".xml") != -1):
+					if(i.find("_L.xml") != -1):
 						#print "file is",i
 						fd = open(dirs+i,'r')
 						self.runfilesearch(fd,tag,sid,lists)
