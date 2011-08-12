@@ -90,7 +90,7 @@ output_case_dic = {
 
 output_top_dic = {
 '0':['<chapter ','name=','>'],
-'1':['<title>','CONTENT','</title>\n'],
+'1':['<sect>','CONTENT','</sect>\n'],
 '2':['<sect>','CONTENT','</sect>\n'],
 '3':output_case_dic,
 '*':'3',
@@ -264,6 +264,11 @@ class MyHTMLParser(HTMLParser):
 						else:
 							print mdata[self.output_list_cnt]
 							self.of.write(mdata[self.output_list_cnt])
+							if (self.output_list_cnt == 0):
+								print self.file_name
+								self.of.write("<title>")
+								self.of.write(self.file_name[0:len(self.file_name)-6])
+								self.of.write("</title>")
 							self.output_list_cnt += 1
 							self.xmlprint()
 							return
