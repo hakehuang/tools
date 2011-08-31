@@ -9,7 +9,6 @@ import os
 import getopt
 import urllib
 import string
-import json
 
 from types import *
 from HTMLParser import HTMLParser
@@ -244,11 +243,11 @@ class MyHTMLParser(HTMLParser):
 									self.of.write(self.case_title)
 								else:
 									if (self.output != screen_dic):
-										print json.dumps(self.cur_content).replace("<","&lt;").replace(">","&gt;").replace("&","&amp;")
-										self.of.write(json.dumps(self.cur_content).replace("<","&lt;").replace(">","&gt;").replace("&","&amp;") + "\n")
+										print self.cur_content.replace("<","&lt;").replace(">","&gt;").replace("&","&amp;")
+										self.of.write(self.cur_content.replace("<","&lt;").replace(">","&gt;").replace("&","&amp;") + "\n")
 									else:
-										print json.dumps(self.cur_content)
-										self.of.write(json.dumps(self.cur_content))
+										print self.cur_content
+										self.of.write(self.cur_content)
 							self.output_list_cnt += 1
 							return
 						elif (mdata[self.output_list_cnt].find('=') != -1 ):
