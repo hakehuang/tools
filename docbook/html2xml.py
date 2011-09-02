@@ -242,8 +242,12 @@ class MyHTMLParser(HTMLParser):
 									print self.case_title
 									self.of.write(self.case_title)
 								else:
-									print self.cur_content
-									self.of.write(self.cur_content + "\n")
+									if (self.output != screen_dic):
+										print self.cur_content.replace("<","&lt;").replace(">","&gt;").replace("&","&amp;")
+										self.of.write(self.cur_content.replace("<","&lt;").replace(">","&gt;").replace("&","&amp;") + "\n")
+									else:
+										print self.cur_content
+										self.of.write(self.cur_content)
 							self.output_list_cnt += 1
 							return
 						elif (mdata[self.output_list_cnt].find('=') != -1 ):
@@ -264,16 +268,15 @@ class MyHTMLParser(HTMLParser):
 						else:
 							print mdata[self.output_list_cnt]
 							self.of.write(mdata[self.output_list_cnt])
-							if (self.output_list_cnt == 0):
-								print self.file_name
-								self.of.write("<title>")
-								self.of.write(self.file_name[0:len(self.file_name)-6])
-								self.of.write("</title>")
 							self.output_list_cnt += 1
 							self.xmlprint()
 							return
 					else:
 						self.output_list_cnt = 0
+						if(self.output == output_top_dic):
+							#insert title here
+							print "<title>" + self.file_name + "</title>"
+							self.of.write("<title>" + self.file_name + "</title>")
 						self.output_cnt += 1
 						self.xmlprint()
 						return
