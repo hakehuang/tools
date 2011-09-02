@@ -529,7 +529,7 @@ do
      #pango gtk2    fslgnome
      sed -i '/sd-show-icon/s/^/#/g' ${MX31_ROOTFS}etc/udev/rules.d/20-board.rules 
      sed -i "4s/fslgui//" ${MX31_ROOTFS}etc/rc.d/rc.conf 
-     echo "/etc/rc.d/init.d/vte &" >> ${MX31_ROOTFS}etc/rc.d/rc.local
+     echo "/etc/rc.d/init.d/vte \$1 &" >> ${MX31_ROOTFS}etc/rc.d/rc.local
      echo "/dev/ttyGS0" >> ${MX31_ROOTFS}etc/securetty
      sed -i "s/pango//g" ${MX31_ROOTFS}etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX31_ROOTFS}etc/rc.d/rc.conf 
@@ -539,7 +539,7 @@ do
   then
      sed -i '/sd-show-icon/s/^/#/g' ${MX35_ROOTFS}etc/udev/rules.d/20-board.rules
      sed -i "4s/fslgui//" ${MX35_ROOTFS}etc/rc.d/rc.conf
-     echo "/etc/rc.d/init.d/vte &" >> ${MX35_ROOTFS}etc/rc.d/rc.local
+     echo "/etc/rc.d/init.d/vte \$1  &" >> ${MX35_ROOTFS}etc/rc.d/rc.local
      echo "/dev/ttyGS0" >> ${MX35_ROOTFS}etc/securetty
      sed -i "s/pango//g" ${MX35_ROOTFS}etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX35_ROOTFS}etc/rc.d/rc.conf 
@@ -549,7 +549,7 @@ do
   then
      sed -i '/sd-show-icon/s/^/#/g' ${MX37_ROOTFS}/etc/udev/rules.d/20-board.rules
      sed -i "4s/fslgui//" ${MX37_ROOTFS}etc/rc.d/rc.conf
-     echo "/etc/rc.d/init.d/vte &" >> ${MX37_ROOTFS}etc/rc.d/rc.local
+     echo "/etc/rc.d/init.d/vte \$1 &" >> ${MX37_ROOTFS}etc/rc.d/rc.local
      echo "/dev/ttyGS0" >> ${MX37_ROOTFS}etc/securetty
      sed -i "s/pango//g" ${MX37_ROOTFS}etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX37_ROOTFS}etc/rc.d/rc.conf 
@@ -559,7 +559,7 @@ do
   then
      sed -i '/sd-show-icon/s/^/#/g' ${MX37_ROOTFS_24}/etc/udev/rules.d/20-board.rules
      sed -i "4s/fslgui//" ${MX37_ROOTFS_24}etc/rc.d/rc.conf
-     echo "/etc/rc.d/init.d/vte &" >> ${MX37_ROOTFS_24}etc/rc.d/rc.local
+     echo "/etc/rc.d/init.d/vte \$1 &" >> ${MX37_ROOTFS_24}etc/rc.d/rc.local
      echo "/dev/ttygs0" >> ${MX37_ROOTFS_24}etc/securetty
      sed -i "s/pango//g" ${MX37_ROOTFS_24}etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX37_ROOTFS_24}etc/rc.d/rc.conf 
@@ -569,7 +569,7 @@ do
   then
      sed -i '/sd-show-icon.sh/s/^/#/g' ${MX51_ROOTFS}/etc/udev/rules.d/20-board.rules
      sed -i "4s/fslgui//" ${MX51_ROOTFS}etc/rc.d/rc.conf
-     echo "/etc/rc.d/init.d/vte &" >> ${MX51_ROOTFS}etc/rc.d/rc.local
+     echo "/etc/rc.d/init.d/vte \$1 &" >> ${MX51_ROOTFS}etc/rc.d/rc.local
      echo "/dev/ttyGS0" >> ${MX51_ROOTFS}etc/securetty
      sed -i "s/pango//g" ${MX51_ROOTFS}etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX51_ROOTFS}etc/rc.d/rc.conf 
@@ -579,7 +579,7 @@ do
   then
      sed -i '/sd-show-icon.sh/s/^/#/g' ${MX51_ROOTFS_28}/etc/udev/rules.d/20-board.rules
      sed -i "4s/fslgui//" ${MX51_ROOTFS_28}etc/rc.d/rc.conf
-     echo "/etc/rc.d/init.d/vte &" >> ${MX51_ROOTFS_28}etc/rc.d/rc.local
+     echo "/etc/rc.d/init.d/vte \$1 &" >> ${MX51_ROOTFS_28}etc/rc.d/rc.local
      echo "/dev/ttyGS0" >> ${MX51_ROOTFS_28}etc/securetty
      sed -i "s/pango//g" ${MX51_ROOTFS_28}etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX51_ROOTFS_28}etc/rc.d/rc.conf 
@@ -589,7 +589,7 @@ do
   then
      sed -i '/sd-show-icon.sh/s/^/#/g' ${MX25_ROOTFS}/etc/udev/rules.d/20-board.rules
      sed -i "4s/fslgui//" ${MX25_ROOTFS}etc/rc.d/rc.conf
-     echo "/etc/rc.d/init.d/vte &" >> ${MX25_ROOTFS}etc/rc.d/rc.local
+     echo "/etc/rc.d/init.d/vte \$1 &" >> ${MX25_ROOTFS}etc/rc.d/rc.local
      echo "/dev/ttyGS0" >> ${MX25_ROOTFS}etc/securetty
      sed -i "s/pango//g" ${MX25_ROOTFS}etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX25_ROOTFS}etc/rc.d/rc.conf 
@@ -597,35 +597,35 @@ do
   fi
   if [ $i == "MX233" ]
   then
-     echo "/etc/rc.d/init.d/vte &" >> ${MX233_ROOTFS}/rootfs/etc/rc.d/rc.local || exit 1
+     echo "/etc/rc.d/init.d/vte \$1 &" >> ${MX233_ROOTFS}/rootfs/etc/rc.d/rc.local || exit 1
      sed -i "s/pango//g" ${MX233_ROOTFS}/rootfs/etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX233_ROOTFS}/rootfs/etc/rc.d/rc.conf 
      sed -i "s/fslgnome//g" ${MX233_ROOTFS}/rootfs/etc/rc.d/rc.conf 
   fi
   if [ $i == "MX28" ]
   then
-     echo "/etc/rc.d/init.d/vte &" >> ${MX28_ROOTFS}/rootfs/etc/rc.d/rc.local || exit 1
+     echo "/etc/rc.d/init.d/vte \$1 &" >> ${MX28_ROOTFS}/rootfs/etc/rc.d/rc.local || exit 1
      sed -i "s/pango//g" ${MX28_ROOTFS}/rootfs/etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX28_ROOTFS}/rootfs/etc/rc.d/rc.conf 
      sed -i "s/fslgnome//g" ${MX28_ROOTFS}/rootfs/etc/rc.d/rc.conf 
   fi
   if [ $i == "MX53" ]
   then
-     echo "/etc/rc.d/init.d/vte &" >> ${MX53_ROOTFS}/etc/rc.d/rc.local || exit 1
+     echo "/etc/rc.d/init.d/vte \$1 &" >> ${MX53_ROOTFS}/etc/rc.d/rc.local || exit 1
      sed -i "s/pango//g" ${MX53_ROOTFS}/etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX53_ROOTFS}/etc/rc.d/rc.conf 
      sed -i "s/fslgnome//g" ${MX53_ROOTFS}/etc/rc.d/rc.conf 
   fi
   if [ $i == "MX50" ]
   then
-     echo "/etc/rc.d/init.d/vte &" >> ${MX50_ROOTFS}/etc/rc.d/rc.local || exit 1
+     echo "/etc/rc.d/init.d/vte \$1 &" >> ${MX50_ROOTFS}/etc/rc.d/rc.local || exit 1
      sed -i "s/pango//g" ${MX50_ROOTFS}/etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX50_ROOTFS}/etc/rc.d/rc.conf 
      sed -i "s/fslgnome//g" ${MX50_ROOTFS}/etc/rc.d/rc.conf 
   fi
   if [ $i == "MX61" ]
   then
-     echo "/etc/rc.d/init.d/vte &" >> ${MX61_ROOTFS}/etc/rc.d/rc.local || exit 1
+     echo "/etc/rc.d/init.d/vte \$1 &" >> ${MX61_ROOTFS}/etc/rc.d/rc.local || exit 1
      sed -i "s/pango//g" ${MX61_ROOTFS}/etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX61_ROOTFS}/etc/rc.d/rc.conf 
      sed -i "s/fslgnome//g" ${MX61_ROOTFS}/etc/rc.d/rc.conf 
