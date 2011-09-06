@@ -461,7 +461,7 @@ do
  mv ${MX61_ROOTFS} ./last_week/
  mkdir -p ${MX61_ROOTFS}
  cp -a /mnt/tempfs/* ${MX61_ROOTFS}/
- cp ${NFS_PATH}temp/${RELEASE_TARGET}/u-boot-mx61-*.bin ${MX61_ROOTFS}/root
+ cp ${NFS_PATH}temp/${RELEASE_TARGET}/u-boot-mx6q-*.bin ${MX61_ROOTFS}/root
  sync
  umount /mnt/tempfs 
  fi
@@ -533,17 +533,26 @@ do
      echo "/dev/ttyGS0" >> ${MX31_ROOTFS}etc/securetty
      sed -i "s/pango//g" ${MX31_ROOTFS}etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX31_ROOTFS}etc/rc.d/rc.conf 
-     sed -i "s/fslgnome//g" ${MX31_ROOTFS}etc/rc.d/rc.conf 
+     sed -i "s/fslgnome//g" ${MX31_ROOTFS}etc/rc.d/rc.conf
+		 echo "/dev/mmcblk0p1  /mnt/mmcblk0p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/mmcblk1p1  /mnt/mmcblk1p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sda1       /mnt/sda1  ext3   noauto         0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sdb1       /mnt/sdb1  ext3   noauto          0       0" >> ${MX31_ROOTFS}etc/fstab
+
   fi
   if [ $i == "MX35" ]
   then
      sed -i '/sd-show-icon/s/^/#/g' ${MX35_ROOTFS}etc/udev/rules.d/20-board.rules
      sed -i "4s/fslgui//" ${MX35_ROOTFS}etc/rc.d/rc.conf
-     echo "/etc/rc.d/init.d/vte \$1  &" >> ${MX35_ROOTFS}etc/rc.d/rc.local
+     echo "/etc/rc.d/init.d/vte \$1 &" >> ${MX35_ROOTFS}etc/rc.d/rc.local
      echo "/dev/ttyGS0" >> ${MX35_ROOTFS}etc/securetty
      sed -i "s/pango//g" ${MX35_ROOTFS}etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX35_ROOTFS}etc/rc.d/rc.conf 
      sed -i "s/fslgnome//g" ${MX35_ROOTFS}etc/rc.d/rc.conf 
+		 echo "/dev/mmcblk0p1  /mnt/mmcblk0p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/mmcblk1p1  /mnt/mmcblk1p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sda1       /mnt/sda1  ext3   noauto         0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sdb1       /mnt/sdb1  ext3   noauto          0       0" >> ${MX31_ROOTFS}etc/fstab
   fi
   if [ $i == "MX37" ]
   then
@@ -554,6 +563,10 @@ do
      sed -i "s/pango//g" ${MX37_ROOTFS}etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX37_ROOTFS}etc/rc.d/rc.conf 
      sed -i "s/fslgnome//g" ${MX37_ROOTFS}etc/rc.d/rc.conf 
+		 echo "/dev/mmcblk0p1  /mnt/mmcblk0p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/mmcblk1p1  /mnt/mmcblk1p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sda1       /mnt/sda1  ext3   noauto         0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sdb1       /mnt/sdb1  ext3   noauto          0       0" >> ${MX31_ROOTFS}etc/fstab
   fi
   if [ $i == "MX37_24" ]
   then
@@ -564,6 +577,10 @@ do
      sed -i "s/pango//g" ${MX37_ROOTFS_24}etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX37_ROOTFS_24}etc/rc.d/rc.conf 
      sed -i "s/fslgnome//g" ${MX37_ROOTFS_24}etc/rc.d/rc.conf 
+		 echo "/dev/mmcblk0p1  /mnt/mmcblk0p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/mmcblk1p1  /mnt/mmcblk1p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sda1       /mnt/sda1  ext3   noauto         0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sdb1       /mnt/sdb1  ext3   noauto          0       0" >> ${MX31_ROOTFS}etc/fstab
   fi
   if [ $i == "MX51" ]
   then
@@ -574,6 +591,10 @@ do
      sed -i "s/pango//g" ${MX51_ROOTFS}etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX51_ROOTFS}etc/rc.d/rc.conf 
      sed -i "s/fslgnome//g" ${MX51_ROOTFS}etc/rc.d/rc.conf 
+		 echo "/dev/mmcblk0p1  /mnt/mmcblk0p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/mmcblk1p1  /mnt/mmcblk1p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sda1       /mnt/sda1  ext3   noauto         0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sdb1       /mnt/sdb1  ext3   noauto          0       0" >> ${MX31_ROOTFS}etc/fstab
   fi
   if [ $i == "MX51_28" ]
   then
@@ -584,6 +605,10 @@ do
      sed -i "s/pango//g" ${MX51_ROOTFS_28}etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX51_ROOTFS_28}etc/rc.d/rc.conf 
      sed -i "s/fslgnome//g" ${MX51_ROOTFS_28}etc/rc.d/rc.conf 
+		 echo "/dev/mmcblk0p1  /mnt/mmcblk0p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/mmcblk1p1  /mnt/mmcblk1p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sda1       /mnt/sda1  ext3   noauto         0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sdb1       /mnt/sdb1  ext3   noauto          0       0" >> ${MX31_ROOTFS}etc/fstab
   fi
   if [ $i == "MX25" ]
   then
@@ -594,6 +619,10 @@ do
      sed -i "s/pango//g" ${MX25_ROOTFS}etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX25_ROOTFS}etc/rc.d/rc.conf 
      sed -i "s/fslgnome//g" ${MX25_ROOTFS}etc/rc.d/rc.conf 
+		 echo "/dev/mmcblk0p1  /mnt/mmcblk0p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/mmcblk1p1  /mnt/mmcblk1p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sda1       /mnt/sda1  ext3   noauto         0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sdb1       /mnt/sdb1  ext3   noauto          0       0" >> ${MX31_ROOTFS}etc/fstab
   fi
   if [ $i == "MX233" ]
   then
@@ -601,6 +630,10 @@ do
      sed -i "s/pango//g" ${MX233_ROOTFS}/rootfs/etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX233_ROOTFS}/rootfs/etc/rc.d/rc.conf 
      sed -i "s/fslgnome//g" ${MX233_ROOTFS}/rootfs/etc/rc.d/rc.conf 
+		 echo "/dev/mmcblk0p1  /mnt/mmcblk0p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/mmcblk1p1  /mnt/mmcblk1p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sda1       /mnt/sda1  ext3   noauto         0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sdb1       /mnt/sdb1  ext3   noauto          0       0" >> ${MX31_ROOTFS}etc/fstab
   fi
   if [ $i == "MX28" ]
   then
@@ -608,6 +641,10 @@ do
      sed -i "s/pango//g" ${MX28_ROOTFS}/rootfs/etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX28_ROOTFS}/rootfs/etc/rc.d/rc.conf 
      sed -i "s/fslgnome//g" ${MX28_ROOTFS}/rootfs/etc/rc.d/rc.conf 
+		 echo "/dev/mmcblk0p1  /mnt/mmcblk0p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/mmcblk1p1  /mnt/mmcblk1p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sda1       /mnt/sda1  ext3   noauto         0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sdb1       /mnt/sdb1  ext3   noauto          0       0" >> ${MX31_ROOTFS}etc/fstab
   fi
   if [ $i == "MX53" ]
   then
@@ -615,13 +652,21 @@ do
      sed -i "s/pango//g" ${MX53_ROOTFS}/etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX53_ROOTFS}/etc/rc.d/rc.conf 
      sed -i "s/fslgnome//g" ${MX53_ROOTFS}/etc/rc.d/rc.conf 
+		 echo "/dev/mmcblk0p1  /mnt/mmcblk0p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/mmcblk1p1  /mnt/mmcblk1p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sda1       /mnt/sda1  ext3   noauto         0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sdb1       /mnt/sdb1  ext3   noauto          0       0" >> ${MX31_ROOTFS}etc/fstab
   fi
   if [ $i == "MX50" ]
   then
-     echo "/etc/rc.d/init.d/vte \$1 &" >> ${MX50_ROOTFS}/etc/rc.d/rc.local || exit 1
+     echo "/etc/rc.d/init.d/vte \$1  &" >> ${MX50_ROOTFS}/etc/rc.d/rc.local || exit 1
      sed -i "s/pango//g" ${MX50_ROOTFS}/etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX50_ROOTFS}/etc/rc.d/rc.conf 
      sed -i "s/fslgnome//g" ${MX50_ROOTFS}/etc/rc.d/rc.conf 
+		 echo "/dev/mmcblk0p1  /mnt/mmcblk0p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/mmcblk1p1  /mnt/mmcblk1p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sda1       /mnt/sda1  ext3   noauto         0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sdb1       /mnt/sdb1  ext3   noauto          0       0" >> ${MX31_ROOTFS}etc/fstab
   fi
   if [ $i == "MX61" ]
   then
@@ -629,7 +674,32 @@ do
      sed -i "s/pango//g" ${MX61_ROOTFS}/etc/rc.d/rc.conf 
      sed -i "s/gtk2//g" ${MX61_ROOTFS}/etc/rc.d/rc.conf 
      sed -i "s/fslgnome//g" ${MX61_ROOTFS}/etc/rc.d/rc.conf 
+		 echo "/dev/mmcblk0p1  /mnt/mmcblk0p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/mmcblk1p1  /mnt/mmcblk1p1  ext3  defaults          0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sda1       /mnt/sda1  ext3   noauto         0       0" >> ${MX31_ROOTFS}etc/fstab
+		 echo "/dev/sdb1       /mnt/sdb1  ext3   noauto          0       0" >> ${MX31_ROOTFS}etc/fstab
   fi
+done
+
+#update the rootfs to rootfs_r
+for i in $PLATFORM
+do
+  if [ $i == "MX53" ]; then
+		rm -rf  ${MX53_ROOTFS}_r
+		cp -a ${MX53_ROOTFS} ${MX53_ROOTFS}_r
+	fi
+  if [ $i == "MX51" ]; then
+		rm -rf  ${MX51_ROOTFS}_r
+		cp -a ${MX51_ROOTFS} ${MX51_ROOTFS}_r
+	fi
+  if [ $i == "MX50" ]; then
+		rm -rf  ${MX50_ROOTFS}_r
+		cp -a ${MX50_ROOTFS} ${MX50_ROOTFS}_r
+	fi
+  if [ $i == "MX61" ]; then
+		rm -rf  ${MX61_ROOTFS}_r
+		cp -a ${MX61_ROOTFS} ${MX61_ROOTFS}_r
+	fi
 done
 
 echo "finish processing!"
