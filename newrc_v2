@@ -46,19 +46,21 @@ TFTP_SERVER=10.192.225.218
 NFS_PATH=/rootfs/
 
 #rootfs path
-MX233_ROOTFS=${NFS_PATH}imx233_rootfs/
-MX28_ROOTFS=${NFS_PATH}imx28_rootfs/
-MX31_ROOTFS=${NFS_PATH}imx31_rootfs/
-MX35_ROOTFS=${NFS_PATH}imx35_rootfs/
-MX37_ROOTFS=${NFS_PATH}imx37_rootfs/
-MX51_ROOTFS=${NFS_PATH}imx51_rootfs/
-MX51_ROOTFS_28=${NFS_PATH}imx51_rootfs_babbage/
-MX37_ROOTFS_24=${NFS_PATH}imx37_rootfs_24/
-MX25_ROOTFS=${NFS_PATH}imx25_rootfs/
-MX53_ROOTFS=${NFS_PATH}imx53_rootfs/
-MX50_ROOTFS=${NFS_PATH}imx50_rootfs/
-MX61_ROOTFS=${NFS_PATH}imx61_rootfs/
+MX233_ROOTFS=${NFS_PATH}imx233_rootfs_r/
+MX28_ROOTFS=${NFS_PATH}imx28_rootfs_r/
+MX31_ROOTFS=${NFS_PATH}imx31_rootfs_r/
+MX35_ROOTFS=${NFS_PATH}imx35_rootfs_r/
+MX37_ROOTFS=${NFS_PATH}imx37_rootfs_r/
+MX51_ROOTFS=${NFS_PATH}imx51_rootfs_r
+MX25_ROOTFS=${NFS_PATH}imx25_rootfs_r/
+MX53_ROOTFS=${NFS_PATH}imx53_rootfs_r
+MX50_ROOTFS=${NFS_PATH}imx50_rootfs_r
+MX61_ROOTFS=${NFS_PATH}imx61_rootfs_r
 
+MX51_ROOTFS_d=${NFS_PATH}imx51_rootfs
+MX53_ROOTFS_d=${NFS_PATH}imx53_rootfs
+MX50_ROOTFS_d=${NFS_PATH}imx50_rootfs
+MX61_ROOTFS_d=${NFS_PATH}imx61_rootfs
 
 echo "$(date +"%y%m%d")" >> .newrclog
 echo "$0 $@" >> .newrclog
@@ -74,16 +76,15 @@ fi
 
 if [ $1 == "clean" ]
 then
-  rm -rf ${NFS_PATH}imx31_rootfs
-  rm -rf ${NFS_PATH}imx35_rootfs
-  rm -rf ${NFS_PATH}imx37_rootfs
-  rm -rf ${NFS_PATH}imx37_rootfs_24
-  rm -rf ${NFS_PATH}imx51_rootfs
-  rm -rf ${NFS_PATH}imx25_rootfs
-  rm -rf ${NFS_PATH}imx28_rootfs
-  rm -rf ${NFS_PATH}imx53_rootfs
-  rm -rf ${NFS_PATH}imx50_rootfs
-  rm -rf ${NFS_PATH}imx61_rootfs
+  rm -rf ${NFS_PATH}imx31_rootfs_r
+  rm -rf ${NFS_PATH}imx35_rootfs_r
+  rm -rf ${NFS_PATH}imx37_rootfs_r
+  rm -rf ${NFS_PATH}imx51_rootfs_r
+  rm -rf ${NFS_PATH}imx25_rootfs_r
+  rm -rf ${NFS_PATH}imx28_rootfs_r
+  rm -rf ${NFS_PATH}imx53_rootfs_r
+  rm -rf ${NFS_PATH}imx50_rootfs_r
+  rm -rf ${NFS_PATH}imx61_rootfs_r
   exit 0
 fi
 
@@ -685,20 +686,20 @@ done
 for i in $PLATFORM
 do
   if [ $i == "MX53" ]; then
-		rm -rf  ${MX53_ROOTFS}_r
-		cp -a ${MX53_ROOTFS} ${MX53_ROOTFS}_r
+		rm -rf  ${MX53_ROOTFS_d}
+		cp -a ${MX53_ROOTFS} ${MX53_ROOTFS_d}
 	fi
   if [ $i == "MX51" ]; then
-		rm -rf  ${MX51_ROOTFS}_r
-		cp -a ${MX51_ROOTFS} ${MX51_ROOTFS}_r
+		rm -rf  ${MX51_ROOTFS_d}
+		cp -a ${MX51_ROOTFS} ${MX51_ROOTFS_d}
 	fi
   if [ $i == "MX50" ]; then
-		rm -rf  ${MX50_ROOTFS}_r
-		cp -a ${MX50_ROOTFS} ${MX50_ROOTFS}_r
+		rm -rf  ${MX50_ROOTFS_d}
+		cp -a ${MX50_ROOTFS} ${MX50_ROOTFS_d}
 	fi
   if [ $i == "MX61" ]; then
-		rm -rf  ${MX61_ROOTFS}_r
-		cp -a ${MX61_ROOTFS} ${MX61_ROOTFS}_r
+		rm -rf  ${MX61_ROOTFS_d}
+		cp -a ${MX61_ROOTFS} ${MX61_ROOTFS_d}
 	fi
 done
 
