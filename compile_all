@@ -317,6 +317,7 @@ make vte || rc="6x $RC"
 sudo cp -a install/testcases/bin/* ${VTE_TARGET_PRE}/vte_mx61/testcases/bin/
 sudo cp -a install/runtest/* ${VTE_TARGET_PRE}/vte_mx61/runtest/
 sudo cp -a install/bin/* ${VTE_TARGET_PRE}/vte_mx61/bin/
+sudo cp -a testcases/bin/* ${VTE_TARGET_PRE}/vte_mx61/testcases/bin/
 
 fi
 echo $RC
