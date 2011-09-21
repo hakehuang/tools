@@ -11,7 +11,6 @@ import getopt
 import re
 
 
-
 Pattern = ['Auto_Level']
 Attrib = {
 	      'Auto_Level': 'Auto'

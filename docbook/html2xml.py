@@ -90,8 +90,8 @@ output_case_dic = {
 
 output_top_dic = {
 '0':['<chapter ','name=','>'],
-'1':['<sect>','CONTENT','</sect>\n'],
-'2':['<sect>','CONTENT','</sect>\n'],
+'1':['<section>','CONTENT','</section>\n'],
+'2':['<section>','CONTENT','</section>\n'],
 '3':output_case_dic,
 '*':'3',
 'end':['</chapter>'],
@@ -124,6 +124,7 @@ class MyHTMLParser(HTMLParser):
 			self.output_tree = []
 			self.case_title = ''
 			self.of = 'NULL'
+			self.title = 0
 		def handle_starttag(self, tag, attrs):
 			#print "Encountered the beginning of a %s" % tag
 			for k, v in top_dic.iteritems():
@@ -239,8 +240,8 @@ class MyHTMLParser(HTMLParser):
 								self.of.write(self.file_name)
 							else:
 								if (self.output == output_case_dic and self.output_cnt == 1):
-									print self.case_title
-									self.of.write(self.case_title)
+									print self.case_title.replace("<","&lt;").replace(">","&gt;").replace("&","&amp;")
+									self.of.write(self.case_title.replace("<","&lt;").replace(">","&gt;").replace("&","&amp;"))
 								else:
 									if (self.output != screen_dic):
 										print self.cur_content.replace("<","&lt;").replace(">","&gt;").replace("&","&amp;")
@@ -273,7 +274,8 @@ class MyHTMLParser(HTMLParser):
 							return
 					else:
 						self.output_list_cnt = 0
-						if(self.output == output_top_dic):
+						if(self.output == output_top_dic and self.title == 0):
+							self.title = 1
 							#insert title here
 							print "<title>" + self.file_name + "</title>"
 							self.of.write("<title>" + self.file_name + "</title>")
