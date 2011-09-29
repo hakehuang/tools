@@ -51,16 +51,16 @@ MX28_ROOTFS=${NFS_PATH}imx28_rootfs_r/
 MX31_ROOTFS=${NFS_PATH}imx31_rootfs_r/
 MX35_ROOTFS=${NFS_PATH}imx35_rootfs_r/
 MX37_ROOTFS=${NFS_PATH}imx37_rootfs_r/
-MX51_ROOTFS=${NFS_PATH}imx51_rootfs_r
+MX51_ROOTFS=${NFS_PATH}imx51_rootfs_r/
 MX25_ROOTFS=${NFS_PATH}imx25_rootfs_r/
-MX53_ROOTFS=${NFS_PATH}imx53_rootfs_r
-MX50_ROOTFS=${NFS_PATH}imx50_rootfs_r
-MX61_ROOTFS=${NFS_PATH}imx61_rootfs_r
+MX53_ROOTFS=${NFS_PATH}imx53_rootfs_r/
+MX50_ROOTFS=${NFS_PATH}imx50_rootfs_r/
+MX61_ROOTFS=${NFS_PATH}imx61_rootfs_r/
 
-MX51_ROOTFS_d=${NFS_PATH}imx51_rootfs
-MX53_ROOTFS_d=${NFS_PATH}imx53_rootfs
-MX50_ROOTFS_d=${NFS_PATH}imx50_rootfs
-MX61_ROOTFS_d=${NFS_PATH}imx61_rootfs
+MX51_ROOTFS_d=${NFS_PATH}imx51_rootfs/
+MX53_ROOTFS_d=${NFS_PATH}imx53_rootfs/
+MX50_ROOTFS_d=${NFS_PATH}imx50_rootfs/
+MX61_ROOTFS_d=${NFS_PATH}imx61_rootfs/
 
 echo "$(date +"%y%m%d")" >> .newrclog
 echo "$0 $@" >> .newrclog
