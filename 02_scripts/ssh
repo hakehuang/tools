@@ -1,0 +1,20 @@
+#no pass word access
+
+1. generate the private and public key in client. 
+ssh-keygen -t dsa
+by default the output is 
+private_key:id_dsa
+prublic_key:id_dsa.pub
+
+you's better rename then to others: like
+private_key:id_dsa2
+prublic_key:id_dsa2.pub
+
+2. add the public key to server ~/.ssh/authorized_keys, 
+cat id_dsa2.pub >> ~/.ssh/authorized_keys
+
+3. login with private key
+for ssh:
+ssh -l root -i ~/.ssh/id_dsa2
+for scp:
+scp -i ~/.ssh/id_dsa2 <local file> root@<server IP>:<path>/<file name>

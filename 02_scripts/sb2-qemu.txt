@@ -1,0 +1,7 @@
+﻿in Ubunut 
+set path virable with arm-none-linux-gnueabi-gcc
+sudo ~/sb2/bin/sb2-init -c qemu-arm <my_target> arm-none-linux-gnueabi-gcc
+
+run test
+
+sudo ~/sb2/bin/sb2 ./test

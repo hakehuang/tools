@@ -1,0 +1,45 @@
+﻿#delete the leading numbers of a file
+sed 's/^[0-9]*//g' data.txt
+
+#delete blank line
+sed "/^$/d" data.txt
+
+#delete match pattern line
+sed "/ata/d" data.txt
+
+#match sd_icon_manager and add '#'' in this line of test file
+sed -i '/sd_icon_manager/s/^/#/g' test
+
+#delete leading numbers
+sed -r 's/^[0-9]+//g' <filename>
+
+#match a pattern and replace a line
+ sed -i "/CONFIG_GCOV_PROFILE/s/^.*/CONFIG_GCOV_PROFILE=y/g" .config
+
+
+#append a line after pattern
+sed '/helloworld/a 123456'
+
+#append multi line after pattern
+sed '/helloworld/a 123456\
+234\
+wee'
+
+#append a line before pattern
+sed '/helloworld/i 123456'
+
+#append multi line after a pattern
+sed -i "/CONFIG_GCOV_PROFILE/a CONFIG_GCOV_ALL=y\nCONFIG_GCOV_PROC=y\nCONFIG_GCOV_HAMMER=y" filename
+
+
+#delete tailing withe space
+sed -i "s/ *$//g"  testcases/vte_tests_suite/ipudev_test/screenlayer/ScreenLayer.c
+
+#delete indent SP followed by a TAB
+sed -i "s/ \t/ /g"  testcases/vte_tests_suite/ipudev_test/screenlayer/ScreenLayer.c
+
+#add to defined line(add test to file line 1)
+sed -i "1/a/ test" file
+
+#sed not include
+sed '/nome/!s/$/ok/' file

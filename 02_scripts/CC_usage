@@ -1,0 +1,130 @@
+﻿#label all files
+cleartool mklabel -r TEST_LABEL /vob/test/a
+
+cleartool rmtype lbtype:TEST_LABEL
+
+cleartool mklabel -replace -version /main/TEST_LABEL TEST_LABEL2 *
+
+clearfsimport -recurse /xxx/xxx/xxx/src /view/zhuj/home/vobs/cc_account
+
+#Integration view 
+########################################################################
+element * CHECKEDOUT
+element * /main/<Branch name>/LATEST
+element * <baseline label> 
+
+e.g
+
+element * CHECKEDOUT
+element * /main/VTE_MX31_3STACK_20080720_01/LATEST
+element * VTE_MAIN_20080720_01
+
+Note: the parent folder should merge too
+
+#########################################################################
+
+
+#developer view
+###########################################################################
+
+element * CHECKEDOUT
+element * /main/<branch a>/<sub branch of a >/LATEST
+element * /main/<branch a>/LATEST -mkbranch <sub branch of a >
+element * <base line label> -mkbranch <branch of a>
+element * /main/LATEST  -mkbranch <branch a>
+
+e.g.
+
+element * CHECKEDOUT
+element * /main/VTE_MX31_3STACK_20080720_01/MX31_3STACK_HAKE_CR0007404_20080720/LATEST
+element * /main/VTE_MX31_3STACK_20080720_01/LATEST -mkbranch MX31_3STACK_HAKE_CR0007404_20080720
+element * VTE_MAIN_20080720_01 -mkbranch VTE_MX31_3STACK_20080720_01
+
+element * CHECKEDOUT
+element * /main/VTE_MX31_3STACK_20080720_01/MX31_3STACK_HAKE_CR0007404_20080720/LATEST
+element * /main/VTE_MX31_3STACK_20080720_01/LATEST -mkbranch MX31_3STACK_HAKE_CR0007404_20080720
+element * .../VTE_MAIN_20080720_01 -mkbranch VTE_MX31_3STACK_20080720_01
+element * /main/LATEST  -mkbranch VTE_MX31_3STACK_20080720_01
+
+
+###########################################################################
+FSL MAD CC configure Spec schema for Linux BSP testing team
+
+element * CHECKEDOUT
+element * .../<developer branch>/LATEST
+element * .../<integration branch> -mkbranch <developer branch>
+element * .../mln_main/<LABELNAME> -mkbranch <integration branch>
+element * .../mln_main/LATEST -mkbranch <integration branch>
+element * /main/LATEST -mkbranch  mln_main
+
+e.g.
+
+element * CHECKEDOUT
+element * .../int_engr200809_vte/LATEST
+element * .../mln_main/BLN_VTE_MAIN_2.6.24_080904 -mkbranch int_engr200809_vte
+element * .../mln_main/LATEST -mkbranch int_engr200809_vte
+element * /main/LATEST -mkbranch mln_main
+
+
+
+##########################################################################
+
+How to create a BRANCH
+
+log in //sh-run2
+
+cd /vobs/fsl_mad_tt_lnx
+
+ct mkbrtype -nc VTE_<CHIP>_<HARDWARE>_REL<DATE>_<VERSION>
+
+
+#for the select version
+ct mkbranch -nc VTE_<CHIP>_<HARDWARE>_REL<DATE>_<VERSION> <folder/filename>@@<main/branch type>/<version number>
+
+i.e
+
+ct mkbrtype -nc VTE_MX51_3STACK_REL20080801_3.3.2
+
+ct mkbranch VTE_MX51_3STACK_REL20080801_3.3.2 vte@@/main/0 
+
+############################################################################
+import to source control
+
+cd <your vobs>
+clearfsimport -nsetevent -recurse Y:\fsl_mad_tt_lnx\vte .
+Note: if the pass is in the veiw path, need to change to another name and do import
+
+cc_citree -checkin Y:\fsl_mad_tt_lnx\vte 
+
+
+/vobs/xxxx/abc/...
+cc_citree -checkin abc
+
+/homes/
+
+/vobs/cc_training/...
+
+##############################################################################
+element * CHECKEDOUT
+element * .../mln_main/LATEST -mkbranch rls_cr20222_vte
+element * /main/LATEST -mkbranch mln_main
+
+################################################################################
+go to the monut disk in Y: on server
+
+ct setview vw_vte_b20222
+cd /vobs/fsl_mad_tt_lnx
+
+##############################################################################
+Procedures:
+1. import source code
+create a branh tag in typeexplorer: mln_main
+create 
+write the config spec as:
+
+##################################################################################
+Edit config spec.
+ct catcs
+ct edcs 
+
+ 

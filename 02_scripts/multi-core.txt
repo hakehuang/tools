@@ -1,0 +1,9 @@
+﻿逻辑CPU个数：cat /proc/cpuinfo | grep "processor" | wc -l
+物理CPU个数：cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l
+
+“siblings” 指的是一个物理CPU有几个逻辑CPU
+”cpu cores“指的是一个物理CPU有几个核
+
+不应该按照flags里是否有 ht 标志来判断系统是否有超线程能力，而应该：
+如果“siblings”和“cpu cores”一致，则说明不支持超线程，或者超线程未打开。
+如果“siblings”是“cpu cores”的两倍，则说明支持超线程，并且超线程已打开。

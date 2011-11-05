@@ -1,0 +1,27 @@
+﻿mount -t nfs -o nolock 10.192.225.218:/rootfs/Release/Marley_MX37/rootfs_2.3.0_mx37 /mnt/nfs2
+
+e -c "noinitrd console=ttymxc0 root=/dev/nfs nfsroot=10.192.225.218:/rootfs/Release/Marley_MX37/rootfs_2.3.0_mx37 rw ip=dhcp MOPTS=nolock,ro,wsize=2048,rsize=2048"
+
+
+mount -t nfs -o nolock,rsize=2048,wsize=2048  10.192.225.222:/rootfs/hake /mnt/nfs 
+
+e -c "noinitrd console=ttymxc0 root=/dev/nfs nfsroot=10.192.225.218:/rootfs/Release/Marley_MX37/rootfs_3.0.0 rw ip=dhcp MOPTS=nolock,ro,wsize=2048,rsize=2048"
+
+mount -t nfs -o nolock,rsize=2048,wsize=2048  10.192.225.222:/rootfs/wb /mnt/nfs
+
+
+检查portmap和nfs服务的状态
+
+/etc/init.d/portmap status
+
+/etc/init.d/nfs status
+
+设置自动启动NFS服务
+
+对于实际应用中的Linux系统，每次开机后都手工启动nfs服务是不现实的，应该设置系统在指定的运行级别（通常为3和5）自动启动portmap和nfs服务。
+
+chkconfig --level 35 portmap on
+
+chkconfig --level 35 nfs on
+
+执行“ntsysv”命令启动服务配置程序，找到“nfs”和“portmap”服务，分别在其前面加上“*”，然后选择“确定”即可。 

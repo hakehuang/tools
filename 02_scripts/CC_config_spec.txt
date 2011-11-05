@@ -1,0 +1,17 @@
+﻿#element * CHECKEDOUT
+##element * .../mln_main/LATEST
+#element * .../int_engr200809_vte/LATEST
+##element *  .../mln_main/BLN_VTE_MAIN_2.6.24_080904 -mkbranch int_engr200809_vte
+#element * .../mln_main/LATEST -mkbranch int_engr200809_vte
+#element * /main/LATEST -mkbranch mln_main
+
+##for SDK3.3 label
+##element * .../int_engr200809_vte/ITR_B20222_VTE_SDK3.3
+##element * .../mln_main/LATEST -mkbranch int_engr200809_vte
+##element * /main/LATEST -mkbranch mln_main
+
+###for vte gpl version
+element * CHECKEDOUT
+element * .../int_engr113797_vte/LATEST
+element * /mln_main/LATEST -mkbranch int_engr113797_vte
+element * /main/LATEST -mkbranch mln_main

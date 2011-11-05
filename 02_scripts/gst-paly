@@ -1,0 +1,23 @@
+﻿gst-launch playbin uri=file:///home/joe/my-random-media-file.mpeg
+
+
+gst-launch filesrc location=$DIR ! mfw_mp4demuxer name=demuxer demuxer. ! queue ! mfw_h264decoder ! mfw_v4lsink demuxer. ! queue ! mfw_mp3decoder ! osssink device="/dev/sound/dsp"
+
+#for mp3
+gst-launch filesrc location=./Mpeg1L2_44kHz_128kbps_m_MoonMiss.mp3 ! mfw_mp3decoder ! volume volume=10 ! alsasink
+
+
+gst-launch filesrc location=./H264_BP13_320x176_25_603_AAC_44_128_2_Earthed3.mp4   ! mfw_mp4demuxer name=demux demux. ! queue max-size-time=0 ! mfw_h264decoder ! mfw_v4lsink demux. ! queue max-size-time=0 ! mfw_aacdecoder ! alsasink
+ 
+gst-launch filesrc location=./H264_BP13_320x240_15_515_AAC_44_128_2_comicbook.mp4 ! mfw_mp4demuxer name=demux demux. ! queue max-size-time=0 ! mfw_h264decoder ! mfw_v4lsink demux. ! queue max-size-time=0 ! mfw_aacdecoder ! alsasink
+ 
+gst-launch filesrc location=./H264_BP11_352x288_25_1536_AAC_11_64_1_friendsr.mp4   ! mfw_mp4demuxer name=demux demux. ! queue max-size-time=0 ! mfw_h264decoder ! mfw_v4lsink demux. ! queue max-size-time=0 ! mfw_aacdecoder ! alsasink
+ 
+gst-launch filesrc location=./H264_BP12_320x240_25_384_MP3_48_320_2.avi ! mfw_avidemuxer name=demux demux. ! queue max-size-time=0 ! mfw_h264decoder ! mfw_v4lsink demux. ! queue max-size-time=0 ! mfw_mp3decoder ! alsasink
+ 
+gst-launch filesrc location=./Kaleidoscope_h264_qvga_387kbps_30fps_acc_48kHz_128kbps_131sec.mp4 ! mfw_mp4demuxer name=demux demux. ! queue max-size-buffers=0 ! mfw_h264decoder ! mfw_v4lsink demux. ! queue max-size-buffers=0 ! mfw_aacdecoder ! alsasink
+ 
+gst-launch filesrc  location=Kaleidoscope_mp4v_mp3_320x240_30fps_284kbps_a_44.1khz_160kbps.avi ! mfw_avidemuxer name=d d. ! queue max-size-time=0 ! mfw_mpeg4aspdecoder ! mfw_v4lsink
+
+
+

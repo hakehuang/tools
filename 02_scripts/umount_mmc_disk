@@ -1,0 +1,48 @@
+#!/bin/sh
+# Program:
+# 	mount the mmc disk into /mnt/mmc0~n
+# prerequisite:
+#   all mmc kernel driver should inserted.
+#   MMC card insert in
+# History:
+# 2008/07/02	Hake First release
+
+#check the /proc/partition
+echo please make sure your insmod the mmc card driver
+echo please make sure the mmc card is inserted
+
+
+wait 3
+
+PROC=$(mount | awk '{print $1}' | grep proc)
+MMCMAJOR=179
+MMCBLK=0
+
+echo make sure MMC major number is $MMCMAJOR
+
+if [ -z $PROC ]
+then
+mount proc /proc -t proc
+fi
+
+wait 5
+
+DNAMES=$(cat /proc/partitions | awk -v mj="$MMCMAJOR" -v mr="$MMCBLK" '{if($1 == mj && $2 != mr) print $4}')
+
+echo $DNAMES
+
+
+for i in $DNAMES
+do
+   ISMOUNT=$(mount | grep $i| awk '{print $1}')
+   if [ -z $ISMOUNT ]
+   then
+     echo not mount
+   else
+     umount /dev/$i
+   fi
+done
+
+
+mount
+

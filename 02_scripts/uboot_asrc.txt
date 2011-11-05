@@ -1,0 +1,64 @@
+﻿#for mx51
+setenv serverip 10.192.225.218
+setenv bootargs console=ttymxc0,115200 root=/dev/nfs ip=dhcp nfsroot=10.192.224.234:/rootfs/imx51_rootfs,tcp,,ro,wsize=1024,rsize=1024
+tftpboot /tftpboot/uImage_mx51
+bootm
+
+
+
+bootdelay=3
+baudrate=115200
+loadaddr=0x80800000
+netdev=eth0
+ethprime=smc911x
+uboot_addr=0xa0000000
+uboot=u-boot.bin
+kernel=uImage
+nfsroot=/opt/eldk/arm
+bootargs_base=setenv bootargs console=ttymxc0,115200
+bootargs_nfs=setenv bootargs ${bootargs} root=/dev/nfs ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp
+bootcmd_net=run bootargs_base bootargs_nfs; tftpboot ${loadaddr} ${kernel}; bootm
+prg_uboot=tftpboot ${loadaddr} ${uboot}; protect off ${uboot_addr} 0xa003ffff; erase ${uboot_addr} 0xa003ffff; cp.b ${loadaddr} ${uboot_addr} ${filesize}; setenv filesize; saveenv
+ethact=smc911x
+bootargs=console=ttymxc0,115200 root=/dev/nfs ip=dhcp nfsroot=:/opt/eldk/arm,v3,tcp
+serverip=10.192.225.218
+bootcmd=run testboot
+testboot=dhcp mx35_uboot_arsc.img;autoscr
+stdin=serial
+stdout=serial
+stderr=serial
+
+#mx35
+setenv testboot 'dhcp mx35_uboot_arsc.img;autoscr'
+setenv serverip 10.192.225.218
+setenv bootcmd run testboot
+
+#mx51
+setenv testboot 'dhcp mx51_uboot_arsc.img;autoscr'
+setenv serverip 10.192.225.218
+setenv bootcmd run testboot
+
+#mx37
+setenv testboot 'dhcp mx37_uboot_arsc.img;autoscr'
+setenv serverip 10.192.225.218
+setenv bootcmd run testboot
+
+#mx25
+1. need boot in redboot and get the board IP for FEC,
+2. setenv as following:
+   setenv ethaddr fec0
+   setenv serverip 10.192.225.218
+   setenv ipaddr <FEC IP>
+   setenv bootcmd run testboot
+   setenv testboot 'dhcp mx25_uboot_arsc.img;autoscr'
+3. saveenv
+4. connect net cable to FEC port.
+5. res
+
+#mx31
+setenv testboot 'dhcp mx31_uboot_arsc.img;autoscr'
+setenv serverip 10.192.225.218
+setenv bootcmd run testboot
+
+
+ 

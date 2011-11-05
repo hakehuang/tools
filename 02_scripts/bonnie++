@@ -1,0 +1,13 @@
+You must use the "-u" switch when running as root.
+usage: bonnie++ [-d scratch-dir] [-s size(Mb)[:chunk-size(b)]]
+                [-n number-to-stat[:max-size[:min-size][:num-directories]]]
+                [-m machine-name]
+                [-r ram-size-in-Mb]
+                [-x number-of-tests] [-u uid-to-use:gid-to-use] [-g gid-to-use]
+                [-q] [-f] [-b] [-p processes | -y]
+
+Version: 1.03c
+
+
+
+bonnie++ -d /mnt/rwfs -s 1000 -n 100:2048:0:1000:512 -m MX28 -r 100 -x 2 -u 0:0

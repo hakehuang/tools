@@ -1,0 +1,31 @@
+ For 31
+   load -r -b 0x100000  mx31_3stack_redboot.bin 
+   nand scan -o
+   run
+   rom
+   res
+   For 35
+   load -r -b 0x100000  mx35_3stack_redboot.bin 
+   nand scan -o
+   run
+   rom
+   res
+   For 37
+   load -r -b 0x100000  mx37_3stack_redboot.bin 
+   nand scan -o
+   run
+   rom
+   res
+   For 51
+   load -r -b 0x100000  mx51_3stack_redboot.bin 
+   nand scan -o
+   run
+   rom
+   res
+   For 25
+   load -r -b 0x100000  mx25_3stack_redboot.bin 
+   nand scan -o
+    run
+   factive NAND
+   rom
+   res

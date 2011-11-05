@@ -1,0 +1,1 @@
+stty ispeed 115200 ospeed 115200 -F /dev/ttyS0

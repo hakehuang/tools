@@ -1,0 +1,17 @@
+regulation expression
+http://www.cnblogs.com/coderzh/archive/2008/05/06/1185755.html
+
+\d  匹配任何十进制数；它相当于类 [0-9]。
+
+\D  匹配任何非数字字符；它相当于类 [^0-9]。
+
+\s  匹配任何空白字符；它相当于类  [ "t"n"r"f"v]。
+
+\S  匹配任何非空白字符；它相当于类 [^ "t"n"r"f"v]。
+
+\w  匹配任何字母数字字符；它相当于类 [a-zA-Z0-9_]。
+
+\W  匹配任何非字母数字字符；它相当于类 [^a-zA-Z0-9_]。
+
+dictionary
+http://blogold.chinaunix.net/u2/66926/showart_570111.html

@@ -1,0 +1,42 @@
+#Enable NTSC:
+echo U:640x480p-60 > /sys/class/graphics/fb0/mode
+#Enable PAL:
+echo U:640x480p-50 > /sys/class/graphics/fb0/mode
+#enable screen
+echo -e "\033[9;0]" > /dev/tty0 
+#close TVout
+##echo 0 > /sys/class/graphics/fb0/blank
+echo U:480x640p-67 > /sys/class/graphics/fb0/mode
+#enter power saving mode
+echo standby > /sys/power/state
+
+Enable NTSC:
+mx31  echo U:640x480p-60 > /sys/class/graphics/fb0/mode
+mx37  echo 0 > /sys/class/graphics/fb1/blank
+mx37  echo U:720x480i-60 > /sys/class/graphics/fb1/mode
+Enable PAL:
+mx31  echo U:640x480p-50 > /sys/class/graphics/fb0/mode
+mx37  echo 0 > /sys/class/graphics/fb1/blank
+mx37  echo U:720x576i-50 > /sys/class/graphics/fb1/mode
+Disable TVOUT
+mx31   echo U:480x640p-67 > /sys/class/graphics/fb0/mode
+mx37   echo U:480x640p-60 > /sys/class/graphics/fb0/mode
+
+
+#for overlay
+#NTSC
+echo 1-layer-fb > /sys/class/graphics/fb0/fsl_disp_property
+echo U:720x480i-60 > /sys/class/graphics/fb1/mode
+echo 0 > /sys/class/graphics/fb1/blank
+#PAL
+echo 1-layer-fb > /sys/class/graphics/fb0/fsl_disp_property
+echo U:720x576i-50 > /sys/class/graphics/fb1/mode
+echo 0 > /sys/class/graphics/fb1/blank
+
+
+
+
+
+
+
+

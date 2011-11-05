@@ -1,0 +1,6 @@
+#Using dd to wipe an entire disk with random data:
+dd if=/dev/urandom of=/dev/hda
+#Create a 1GB file containing only zeros (bs=blocksize, count=number of blocks):
+ dd if=/dev/zero of=mytestfile.out bs=1000 count=1000000
+#Create a 1GB sparse file or resize an existing file to 1GB without overwriting:
+dd if=/dev/zero of=mytestfile.out bs=1 count=0 seek=1G

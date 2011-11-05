@@ -1,0 +1,9 @@
+modprobe mtd
+modprobe jffs2
+modprobe mtdram
+modprobe mtdchar
+modprobe mtdblock
+
+dd if=/jffs2.img of=/dev/mtd0
+mount -t jffs2 /dev/mtdblock0 /mnt
+

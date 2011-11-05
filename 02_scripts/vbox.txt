@@ -1,0 +1,2 @@
+﻿right ctrl+f full screen
+right ctrl+l adjust mode

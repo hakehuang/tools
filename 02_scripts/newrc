@@ -1,0 +1,322 @@
+#!/bin/sh
+# Prerequisite /etc/rc.d/rc.local 
+# this script is run on NFS server for weekly test
+# init the root file system to run vte scripts
+# by Hake Huang
+# freescale copy right. all rights reserved
+
+
+#HOST_SERVER=10.192.225.222
+
+HOST_SERVER=10.192.224.48
+
+#PLATFORM="MX31 MX35 MX37 MX51 MX25"
+#PLATFORM="MX37_24"
+#PLATFORM="MX31"
+#PLATFORM="BL"
+
+#released package name
+RELEASE_PACKAGE=$(basename $1)
+
+#release path in build server
+if [ $HOST_SERVER == "10.192.224.48" ]
+then
+RELEASE_PATH="/pub1$(dirname $1)"
+RELEASE_PATH=$(echo $RELEASE_PATH | sed 's/(/\\(/g')
+RELEASE_PATH=$(echo $RELEASE_PATH | sed 's/)/\\)/g')
+echo $RELEASE_PATH
+else
+RELEASE_PATH="$(dirname $1)"
+fi
+
+
+#path for test script
+VTE_ORIGINAL_PATH=/rootfs/
+
+#tftpd server
+TFTP_SERVER=10.192.225.218
+
+#NFS server 
+#NFS_SERVER=10.192.224.170
+
+#NFS server path
+NFS_PATH=/rootfs/
+
+#rootfs path
+MX31_ROOTFS=${NFS_PATH}imx31_rootfs/
+MX35_ROOTFS=${NFS_PATH}imx35_rootfs/
+MX37_ROOTFS=${NFS_PATH}imx37_rootfs/
+MX51_ROOTFS=${NFS_PATH}imx51_rootfs/
+MX37_ROOTFS_24=${NFS_PATH}imx37_rootfs_24/
+MX25_ROOTFS=${NFS_PATH}imx25_rootfs/
+
+
+if [ $# -ne 1 ]
+then
+echo "need released filename"
+echo "or"
+echo "./newrc clean"
+echo "to clean all folders"
+exit 0
+fi
+
+if [ -e ${NFS_PATH}temp ]
+then
+  rm -rf ${NFS_PATH}temp
+fi
+
+
+if [ $1 == "clean" ]
+then
+  rm -rf ${NFS_PATH}imx31_rootfs
+  rm -rf ${NFS_PATH}imx35_rootfs
+  rm -rf ${NFS_PATH}imx37_rootfs
+  rm -rf ${NFS_PATH}imx37_rootfs_24
+  rm -rf ${NFS_PATH}imx51_rootfs
+  rm -rf ${NFS_PATH}imx25_rootfs
+  exit 0
+fi
+mkdir ${NFS_PATH}temp
+
+echo "get the package"
+scp b20222@${HOST_SERVER}:${RELEASE_PATH}/${RELEASE_PACKAGE} ${NFS_PATH}temp/ || exit 1  
+
+echo "unzip the package"
+tar xzvf ${NFS_PATH}temp/$RELEASE_PACKAGE -C ${NFS_PATH}temp || exit 2
+#RELEASE_TARGET=$(basename ${RELEASE_PACKAGE} .tar.gz)
+RELEASE_TARGET=$(ls -l ${NFS_PATH}temp | grep ^d | awk '{print $9}')
+
+
+if [ $PLATFORM == "BL" ]
+then
+ echo "upload boot loader"
+ cd ${NFS_PATH}temp/${RELEASE_TARGET}/
+ RBDIR=$(ls redboot*)
+ echo unzip $RBDIR
+ unzip $RBDIR
+ RBDIR=$(ls | grep redboot)
+ for i in $RBDIR
+ do
+  if [ -d $i ]
+  then
+    echo "copy boot loader"
+    scp ${i}/bin/mx31_3stack_redboot.bin  ${TFTP_SERVER}:/tftpboot/
+    scp ${i}/bin/mx35_3stack_redboot.bin  ${TFTP_SERVER}:/tftpboot/
+    scp ${i}/bin/mx37_3stack_redboot.bin  ${TFTP_SERVER}:/tftpboot/
+    scp ${i}/bin/mx51_3stack_redboot.bin  ${TFTP_SERVER}:/tftpboot/
+    scp ${i}/bin/mx25_3stack_redboot.bin  ${TFTP_SERVER}:/tftpboot/
+   echo "finish transfer bootloader"
+   fi
+ done
+ exit 0
+fi
+
+echo "now copy the zImages"
+for i in $PLATFORM
+do
+ if [ $i == "MX31" ]
+ then
+  scp ${NFS_PATH}temp/${RELEASE_TARGET}/imx31_3stack/zImage ${TFTP_SERVER}:/tftpboot/zImage_mx31
+ fi
+ if [ $i == "MX35" ]
+ then
+  scp ${NFS_PATH}temp/${RELEASE_TARGET}/imx35_3stack/zImage ${TFTP_SERVER}:/tftpboot/zImage_mx35 
+ fi
+ if [ $i == "MX37" ]
+ then
+  scp ${NFS_PATH}temp/${RELEASE_TARGET}/imx37_3stack/zImage ${TFTP_SERVER}:/tftpboot/zImage_mx37
+ fi
+ if [ $i == "MX37_24" ]
+ then
+  scp ${NFS_PATH}temp/${RELEASE_TARGET}/zImage ${TFTP_SERVER}:/tftpboot/zImage_mx37_24
+ fi
+ if [ $i == "MX51" ]
+ then
+  scp ${NFS_PATH}temp/${RELEASE_TARGET}/imx51_3stack/zImage ${TFTP_SERVER}:/tftpboot/zImage_mx51
+ fi
+ if [ $i == "MX25" ]
+ then
+  scp ${NFS_PATH}temp/${RELEASE_TARGET}/imx25_3stack/zImage ${TFTP_SERVER}:/tftpboot/zImage_mx25
+ fi
+done
+
+
+echo "now copy the rootfs"
+mkdir -p /mnt/tempfs
+
+
+for i in $PLATFORM
+do
+ LOOP_AVAIL=$(losetup -f)
+ if [ $? -ne 0 ]
+ then
+   echo "no loop device available"
+   echo "using losetup -f to check"
+   echo "using losetup -d /dev/loop? to delete"
+   exit 1
+  fi
+ if [ $i == "MX31" ]
+ then
+ gzip -d ${NFS_PATH}temp/${RELEASE_TARGET}/imx31_3stack/rootfs.ext2.gz 
+ if [ $? -ne 0 ]
+ then
+  mv ${NFS_PATH}temp/${RELEASE_TARGET}/imx31_3stack/rootfs.ext2.gz ${NFS_PATH}temp/${RELEASE_TARGET}/imx31_3stack/rootfs.ext2
+ fi 
+ mount -o loop ${NFS_PATH}temp/${RELEASE_TARGET}/imx31_3stack/rootfs.ext2 /mnt/tempfs
+ rm -rf ${MX31_ROOTFS}
+ mkdir -p ${MX31_ROOTFS}
+ cp -a /mnt/tempfs/* ${MX31_ROOTFS}/
+ sync
+ umount /mnt/tempfs 
+ fi 
+ sleep 1
+
+ if [ $i == "MX35" ]
+ then
+ gzip -d ${NFS_PATH}temp/${RELEASE_TARGET}/imx35_3stack/rootfs.ext2.gz
+ if [ $? -ne 0 ]
+ then
+  mv ${NFS_PATH}temp/${RELEASE_TARGET}/imx35_3stack/rootfs.ext2.gz ${NFS_PATH}temp/${RELEASE_TARGET}/imx35_3stack/rootfs.ext2
+ fi 
+ mount -o loop ${NFS_PATH}temp/${RELEASE_TARGET}/imx35_3stack/rootfs.ext2 /mnt/tempfs
+ ls /mnt/tempfs
+ rm -rf ${MX35_ROOTFS}
+ mkdir -p ${MX35_ROOTFS}
+ cp -a /mnt/tempfs/* ${MX35_ROOTFS}/
+ sync
+ umount /mnt/tempfs 
+ fi 
+
+ if [ $i == "MX37" ]
+ then
+ gzip -d ${NFS_PATH}temp/${RELEASE_TARGET}/imx37_3stack/rootfs.ext2.gz
+ if [ $? -ne 0 ]
+ then
+  mv ${NFS_PATH}temp/${RELEASE_TARGET}/imx37_3stack/rootfs.ext2.gz ${NFS_PATH}temp/${RELEASE_TARGET}/imx37_3stack/rootfs.ext2
+ fi 
+ mount -o loop ${NFS_PATH}temp/${RELEASE_TARGET}/imx37_3stack/rootfs.ext2 /mnt/tempfs
+ rm -rf ${MX37_ROOTFS}
+ mkdir -p ${MX37_ROOTFS}
+ cp -a /mnt/tempfs/* ${MX37_ROOTFS}/
+ sync
+ umount /mnt/tempfs 
+ fi 
+
+ if [ $i == "MX37_24" ]
+ then
+ gzip -d ${NFS_PATH}temp/${RELEASE_TARGET}/rootfs.ext2.gz
+ if [ $? -ne 0 ]
+ then
+  mv ${NFS_PATH}temp/${RELEASE_TARGET}/rootfs.ext2.gz ${NFS_PATH}temp/${RELEASE_TARGET}/imx37_3stack/rootfs.ext2
+ fi 
+ mount -o loop ${NFS_PATH}temp/${RELEASE_TARGET}/rootfs.ext2 /mnt/tempfs
+ rm -rf ${MX37_ROOTFS_24}
+ mkdir -p ${MX37_ROOTFS_24}
+ cp -a /mnt/tempfs/* ${MX37_ROOTFS_24}/
+ sync
+ umount /mnt/tempfs 
+ fi 
+
+ if [ $i == "MX51" ]
+ then
+ gzip -d ${NFS_PATH}temp/${RELEASE_TARGET}/imx51_3stack/rootfs.ext2.gz
+ if [ $? -ne 0 ]
+ then
+  mv ${NFS_PATH}temp/${RELEASE_TARGET}/imx51_3stack/rootfs.ext2.gz ${NFS_PATH}temp/${RELEASE_TARGET}/imx51_3stack/rootfs.ext2
+ fi 
+ mount -o loop ${NFS_PATH}temp/${RELEASE_TARGET}/imx51_3stack/rootfs.ext2 /mnt/tempfs
+ rm -rf ${MX51_ROOTFS}
+ mkdir -p ${MX51_ROOTFS}
+ cp -a /mnt/tempfs/* ${MX51_ROOTFS}/
+ sync
+ umount /mnt/tempfs 
+ fi
+ 
+ if [ $i == "MX25" ]
+ then
+ gzip -d ${NFS_PATH}temp/${RELEASE_TARGET}/imx25_3stack/rootfs.ext2.gz
+ if [ $? -ne 0 ]
+ then
+  mv ${NFS_PATH}temp/${RELEASE_TARGET}/imx25_3stack/rootfs.ext2.gz ${NFS_PATH}temp/${RELEASE_TARGET}/imx25_3stack/rootfs.ext2
+ fi 
+ mount -o loop ${NFS_PATH}temp/${RELEASE_TARGET}/imx25_3stack/rootfs.ext2 /mnt/tempfs
+ rm -rf ${MX25_ROOTFS}
+ mkdir -p ${MX25_ROOTFS}
+ cp -a /mnt/tempfs/* ${MX25_ROOTFS}/
+ sync
+ umount /mnt/tempfs 
+ fi 
+done
+
+
+echo "now copy the vte script to /etc/rc.d/init.d/"
+for i in $PLATFORM
+do
+  if [ $i == "MX31" ]
+  then
+  cp ${VTE_ORIGINAL_PATH}vte ${MX31_ROOTFS}etc/rc.d/init.d/
+  fi
+  if [ $i == "MX35" ]
+  then
+  cp ${VTE_ORIGINAL_PATH}vte ${MX35_ROOTFS}etc/rc.d/init.d/
+  fi
+  if [ $i == "MX37" ]
+  then
+  cp ${VTE_ORIGINAL_PATH}vte ${MX37_ROOTFS}etc/rc.d/init.d/
+  fi
+  if [ $i == "MX37_24" ]
+  then
+  cp ${VTE_ORIGINAL_PATH}vte ${MX37_ROOTFS_24}etc/rc.d/init.d/
+  fi
+  if [ $i == "MX51" ]
+  then
+  cp ${VTE_ORIGINAL_PATH}vte ${MX51_ROOTFS}etc/rc.d/init.d/
+  fi
+  if [ $i == "MX25" ]
+  then
+  cp ${VTE_ORIGINAL_PATH}vte ${MX25_ROOTFS}etc/rc.d/init.d/
+  fi
+done
+
+echo "now modify the /etc/rc.d/rc.local & /etc/udev/rules.d/20-board.rules"
+for i in $PLATFORM
+do
+  if [ $i == "MX31" ]
+  then
+     sed -i '/sd-show-icon/s/^/#/g' ${MX31_ROOTFS}etc/udev/rules.d/20-board.rules || exit 1
+     sed -i "4s/fslgui//" ${MX31_ROOTFS}etc/rc.d/rc.conf || exit 1
+     echo "/etc/rc.d/init.d/vte &" >> ${MX31_ROOTFS}etc/rc.d/rc.local || exit 1
+  fi
+  if [ $i == "MX35" ]
+  then
+     sed -i '/sd-show-icon/s/^/#/g' ${MX35_ROOTFS}etc/udev/rules.d/20-board.rules
+     sed -i "4s/fslgui//" ${MX35_ROOTFS}etc/rc.d/rc.conf
+     echo "/etc/rc.d/init.d/vte &" >> ${MX35_ROOTFS}etc/rc.d/rc.local
+  fi
+  if [ $i == "MX37" ]
+  then
+     sed -i '/sd-show-icon/s/^/#/g' ${MX37_ROOTFS}/etc/udev/rules.d/20-board.rules
+     sed -i "4s/fslgui//" ${MX37_ROOTFS}etc/rc.d/rc.conf
+     echo "/etc/rc.d/init.d/vte &" >> ${MX37_ROOTFS}etc/rc.d/rc.local
+  fi
+  if [ $i == "MX37_24" ]
+  then
+     sed -i '/sd-show-icon/s/^/#/g' ${MX37_ROOTFS_24}/etc/udev/rules.d/20-board.rules
+     sed -i "4s/fslgui//" ${MX37_ROOTFS_24}etc/rc.d/rc.conf
+     echo "/etc/rc.d/init.d/vte &" >> ${MX37_ROOTFS_24}etc/rc.d/rc.local
+  fi
+  if [ $i == "MX51" ]
+  then
+     sed -i '/sd-show-icon.sh/s/^/#/g' ${MX51_ROOTFS}/etc/udev/rules.d/20-board.rules
+     sed -i "4s/fslgui//" ${MX51_ROOTFS}etc/rc.d/rc.conf
+     echo "/etc/rc.d/init.d/vte &" >> ${MX51_ROOTFS}etc/rc.d/rc.local
+  fi
+  if [ $i == "MX25" ]
+  then
+     sed -i '/sd-show-icon.sh/s/^/#/g' ${MX25_ROOTFS}/etc/udev/rules.d/20-board.rules
+     sed -i "4s/fslgui//" ${MX25_ROOTFS}etc/rc.d/rc.conf
+     echo "/etc/rc.d/init.d/vte &" >> ${MX25_ROOTFS}etc/rc.d/rc.local
+  fi
+done
+
+echo "finish processing!"

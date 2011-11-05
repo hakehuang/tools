@@ -1,0 +1,81 @@
+#!/usr/bin/perl
+# test.pl
+#Author homepage: http://spot.126.com
+use strict;
+use Socket;
+
+my $pop3server = "263.net";
+my $port = 110;
+
+$|=1;
+
+
+my ($a,$name,$aliases,$proto,$type,$len,$thataddr,$thisaddr,$i);
+my $AF_INET = 2;
+my $SOCK_STREAM = 1;
+my $sockaddr = "S n a4 x8";
+
+($name,$aliases,$proto) = getprotobyname("tcp");
+($name,$aliases,$port) = getservbyname($port,"tcp")
+unless $port =~ /^d+$/;;
+($name,$aliases,$type,$len,$thataddr) = gethostbyname($pop3server);
+
+my $this = pack($sockaddr, $AF_INET, 12345, $thisaddr);
+my $that = pack($sockaddr, $AF_INET, $port, $thataddr);
+
+my $mysocket = socket(S, $AF_INET, $SOCK_STREAM, $proto);
+if ($mysocket)
+{
+}
+else
+{
+print "????socket: $!";
+exit(0);
+}
+
+my $mybind = bind(S, $this);
+if ($mybind)
+{
+}
+else
+{
+print "????!: $!";
+exit(0);
+}
+
+my $myconnect = connect(S,$that);
+if ($myconnect)
+{
+}
+else
+{
+print "????: $!";
+exit(0);
+}
+
+
+my $BUFFER = "ON";
+$BUFFER .= chr(13);
+$BUFFER .= chr(10);
+
+my $SENVAL = send(S, $BUFFER,0);
+if ($SENVAL)
+{
+}
+else
+{
+print "????: $!";
+exit(0);
+}
+
+my $BUF = "";
+my $SenderIP = recv(S, $BUF, 4096,0);
+if ($SenderIP)
+{
+}
+else
+{
+print "????: $!";
+exit(0);
+}
+

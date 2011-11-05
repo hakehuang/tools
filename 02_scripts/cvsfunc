@@ -1,0 +1,41 @@
+#!/bin/bash
+
+CVSServer=sh-run1
+CVSGuester=b06975
+CVSDir=/proj/s3192
+CVSTAG=VTE_SOURCE_V0_0_0_9 
+CVSMODULE=MADTEST/vte
+
+case "$1" in
+login)
+	cvs -d :pserver:$CVSGuester@$CVSServer:$CVSDir login
+	;;
+commit)
+	cd  $2
+	cvs -d :pserver:$CVSGuester@$CVSServer:$CVSDir commit 
+	;; 	
+checkout)
+	cvs -d :pserver:$CVSGuester@$CVSServer:$CVSDir checkout $2
+	;;
+tagout)
+	cvs -d :pserver:$CVSGuester@$CVSServer:$CVSDir checkout -r $CVSTAG $CVSMODULE
+	;;
+import)
+	cvs -d :pserver:$CVSGuester@$CVSServer:$CVSDir import -I "*.o" -I "*.a" $2 $3 start
+	;;
+logout)
+	cvs -d :pserver:$CVSGuester@$CVSServer:$CVSDir logout
+	;;
+*)
+	echo usage 
+	echo login .........
+	echo cvsfnuc login
+	echo import ........
+	echo cvsfunc import cvsdir projectname
+	echo checkout ......
+	echo cvsfunc checkout projectname
+	echo logout......
+	echo cvsfunc logout
+	;;
+esac
+

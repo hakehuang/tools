@@ -1,0 +1,124 @@
+﻿For i.mx31
+
+Run script at boot: true
+Boot script:
+.. load -r -b 0x100000 zImage_mx31
+.. e -c "noinitrd console=ttymxc0 root=/dev/nfs nfsroot=10.192.224.218:/rootfs/imx31_rootfs rw ip=dhcp MOPTS=nolock,proto=tcp,ro,wsize=1024,rsize=1024" 
+
+Boot script timeout (1000ms resolution): 1
+Use BOOTP for network configuration: true
+Default server IP address: 10.192.225.218
+Board specifics: 0
+Console baud rate: 115200
+Set eth0 network hardware address [MAC]: false
+GDB connection port: 9000
+Force console for special debug messages: false
+Network debug at boot time: false
+
+
+For i.mx35
+
+Run script at boot: true
+Boot script:
+.. load -r -b 0x100000 zImage_mx35
+.. e -c "noinitrd console=ttymxc0 root=/dev/nfs nfsroot=10.192.224.218:/rootfs/imx35_rootfs rw ip=dhcp MOPTS=nolock,proto=tcp,ro,wsize=1024,rsize=1024" 
+
+Boot script timeout (1000ms resolution): 1
+Use BOOTP for network configuration: true
+Default server IP address: 10.192.225.218
+Board specifics: 0
+Console baud rate: 115200
+Set eth0 network hardware address [MAC]: false
+GDB connection port: 9000
+Force console for special debug messages: false
+Network debug at boot time: false
+
+
+For imx37 new version
+
+Run script at boot: true
+Boot script:
+.. load -r -b 0x100000 zImage_mx37
+.. e -c "noinitrd console=ttymxc0 root=/dev/nfs nfsroot=10.192.224.218:/rootfs/imx37_rootfs rw ip=dhcp MOPTS=nolock,proto=tcp,ro,wsize=1024,rsize=1024 system_rev=0x37110" 
+
+Boot script timeout (1000ms resolution): 1
+Use BOOTP for network configuration: true
+Default server IP address: 10.192.225.218
+Board specifics: 0
+Console baud rate: 115200
+Set eth0 network hardware address [MAC]: false
+GDB connection port: 9000
+Force console for special debug messages: false
+Network debug at boot time: false
+
+
+For imx37 old version
+
+Run script at boot: true
+Boot script:
+.. load -r -b 0x100000 zImage_mx37
+.. e -c "noinitrd console=ttymxc0 root=/dev/nfs nfsroot=10.192.224.218:/rootfs/imx37_rootfs rw ip=dhcp MOPTS=nolock,proto=tcp,ro,wsize=1024,rsize=1024 system_rev=0x37010" 
+
+Boot script timeout (1000ms resolution): 1
+Use BOOTP for network configuration: true
+Default server IP address: 10.192.225.218
+Board specifics: 0
+Console baud rate: 115200
+Set eth0 network hardware address [MAC]: false
+GDB connection port: 9000
+Force console for special debug messages: false
+Network debug at boot time: false
+
+
+For imx37 Samsung version
+
+Run script at boot: true
+Boot script:
+.. load -r -b 0x100000 zImage_mx37_24
+.. e -c "noinitrd console=ttymxc0 root=/dev/nfs nfsroot=10.192.224.218:/rootfs/imx37_rootfs_24 rw ip=dhcp MOPTS=nolock,proto=tcp,ro,wsize=1024,rsize=1024" 
+
+Boot script timeout (1000ms resolution): 1
+Use BOOTP for network configuration: true
+Default server IP address: 10.192.225.218
+Board specifics: 0
+Console baud rate: 115200
+Set eth0 network hardware address [MAC]: false
+GDB connection port: 9000
+Force console for special debug messages: false
+Network debug at boot time: false
+
+For imx51
+
+Run script at boot: true
+Boot script:
+.. load -r -b 0x100000 zImage_mx51
+..e -c "noinitrd console=ttymxc0 root=/dev/nfs nfsroot=10.192.224.218:/rootfs/imx51_rootfs rw ip=dhcp MOPTS=nolock,proto=tcp,ro,wsize=1024,rsize=1024" 
+
+Boot script timeout (1000ms resolution): 1
+Use BOOTP for network configuration: true
+Default server IP address: 10.192.225.218
+Board specifics: 0
+Console baud rate: 115200
+Set eth0 network hardware address [MAC]: false
+GDB connection port: 9000
+Force console for special debug messages: false
+Network debug at boot time: false
+
+
+For imx25
+
+Run script at boot: true
+Boot script:
+.. load -r -b 0x100000 zImage_mx25
+.. e -c "noinitrd console=ttymxc0 root=/dev/nfs nfsroot=10.192.224.218:/rootfs/imx25_rootfs rw ip=dhcp MOPTS=nolock,proto=tcp,ro,wsize=1024,rsize=1024" 
+
+Boot script timeout (1000ms resolution): 1
+Use BOOTP for network configuration: true
+Default server IP address: 10.192.225.218
+Board specifics: 0
+Console baud rate: 115200
+Set eth0 network hardware address [MAC]: false
+GDB connection port: 9000
+Force console for special debug messages: false
+Network debug at boot time: false
+

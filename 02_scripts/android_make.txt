@@ -1,0 +1,2 @@
+﻿export TARGET_PRODUCT=imx51_3stack
+make <your target>

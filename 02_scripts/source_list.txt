@@ -1,0 +1,23 @@
+﻿deb http://mirror.rootguide.org/ubuntu/ feisty main restricted universe multiverse
+deb-src http://mirror.rootguide.org/ubuntu/ feisty main restricted universe multiverse
+deb http://mirror.rootguide.org/ubuntu/ feisty-updates main restricted universe multiverse
+deb-src http://mirror.rootguide.org/ubuntu/ feisty-updates main restricted universe multiverse
+deb http://mirror.rootguide.org/ubuntu/ feisty-backports main restricted universe multiverse
+deb-src http://mirror.rootguide.org/ubuntu/ feisty-backports main restricted universe multiverse
+deb http://mirror.rootguide.org/ubuntu/ feisty-security main restricted universe multiverse
+deb-src http://mirror.rootguide.org/ubuntu/ feisty-security main restricted universe multiverse
+deb http://mirror.rootguide.org/ubuntu/ feisty-proposed main multiverse restricted universe
+deb-src http://mirror.rootguide.org/ubuntu/ feisty-proposed main restricted universe multiverse
+deb http://mirror.rootguide.org/ubuntu-cn/ feisty main multiverse restricted universe
+
+
+deb http://archive.ubuntu.com/ubuntu/ intrepid main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu/ intrepid-security main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu/ intrepid-updates main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu/ intrepid-proposed main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu/ intrepid-backports main restricted universe multiverse
+deb-src http://archive.ubuntu.com/ubuntu/ intrepid main restricted universe multiverse
+deb-src http://archive.ubuntu.com/ubuntu/ intrepid-security main restricted universe multiverse
+deb-src http://archive.ubuntu.com/ubuntu/ intrepid-updates main restricted universe multiverse
+deb-src http://archive.ubuntu.com/ubuntu/ intrepid-proposed main restricted universe multiverse
+deb-src http://archive.ubuntu.com/ubuntu/ intrepid-backports main restricted universe multiverse

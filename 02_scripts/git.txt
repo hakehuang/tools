@@ -1,0 +1,81 @@
+﻿ 
+ #get source
+ git-clone fsl@10.192.225.160:/home/fsl/fsl.android.test.git/ androidtest
+ git-clone fsl@10.192.225.160:/home/fsl/fsl.vte.git/ vte
+ 
+ #web
+ http://10.192.225.160/cgi-bin/gitweb.cgi
+ 
+ #create branch
+$ git clone git://git.kernel.org/pub/scm/.../linux-2.6 my2.6
+$ cd my2.6
+$ git branch my2.6.14 v2.6.14   (1)
+$ git checkout my2.6.14
+
+#check out from branch
+git clone git://sw-git01-tx30.am.freescale.net/linux-2.6-imx.git
+cd linux-2.6-imx
+git checkout -b imx_2.6.28 origin/imx_2.6.28
+
+ 
+ #git create tags
+ git-tag -a Tag_1 -m "test"
+ git-push --tags
+ 
+ #modify last commit comments
+ git commit --amend 
+ 
+ #merge
+ git checkout master
+git merge hotfix<branch name>
+
+#delete local un-merged branch
+git-branch -D <branch name>
+#delete remote un-merged branch
+git-branch -r -D <branch name>
+
+
+#withdraw one commit permanently
+git-reset --hard HEAD~1
+
+#withdraw one commit softly
+git-reset --soft HEAD~1
+
+#add project to git
+# login to remote server
+ssh git@REMOTE_SERVER
+# once logged in
+mkdir example.git
+cd example.git
+git --bare init
+#in local
+mkdir example
+cd example
+git init
+touch README
+git add README
+git commit -m 'first commit'
+git remote add origin <your CID>@REMOTE_SERVER:/path to git/example.git
+git push origin master
+
+#after install git-daemon-run in server
+git-clone git://10.192.225.222/vte
+
+sudo sv stop git-daemon
+sudo sv start git-daemon
+
+#see detailed patch
+git log -p
+
+#see git change in this month
+git log --author="Hake Huang" --since="one month ago" --pretty=oneline | wc -l
+#numbers
+git log --since="one month ago" | git-shortlog -s
+
+#merge
+git remote add <name> <remote git>
+git checkout <name>
+git pull <name> master
+
+
+

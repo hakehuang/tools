@@ -1,0 +1,2 @@
+#find certain name and find pattern in these files
+find -name "pattern" . | xargs grap -n "<pattern>"

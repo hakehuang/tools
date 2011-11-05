@@ -1,0 +1,41 @@
+#!/bin/sh
+# Program:
+# 	modprobe the mmc related kernel modules
+# History:
+# 2008/07/02	Hake First release
+
+
+KERVER=$(uname -r)
+KERDIR=/lib/modules/$KERVER
+if [ -d $KERDIR ]
+then
+   echo $KERDIR exist!
+else
+   echo  warning! kernel version not match!
+   read -p "Please input Kernel path: " firstname
+   if [ -z $KERDIR ]
+   then
+     echo error!! kernel path is wrong!
+     exit 1
+   fi
+fi
+
+MMCDIR=$KERDIR/kernel/drivers/mmc
+MMCMDLS=$(ls $MMCDIR)
+cd $MMCDIR
+for i in $MMCMDLS
+do
+    cd $i
+    MDS=$(ls *.ko) 
+    for j in $MDS
+    do
+       MN=$(echo $j | sed 's/.ko//')
+       modprobe $MN
+    done
+  cd ..
+done
+
+echo mmc module installed
+
+
+

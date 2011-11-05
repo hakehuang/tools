@@ -1,0 +1,47 @@
+#!/bin/sh
+PROC=$(mount | awk '{print $1}'| grep proc)
+
+if [ -z $$PROC ]
+then
+echo N
+else
+echo Y
+fi
+
+SDA=8
+SDD=0
+
+DNAMES=$(cat /proc/partitions | awk -v mj="$SDA" -v mr="$SDD" '{if($1 == mj && $2 != mr) print $4}')
+
+echo $DNAMES
+
+exit 0
+
+for i in $DNAMES
+do
+   ISMOUNT=$(mount | grep $PNAME)
+   if [ -z $ISMOUNT ]
+   then
+     if [ -e /dev/$PNAME ]
+     then
+       echo device node exist
+     else
+       mknode /dev/$i
+     fi 
+     mkdir -P /mnt/mmc/$i
+     FILESYS=$(fsck -T -N /dev/$i)
+     CHECKDOS=$(echo $FILESYS | grep msdos)
+     if [ "$CHECKDOS" ]
+     then
+       mount -t vfat /dev/$i /mnt/mmc/$i
+     else
+       CHECKEXT2=$(echo $FILESYS | grep ext2)
+       if [ "$CHECKEXT2" ]
+       then
+         mount -t ext2 /dev/$i /mnt/mmc/$i
+       else
+         echo no file system support for $i
+       fi 
+     fi
+   fi
+done

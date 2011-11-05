@@ -1,0 +1,10 @@
+#Capture:
+mencoder tv:// oac=pcm=yes ovc=lavc=yes lavcopts=vcodec=mjpeg \
+tv=driver=v4l2:input=1:width=768:height=576:device=/dev/video0:audiorate=48000
+
+mplayer -radio device=/dev/radio0:driver=v4l2:channel=104.4-1
+
+#preview
+mplayer tv:// -tv driver=v4l2:width=320:height=240:fps=25:outfmt=rgb24:device=/dev/video0
+
+

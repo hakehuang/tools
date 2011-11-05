@@ -1,0 +1,35 @@
+#!/bin/sh
+# Program:
+# 	tftp transfer script
+# History:
+# 2008/07/02	Hake First release
+
+TFTPSERVER=10.192.225.96
+
+echo server is 10.192.225.96
+
+if [ $# -ne 2 ]
+then
+    echo "Usage - $0   x  y"
+    echo "       x is put or get, y is the filename"
+    exit 1
+fi
+
+if [ $1 = "get" ]
+then
+    tftp -g -r $2 $TFTPSERVER
+else 
+  if [ $1 = "put" ]
+  then
+    if [ -e $2 ]
+    then
+     tftp -p -l $2 $TFTPSERVER
+    else
+     echo local file $2 does not exit!
+     exit
+    fi
+  else
+    echo wrong paramenter $1
+    exit 1
+  fi
+fi

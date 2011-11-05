@@ -1,0 +1,19 @@
+﻿echo \[rootfs-volume-0\] > ubinize.cfg ; 
+echo mode=ubi >> ubinize.cfg ; 
+echo image=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}-1GB.rootfs.ubifs >> ubinize.cfg ;
+ echo vol_id=0 >> ubinize.cfg ; echo vol_size=48MiB >> ubinize.cfg ; 
+ echo vol_type=dynamic >> ubinize.cfg ; echo vol_name=rootfs0 >> ubinize.cfg ; 
+ echo \[rootfs-volume-1\] >> ubinize.cfg ; echo mode=ubi >> ubinize.cfg ; 
+ echo image=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}-1GB.rootfs.ubifs >> ubinize.cfg ; 
+ echo vol_id=1 >> ubinize.cfg ; echo vol_size=48MiB >> ubinize.cfg ; 
+ echo vol_type=dynamic >> ubinize.cfg ; echo vol_name=rootfs1 >> ubinize.cfg ; 
+ echo \[data-volume-2\] >> ubinize.cfg ; echo mode=ubi >> ubinize.cfg ; 
+ echo vol_id=2 >> ubinize.cfg ; echo vol_size=128MiB >> ubinize.cfg ; 
+ echo vol_type=dynamic >> ubinize.cfg ; echo vol_name=data >> ubinize.cfg ; 
+ echo vol_flags=autoresize >> ubinize.cfg ; 
+ mkfs.ubifs -v -r ${IMAGE_ROOTFS} -o ${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}-1GB.rootfs.ubifs -m 4096 -e 253952 -c 4095 
+ mkfs.ubifs -v -r rootfs -o rootfs.ubifs -m 2048 -e 258048 -c 2047
+ ubinize -o rootfs.ubi -m 4096 -p 256KiB -s 4096 ubinize.cfg
+ 
+
+ ubiformat -q /dev/mtd5 -f ubi.img

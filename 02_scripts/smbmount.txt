@@ -1,0 +1,6 @@
+﻿smbmount //sambaserver/d /mnt/d -o username=aaa,password=bbb
+smbmount //sambaserver/d /mnt/d -o username=aaa%bbb
+　　mount -t smbfs -o username=aaa,password=bbb //sambaserver/d /mnt/d
+
+　　mount -t smbfs -o username=aaa%bbb //sambaserver/d /mnt/d
+　　smbclient //sambaserver/d -U username%password

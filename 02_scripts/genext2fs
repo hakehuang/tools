@@ -1,0 +1,3 @@
+BCNT=$(du -s rootfs | awk '{print $1}')
+genext2fs -U -b $BCNT -d rootfs/ rootfs.ext2
+gzip rootfs.ext2

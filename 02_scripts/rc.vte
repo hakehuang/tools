@@ -1,0 +1,15 @@
+﻿#!/bin/sh
+
+udhcpc
+
+ifconfig lo up
+
+if [ $1 == "start" ]
+then
+mount -t nfs -o nolock,rsize=1024,wsize=1024 10.192.225.222:/rootfs /mnt/nfs
+else
+if [ $1 == "stop" ]
+then
+umount /mnt/nfs
+fi
+fi

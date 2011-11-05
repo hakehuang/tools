@@ -1,0 +1,2 @@
+﻿smbmount //10.192.224.48/LinuxBuildResult /mnt/scmbuild -o username=fsl/b20222
+smbmount //10.192.224.48/LinuxReleaseCandidate /mnt/scmrelease -o username=fsl/b20222

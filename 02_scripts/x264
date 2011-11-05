@@ -1,0 +1,1 @@
+x264.exe --frames 300 --no-cabac --qp 26 -o starwar.h264 foreman08.yuv 352x288

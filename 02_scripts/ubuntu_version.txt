@@ -1,0 +1,14 @@
+cat /etc/issue
+
+
+or
+
+cat /proc/version
+
+or
+
+uname -a
+
+or
+
+lsb_release -a

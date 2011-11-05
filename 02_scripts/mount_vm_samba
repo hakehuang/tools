@@ -1,0 +1,1 @@
+net use W: \\192.168.98.128\home hellor /user:smb

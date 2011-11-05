@@ -1,0 +1,4 @@
+make CROSS_COMPILE=arm-linux-gnueabi- stmp378x_dev_config 
+make CROSS_COMPILE=arm-linux-gnueabi-
+
+elftosb2 -z -c stmp378x_uboot_sb.db -o stmp378x_uboot.sb

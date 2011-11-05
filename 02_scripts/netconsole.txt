@@ -1,0 +1,1 @@
+﻿insmod netconsole.ko  netconsole=6666@10.192.225.10/eth0,30000@10.192.225.222/00:12:3f:52:6a:f6

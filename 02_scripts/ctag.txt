@@ -1,0 +1,11 @@
+﻿#in shell
+ctags –R *
+vi –t tag
+#in vi 
+:tp #tag previous
+:tn #tag next
+:ts #tag show
+Ctrl+] #go into function
+Ctrl+ t # return
+
+Note: the vi shoud start with the directory where "ctags -R *" is running 

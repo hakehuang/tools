@@ -1,0 +1,5 @@
+ifconfig eth0 10.192.225.55
+
+sleep 2
+
+mount -t nfs -o nolock,rsize=1024,wsize=1024 10.192.225.222:/rootfs/hake /mnt/nfs

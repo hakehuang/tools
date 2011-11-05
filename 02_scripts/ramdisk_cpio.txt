@@ -1,0 +1,21 @@
+﻿改名解壓gzip
+mv ramdisk.img ramdisk.img.gz
+gzip -d ramdisk.img.gz
+
+建一個資料夾
+mkdir ramdisk
+cd ramdisk
+
+解壓img
+cpio -i -F ../ramdisk.img
+
+把要改的東西改完後
+
+產生要pack的目錄list,也可以自己列
+cpio -i -t -F ../ramdisk.img > list
+
+根據list去pack new.img
+cpio -o -H newc -O new.img < list
+
+壓縮
+gzip new.img 
